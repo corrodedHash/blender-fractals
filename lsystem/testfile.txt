@@ -1,5 +1,0 @@
-start: A;
-rules:
-A: B;
-B: f;
-B: f A;
