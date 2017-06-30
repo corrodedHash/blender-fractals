@@ -64,7 +64,7 @@ class lsystemParser ( Parser ):
                       "MOVE", "PUSH", "POP", "INIT_SECTION", "INIT_START", 
                       "RULES_SECTION", "FINAL_SECTION" ]
 
-    RULE_terminal = 0
+    RULE_term = 0
     RULE_init_sec = 1
     RULE_init_start = 2
     RULE_rule_sec = 3
@@ -75,7 +75,7 @@ class lsystemParser ( Parser ):
     RULE_final_rule_res = 8
     RULE_code = 9
 
-    ruleNames =  [ "terminal", "init_sec", "init_start", "rule_sec", "rule_entity", 
+    ruleNames =  [ "term", "init_sec", "init_start", "rule_sec", "rule_entity", 
                    "rule_res", "final_sec", "final_rule_entity", "final_rule_res", 
                    "code" ]
 
@@ -105,7 +105,7 @@ class lsystemParser ( Parser ):
 
 
 
-    class TerminalContext(ParserRuleContext):
+    class TermContext(ParserRuleContext):
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
@@ -127,29 +127,29 @@ class lsystemParser ( Parser ):
             return self.getToken(lsystemParser.POP, 0)
 
         def getRuleIndex(self):
-            return lsystemParser.RULE_terminal
+            return lsystemParser.RULE_term
 
         def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterTerminal" ):
-                listener.enterTerminal(self)
+            if hasattr( listener, "enterTerm" ):
+                listener.enterTerm(self)
 
         def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitTerminal" ):
-                listener.exitTerminal(self)
+            if hasattr( listener, "exitTerm" ):
+                listener.exitTerm(self)
 
         def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitTerminal" ):
-                return visitor.visitTerminal(self)
+            if hasattr( visitor, "visitTerm" ):
+                return visitor.visitTerm(self)
             else:
                 return visitor.visitChildren(self)
 
 
 
 
-    def terminal(self):
+    def term(self):
 
-        localctx = lsystemParser.TerminalContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 0, self.RULE_terminal)
+        localctx = lsystemParser.TermContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 0, self.RULE_term)
         self._la = 0 # Token type
         try:
             self.state = 30
@@ -461,11 +461,11 @@ class lsystemParser ( Parser ):
             else:
                 return self.getToken(lsystemParser.NT, i)
 
-        def terminal(self, i:int=None):
+        def term(self, i:int=None):
             if i is None:
-                return self.getTypedRuleContexts(lsystemParser.TerminalContext)
+                return self.getTypedRuleContexts(lsystemParser.TermContext)
             else:
-                return self.getTypedRuleContext(lsystemParser.TerminalContext,i)
+                return self.getTypedRuleContext(lsystemParser.TermContext,i)
 
 
         def SPACE(self, i:int=None):
@@ -515,7 +515,7 @@ class lsystemParser ( Parser ):
                         pass
                     elif token in [lsystemParser.ROT, lsystemParser.MOVE, lsystemParser.PUSH, lsystemParser.POP]:
                         self.state = 54
-                        self.terminal()
+                        self.term()
                         pass
                     else:
                         raise NoViableAltException(self)
@@ -545,7 +545,7 @@ class lsystemParser ( Parser ):
                 pass
             elif token in [lsystemParser.ROT, lsystemParser.MOVE, lsystemParser.PUSH, lsystemParser.POP]:
                 self.state = 68
-                self.terminal()
+                self.term()
                 pass
             else:
                 raise NoViableAltException(self)
@@ -705,11 +705,11 @@ class lsystemParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def terminal(self, i:int=None):
+        def term(self, i:int=None):
             if i is None:
-                return self.getTypedRuleContexts(lsystemParser.TerminalContext)
+                return self.getTypedRuleContexts(lsystemParser.TermContext)
             else:
-                return self.getTypedRuleContext(lsystemParser.TerminalContext,i)
+                return self.getTypedRuleContext(lsystemParser.TermContext,i)
 
 
         def SPACE(self, i:int=None):
@@ -751,7 +751,7 @@ class lsystemParser ( Parser ):
             while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
                 if _alt==1:
                     self.state = 89
-                    self.terminal()
+                    self.term()
                     self.state = 91 
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
@@ -769,7 +769,7 @@ class lsystemParser ( Parser ):
                 _alt = self._interp.adaptivePredict(self._input,11,self._ctx)
 
             self.state = 100
-            self.terminal()
+            self.term()
             self.state = 104
             self._errHandler.sync(self)
             _la = self._input.LA(1)

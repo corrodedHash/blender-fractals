@@ -1,12 +1,16 @@
 class RotateTerminal:
 
-    def __init__(self, rotation):
+    def __init__(self, rotation = None):
+        if rotation is None:
+            rotation = 90
         self.rotation = rotation
 
 
 class MoveTerminal:
 
-    def __init__(self, distance):
+    def __init__(self, distance = None):
+        if distance is None:
+            distance = 1
         self.distance = distance
 
 

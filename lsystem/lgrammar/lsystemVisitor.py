@@ -9,8 +9,8 @@ else:
 
 class lsystemVisitor(ParseTreeVisitor):
 
-    # Visit a parse tree produced by lsystemParser#terminal.
-    def visitTerminal(self, ctx:lsystemParser.TerminalContext):
+    # Visit a parse tree produced by lsystemParser#term.
+    def visitTerm(self, ctx:lsystemParser.TermContext):
         return self.visitChildren(ctx)
 
 

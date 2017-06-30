@@ -3,9 +3,18 @@ import math
 
 class Lsystem:
     def __init__ (self, start_literal):
+        self._non_terminals = []
         self.start = start_literal
         self.position_stack = [(0, 0, 0)]
         self.rotation_stack = [(1, 0, 0)]
+
+    def get_non_terminal(self, name):
+        if name in self._non_terminals:
+            return self._non_terminals[name]
+        else:
+            self._non_terminals[name] = literal_semantic.NonTerminal()
+            return self._non_terminals[name]
+
 
     def _move(self, terminal: literal_semantic.MoveTerminal):
         self.position_stack[-1] += self.rotation_stack * terminal.distance

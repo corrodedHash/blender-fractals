@@ -8,12 +8,12 @@ else:
 # This class defines a complete listener for a parse tree produced by lsystemParser.
 class lsystemListener(ParseTreeListener):
 
-    # Enter a parse tree produced by lsystemParser#terminal.
-    def enterTerminal(self, ctx:lsystemParser.TerminalContext):
+    # Enter a parse tree produced by lsystemParser#term.
+    def enterTerm(self, ctx:lsystemParser.TermContext):
         pass
 
-    # Exit a parse tree produced by lsystemParser#terminal.
-    def exitTerminal(self, ctx:lsystemParser.TerminalContext):
+    # Exit a parse tree produced by lsystemParser#term.
+    def exitTerm(self, ctx:lsystemParser.TermContext):
         pass
 
 
