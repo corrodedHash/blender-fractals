@@ -2,10 +2,19 @@
 from lgrammar.antlr4 import *
 from lgrammar.lsystemParser import lsystemParser
 
+from literal_semantic
+
 # This class defines a complete generic visitor for a parse tree produced by lsystemParser.
 # ctx.accept(self) visits the ctx
 
 class lgrammarVisitor(ParseTreeVisitor):
+
+    def _get_non_terminal(self, name):
+        if name in self.non_terminals:
+            return self.non_terminals[name]
+        else:
+            self.non_terminals[name] = literal_semantic.NonTerminal()
+            return self.non_terminals[name]
 
     # Visit a parse tree produced by lsystemParser#terminal.
     def visitTerminal(self, ctx:lsystemParser.TerminalContext):
@@ -19,6 +28,7 @@ class lgrammarVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by lsystemParser#init_start.
     def visitInit_start(self, ctx:lsystemParser.Init_startContext):
+        self.start_terminal = self._get_non_terminal(ctx.NT.getText())
         return self.visitChildren(ctx)
 
 
@@ -54,6 +64,8 @@ class lgrammarVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by lsystemParser#code.
     def visitCode(self, ctx:lsystemParser.CodeContext):
+        self.non_terminals = dict()
+        self.start_terminal = None
         return self.visitChildren(ctx)
 
 

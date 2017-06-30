@@ -20,7 +20,7 @@ class PopTerminal:
 
 class NonTerminal:
 
-    def __init__(self, name):
+    def __init__(self):
         self.transition = []
         self.final_transition = []
 

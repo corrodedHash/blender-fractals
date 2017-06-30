@@ -16,14 +16,12 @@ class Lsystem:
         new_z = math.sin(terminal.rotation) + math.cos(teriminal.rotation)
         self.position_stack[-1] = (new_x, new_y, new_z)
 
-
-
     def get_vertices (self, level):
         for command in self.start.iterate(level):
             if command is literal_semantic.RotateTerminal:
-                self.rotate(command)
+                self._rotate(command)
             elif command is literal_semantic.MoveTerminal:
-                self.move(command)
+                self._move(command)
             elif command is literal_semantic.PushTerminal:
                 self.position_stack.append(self.position_stack[-1])
                 self.rotation_stack.append(self.rotation_stack[-1])
