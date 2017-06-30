@@ -1,4 +1,4 @@
 init:
 start: A;
 rules:
-A: m1;
+A: m2;

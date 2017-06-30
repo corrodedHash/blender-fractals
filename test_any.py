@@ -10,6 +10,4 @@ class TestSystem(unittest.TestCase):
 
         self.assertTrue('A' in x._non_terminals)
         self.assertEqual(x.start, x._non_terminals['A'])
-        self.assertEqual(x._non_terminals['A'].transition[0].distance, 1)
-        print(sys.path)
-
+        self.assertEqual(x._non_terminals['A'].transition[0].distance, 2)

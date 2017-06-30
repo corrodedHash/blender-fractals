@@ -1,9 +1,10 @@
 # Generated from lsystem.g4 by ANTLR 4.6
-from .lgrammar.antlr4 import *
-from .lgrammar.lsystemParser import lsystemParser
+from antlr4 import *
+from lgrammar.lsystemParser import lsystemParser
+print(__file__)
 
-from .literal_semantic import RotateTerminal, MoveTerminal, PushTerminal, PopTerminal, NonTerminal
-from .lsystem import Lsystem
+from literal_semantic import RotateTerminal, MoveTerminal, PushTerminal, PopTerminal, NonTerminal
+from lsystem_class import Lsystem
 
 # This class defines a complete generic visitor for a parse tree produced by lsystemParser.
 # ctx.accept(self) visits the ctx
@@ -19,7 +20,7 @@ class lgrammarVisitor(ParseTreeVisitor):
         return aggregate
 
     def visitTerminal(self, ctx):
-        if ctx.symbol.type == 5:
+        if ctx.symbol.type == lsystemParser.NT:
             return self.lsystem.get_non_terminal(ctx.getText())
         else:
             return None

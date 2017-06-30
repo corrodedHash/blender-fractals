@@ -1,4 +1,5 @@
-from .literal_semantic import RotateTerminal, MoveTerminal, PushTerminal, PopTerminal, NonTerminal
+from literal_semantic import RotateTerminal, MoveTerminal, PushTerminal, PopTerminal, NonTerminal
+
 import math
 
 class Lsystem:
