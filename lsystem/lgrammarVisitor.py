@@ -1,8 +1,9 @@
 # Generated from lsystem.g4 by ANTLR 4.6
-from lgrammar.antlr4 import *
-from lgrammar.lsystemParser import lsystemParser
+from .lgrammar.antlr4 import *
+from .lgrammar.lsystemParser import lsystemParser
 
-from literal_semantic
+from .literal_semantic import RotateTerminal, MoveTerminal, PushTerminal, PopTerminal, NonTerminal
+from .lsystem import Lsystem
 
 # This class defines a complete generic visitor for a parse tree produced by lsystemParser.
 # ctx.accept(self) visits the ctx
@@ -18,33 +19,37 @@ class lgrammarVisitor(ParseTreeVisitor):
         return aggregate
 
     def visitTerminal(self, ctx):
-        if ctx.type == lsystemParser.NT:
-            return self.lsystem.get_non_terminal(ctx.getText)
+        if ctx.symbol.type == 5:
+            return self.lsystem.get_non_terminal(ctx.getText())
         else:
             return None
 
     # Visit a parse tree produced by lsystemParser#terminal.
     def visitTerm(self, ctx:lsystemParser.TermContext):
         if ctx.ROT() is not None:
-            return literal_semantic.RotateTerminal(float(ctx.FLOAT()))
+            if ctx.FLOAT() is None:
+                return RotateTerminal()
+            return RotateTerminal(float(ctx.FLOAT()))
         elif ctx.MOVE() is not None:
-            return literal_semantic.MoveTerminal(float(ctx.FLOAT()))
+            if ctx.FLOAT() is None:
+                return MoveTerminal()
+            return MoveTerminal(float(ctx.FLOAT()))
         elif ctx.PUSH() is not None:
-            return literal_semantic.PushTerminal()
+            return PushTerminal()
         elif ctx.POP() is not None:
-            return literal_semantic.PopTerminal()
+            return PopTerminal()
 
         return self.visitChildren(ctx)
 
 
     # Visit a parse tree produced by lsystemParser#init_sec.
     def visitInit_sec(self, ctx:lsystemParser.Init_secContext):
-        ctx.init_start.accept()
+        ctx.init_start().accept(self)
 
 
     # Visit a parse tree produced by lsystemParser#init_start.
     def visitInit_start(self, ctx:lsystemParser.Init_startContext):
-        self.lsystem.start = self.lsystem.get_non_terminal(ctx.NT.getText())
+        self.lsystem.start = self.lsystem.get_non_terminal(ctx.NT().getText())
 
     # Visit a parse tree produced by lsystemParser#rule_sec.
     def visitRule_sec(self, ctx:lsystemParser.Rule_secContext):
