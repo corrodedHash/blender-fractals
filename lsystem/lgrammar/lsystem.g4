@@ -1,9 +1,9 @@
 grammar lsystem;
 
+FLOAT : ( INT | NEG_INT ) ( '.' [0-9]+ )? ;
+
 INT : [1-9][0-9]* | '0';
 NEG_INT: '-' [1-9][0-9]*;
-
-FLOAT : ( INT | NEG_INT ) ( '.' [0-9]+ )? ;
 
 SPACE : ' ' | '\t';
 
@@ -23,7 +23,7 @@ RULES_SECTION : 'rules' ;
 FINAL_SECTION : 'final' ;
 
 
-term : ROT FLOAT ? | MOVE FLOAT ? | PUSH | POP ;
+term : ( ROT FLOAT ? ) | ( MOVE FLOAT ? ) | PUSH | POP ;
 
 init_sec : INIT_SECTION SECTION_START init_start ;
 init_start : INIT_START CONTENT_START NT CONTENT_END ;

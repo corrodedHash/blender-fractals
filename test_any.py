@@ -1,12 +1,13 @@
 import unittest
-import lsystem
-import sys
+import lsystem.lsystem_parse
+
 
 class TestSystem(unittest.TestCase):
+
     def test_general(self):
         x = None
         with open("test_grammars/a.txt") as f:
-            x = lsystem.parse(f.read())
+            x = lsystem.lsystem_parse.parse(f.read())
 
         self.assertTrue('A' in x._non_terminals)
         self.assertEqual(x.start, x._non_terminals['A'])

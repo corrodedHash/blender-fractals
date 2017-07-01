@@ -1,6 +1,6 @@
 class RotateTerminal:
 
-    def __init__(self, rotation = None):
+    def __init__(self, rotation=None):
         if rotation is None:
             rotation = 90
         self.rotation = rotation
@@ -8,7 +8,7 @@ class RotateTerminal:
 
 class MoveTerminal:
 
-    def __init__(self, distance = None):
+    def __init__(self, distance=None):
         if distance is None:
             distance = 1
         self.distance = distance
@@ -53,8 +53,8 @@ class NonTerminal:
         if level > 0:
             for literal in self.transition:
                 if literal is NonTerminal:
-                    for l2literal in literal.iterate(level -1):
+                    for l2literal in literal.iterate(level - 1):
                         yield l2literal
                 else:
-                    yield literal 
+                    yield literal
             return

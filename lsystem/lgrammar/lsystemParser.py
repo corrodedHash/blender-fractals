@@ -1,11 +1,13 @@
-# Generated from lsystem.g4 by ANTLR 4.6
+# Generated from lsystem.g4 by ANTLR 4.7
 # encoding: utf-8
 from antlr4 import *
 from io import StringIO
+from typing.io import TextIO
+import sys
 
 def serializedATN():
     with StringIO() as buf:
-        buf.write("\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\22")
+        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\22")
         buf.write("s\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b")
         buf.write("\t\b\4\t\t\t\4\n\t\n\4\13\t\13\3\2\3\2\5\2\31\n\2\3\2")
         buf.write("\3\2\5\2\35\n\2\3\2\3\2\5\2!\n\2\3\3\3\3\3\3\3\3\3\4\3")
@@ -16,10 +18,10 @@ def serializedATN():
         buf.write("\t\3\t\3\t\3\t\3\n\3\n\6\n^\n\n\r\n\16\n_\7\nb\n\n\f\n")
         buf.write("\16\ne\13\n\3\n\3\n\7\ni\n\n\f\n\16\nl\13\n\3\13\3\13")
         buf.write("\3\13\5\13q\n\13\3\13\2\2\f\2\4\6\b\n\f\16\20\22\24\2")
-        buf.write("\2x\2 \3\2\2\2\4\"\3\2\2\2\6&\3\2\2\2\b+\3\2\2\2\n\62")
+        buf.write("\2\2x\2 \3\2\2\2\4\"\3\2\2\2\6&\3\2\2\2\b+\3\2\2\2\n\62")
         buf.write("\3\2\2\2\fB\3\2\2\2\16O\3\2\2\2\20V\3\2\2\2\22c\3\2\2")
-        buf.write("\2\24m\3\2\2\2\26\30\7\13\2\2\27\31\7\5\2\2\30\27\3\2")
-        buf.write("\2\2\30\31\3\2\2\2\31!\3\2\2\2\32\34\7\f\2\2\33\35\7\5")
+        buf.write("\2\24m\3\2\2\2\26\30\7\13\2\2\27\31\7\3\2\2\30\27\3\2")
+        buf.write("\2\2\30\31\3\2\2\2\31!\3\2\2\2\32\34\7\f\2\2\33\35\7\3")
         buf.write("\2\2\34\33\3\2\2\2\34\35\3\2\2\2\35!\3\2\2\2\36!\7\r\2")
         buf.write("\2\37!\7\16\2\2 \26\3\2\2\2 \32\3\2\2\2 \36\3\2\2\2 \37")
         buf.write("\3\2\2\2!\3\3\2\2\2\"#\7\17\2\2#$\7\n\2\2$%\5\6\4\2%\5")
@@ -59,7 +61,7 @@ class lsystemParser ( Parser ):
                      "<INVALID>", "'r'", "'m'", "'push'", "'pop'", "'init'", 
                      "'start'", "'rules'", "'final'" ]
 
-    symbolicNames = [ "<INVALID>", "INT", "NEG_INT", "FLOAT", "SPACE", "NT", 
+    symbolicNames = [ "<INVALID>", "FLOAT", "INT", "NEG_INT", "SPACE", "NT", 
                       "CONTENT_END", "CONTENT_START", "SECTION_START", "ROT", 
                       "MOVE", "PUSH", "POP", "INIT_SECTION", "INIT_START", 
                       "RULES_SECTION", "FINAL_SECTION" ]
@@ -80,9 +82,9 @@ class lsystemParser ( Parser ):
                    "code" ]
 
     EOF = Token.EOF
-    INT=1
-    NEG_INT=2
-    FLOAT=3
+    FLOAT=1
+    INT=2
+    NEG_INT=3
     SPACE=4
     NT=5
     CONTENT_END=6
@@ -97,9 +99,9 @@ class lsystemParser ( Parser ):
     RULES_SECTION=15
     FINAL_SECTION=16
 
-    def __init__(self, input:TokenStream):
-        super().__init__(input)
-        self.checkVersion("4.6")
+    def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
+        super().__init__(input, output)
+        self.checkVersion("4.7")
         self._interp = ParserATNSimulator(self, self.atn, self.decisionsToDFA, self.sharedContextCache)
         self._predicates = None
 
@@ -852,3 +854,8 @@ class lsystemParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
+
+
+
+
+

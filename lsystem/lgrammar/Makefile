@@ -1,9 +1,11 @@
+ANTLR_EXE=/usr/share/java/antlr-complete.jar
+EXE_CALL=java -jar $(ANTLR_EXE)
 java: 
-	antlr4 lsystem.g4
-	javac -cp '/usr/share/java/antlr-complete.jar:$$CLASSPATH' lsystem*.java
+	$(EXE_CALL) lsystem.g4
+	javac -cp '$(ANTLR_EXE):$$CLASSPATH' lsystem*.java
 
 python:
-	antlr4 -Dlanguage=Python3 -visitor lsystem.g4
+	$(EXE_CALL) -Dlanguage=Python3 -visitor lsystem.g4
 
 test:
 	cat testfile.txt | grun lsystem code -gui
