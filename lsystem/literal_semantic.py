@@ -5,6 +5,11 @@ class RotateTerminal:
             rotation = 90
         self.rotation = rotation
 
+    def __str__(self):
+        return "r" + str(self.rotation)
+
+    __repr__ = __str__
+
 
 class MoveTerminal:
 
@@ -13,13 +18,28 @@ class MoveTerminal:
             distance = 1
         self.distance = distance
 
+    def __str__(self):
+        return "m" + str(self.distance)
+
+    __repr__ = __str__
+
 
 class PushTerminal:
     pass
 
+    def __str__(self):
+        return "push"
+
+    __repr__ = __str__
+
 
 class PopTerminal:
     pass
+
+    def __str__(self):
+        return "pop"
+
+    __repr__ = __str__
 
 
 class NonTerminal:
@@ -48,13 +68,16 @@ class NonTerminal:
             raise ValueError("Level cannot be below 0")
 
         if level == 0:
-            return self.final_transition
+            for x in self.final_transition:
+                yield x
+            return
 
         if level > 0:
             for literal in self.transition:
-                if literal is NonTerminal:
+                if type(literal) is NonTerminal:
                     for l2literal in literal.iterate(level - 1):
                         yield l2literal
+
                 else:
                     yield literal
             return
