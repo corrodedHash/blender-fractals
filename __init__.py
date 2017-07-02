@@ -1,5 +1,5 @@
 bl_info = {
-    "name": "Dragon Curve",
+    "name": "Fractals",
     "author": "corrodedHash",
     "version": (0, 3),
     "blender": (2, 75, 0),
@@ -12,6 +12,7 @@ bl_info = {
 
 import os, sys  # NOQA
 sys.path.append(os.path.dirname(__file__))
+sys.path.append(os.path.dirname(__file__) + "/lsystem/lgrammar")
 
 # import dragon  # NOQA
 from fractal import Fractal_add_object  # NOQA
