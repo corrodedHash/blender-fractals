@@ -28,21 +28,28 @@ class lgrammarVisitor(antlr4.ParseTreeVisitor):
         else:
             return None
 
+    # Visit a parse tree produced by lsystemParser#rotation.
+    def visitRotation(self, ctx: lsp.lsystemParser.RotationContext):
+        floats = map(lambda x: float(x.getText()), ctx.FLOAT())
+        return RotateTerminal(*floats)
+
+    # Visit a parse tree produced by lsystemParser#move.
+    def visitMove(self, ctx: lsp.lsystemParser.MoveContext):
+        if ctx.FLOAT() is None:
+            return MoveTerminal()
+        return MoveTerminal(float(ctx.FLOAT().getText()))
+
+    # Visit a parse tree produced by lsystemParser#push.
+    def visitPush(self, ctx: lsp.lsystemParser.PushContext):
+        return PushTerminal()
+
+    # Visit a parse tree produced by lsystemParser#pop.
+    def visitPop(self, ctx: lsp.lsystemParser.PopContext):
+        return PopTerminal()
+
     # Visit a parse tree produced by lsystemParser#terminal.
     def visitTerm(self, ctx: lsp.lsystemParser.TermContext):
-        if ctx.ROT() is not None:
-            if ctx.FLOAT() is None:
-                return RotateTerminal()
-            return RotateTerminal(float(ctx.FLOAT().getText()))
-        elif ctx.MOVE() is not None:
-            if ctx.FLOAT() is None:
-                return MoveTerminal()
-            return MoveTerminal(float(ctx.FLOAT().getText()))
-        elif ctx.PUSH() is not None:
-            return PushTerminal()
-        elif ctx.POP() is not None:
-            return PopTerminal()
-        raise RuntimeError
+        return self.visitChildren(ctx)[0]
 
     # Visit a parse tree produced by lsystemParser#init_sec.
     def visitInit_sec(self, ctx: lsp.lsystemParser.Init_secContext):

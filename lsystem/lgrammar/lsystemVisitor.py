@@ -9,6 +9,26 @@ else:
 
 class lsystemVisitor(ParseTreeVisitor):
 
+    # Visit a parse tree produced by lsystemParser#rotation.
+    def visitRotation(self, ctx:lsystemParser.RotationContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by lsystemParser#move.
+    def visitMove(self, ctx:lsystemParser.MoveContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by lsystemParser#push.
+    def visitPush(self, ctx:lsystemParser.PushContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by lsystemParser#pop.
+    def visitPop(self, ctx:lsystemParser.PopContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by lsystemParser#term.
     def visitTerm(self, ctx:lsystemParser.TermContext):
         return self.visitChildren(ctx)

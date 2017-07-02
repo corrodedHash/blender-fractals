@@ -25,8 +25,14 @@ class FractalGen:
 
         self.position_stack = [(0, 0, 0)]
         self.rotation_stack = [(1, 0, 0)]
+        self.degree_stack = [(0, 0, 0)]
         self.vertex_stack = [(self._bm.verts.new(self.position_stack[-1]),
                               self._bm.verts.new(self._shift_pos()))]
+
+        self.stacks = [self.position_stack,
+                       self.rotation_stack,
+                       self.degree_stack,
+                       self.vertex_stack]
         self._bm.verts.index_update()
         return self
 
@@ -53,14 +59,49 @@ class FractalGen:
         self.position_stack[-1] = new_pos
         self._add_vertex()
 
-    def _rotate(self, terminal: RotateTerminal):
-        new_x = self.rotation_stack[-1][0] * math.cos(terminal.rotation) - \
-            self.rotation_stack[-1][2] * math.sin(terminal.rotation)
+    def _rotate_x(self, vector, rotation):
+        new_x = vector[0]
+        new_y = vector[1] * math.cos(rotation) - \
+            vector[2] * math.sin(rotation)
 
-        new_y = self.rotation_stack[-1][1]
-        new_z = self.rotation_stack[-1][0] * math.sin(terminal.rotation) + \
-            self.rotation_stack[-1][2] * math.cos(terminal.rotation)
-        self.rotation_stack[-1] = (new_x, new_y, new_z)
+        new_z = vector[1] * math.sin(rotation) + \
+            vector[2] * math.cos(rotation)
+        return (new_x, new_y, new_z)
+
+    def _rotate_y(self, vector, rotation):
+        new_x = vector[0] * math.cos(rotation) - \
+            vector[2] * math.sin(rotation)
+
+        new_y = vector[1]
+        new_z = vector[0] * math.sin(rotation) + \
+            vector[2] * math.cos(rotation)
+        return (new_x, new_y, new_z)
+
+    def _rotate_z(self, vector, rotation):
+        new_x = vector[0] * math.cos(rotation) - \
+            vector[1] * math.sin(rotation)
+
+        new_y = vector[0] * math.sin(rotation) + \
+            vector[1] * math.cos(rotation)
+        new_z = vector[2]
+        return (new_x, new_y, new_z)
+
+    def _rotate(self, terminal: RotateTerminal):
+        new_x = (self.degree_stack[-1][0] + terminal.rotation[0]) % 360
+        new_y = (self.degree_stack[-1][1] + terminal.rotation[1]) % 360
+        new_rot = self._rotate_y((1, 0, 0), new_x * 0.0174533)
+        new_rot = self._rotate_z(new_rot, new_y * 0.0174533)
+
+        self.rotation_stack[-1] = new_rot
+        self.degree_stack[-1] = (new_x, new_y, 0)
+
+    def _push(self):
+        for stack in self.stacks:
+            stack.append(stack[-1])
+
+    def _pop(self):
+        for stack in self.stacks:
+            stack.pop()
 
     def draw_vertices(self, level):
         max_count = self._lsystem.approx_steps(level)
@@ -82,13 +123,9 @@ class FractalGen:
             elif type(command) is MoveTerminal:
                 self._move(command)
             elif type(command) is PushTerminal:
-                self.position_stack.append(self.position_stack[-1])
-                self.rotation_stack.append(self.rotation_stack[-1])
-                self.vertex_stack.append(self.vertex_stack[-1])
+                self._push()
             elif type(command) is PopTerminal:
-                self.position_stack.pop()
-                self.rotation_stack.pop()
-                self.vertex_stack.pop()
+                self._pop()
             else:
                 raise RuntimeError(str(command))
         bpy.context.window_manager.progress_end()
@@ -110,8 +147,7 @@ def _create_fractal(self, context):
         frac.draw_vertices(self.iteration)
 
 
-class Fractal_add_object(bpy.types.Operator,
-                         bpy_extras.object_utils.AddObjectHelper):
+class Fractal_add_object(bpy.types.Operator):
     """Create a new Fractal"""
     bl_idname = "mesh.add_fractal"
     bl_label = "Add Fracal"

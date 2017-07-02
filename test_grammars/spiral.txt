@@ -1,0 +1,8 @@
+init:
+start: Y;
+rules:
+Y: m2 A r90 m2 A r90 m1 A r90 m1 A r90 Y;
+X: A r90 X;
+A: m2 A;
+final:
+A: m2;

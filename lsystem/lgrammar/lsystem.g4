@@ -22,10 +22,14 @@ INIT_START : 'start' ;
 RULES_SECTION : 'rules' ;
 FINAL_SECTION : 'final' ;
 
+rotation : ROT SPACE * ( '(' ( ( SPACE * FLOAT SPACE * ',' ) ?  SPACE * FLOAT SPACE * ',' ) ? SPACE * FLOAT SPACE * ')' | FLOAT | );
+move: MOVE FLOAT ?;
+push: PUSH;
+pop: POP;
 
-term : ( ROT FLOAT ? ) | ( MOVE FLOAT ? ) | PUSH | POP ;
+term : rotation | move | push | pop;
 
-init_sec : INIT_SECTION SECTION_START init_start ;
+init_sec : ( INIT_SECTION SECTION_START ) ? init_start ;
 init_start : INIT_START CONTENT_START NT CONTENT_END ;
 
 rule_sec : RULES_SECTION SECTION_START rule_entity + ;

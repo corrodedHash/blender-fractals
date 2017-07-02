@@ -8,6 +8,42 @@ else:
 # This class defines a complete listener for a parse tree produced by lsystemParser.
 class lsystemListener(ParseTreeListener):
 
+    # Enter a parse tree produced by lsystemParser#rotation.
+    def enterRotation(self, ctx:lsystemParser.RotationContext):
+        pass
+
+    # Exit a parse tree produced by lsystemParser#rotation.
+    def exitRotation(self, ctx:lsystemParser.RotationContext):
+        pass
+
+
+    # Enter a parse tree produced by lsystemParser#move.
+    def enterMove(self, ctx:lsystemParser.MoveContext):
+        pass
+
+    # Exit a parse tree produced by lsystemParser#move.
+    def exitMove(self, ctx:lsystemParser.MoveContext):
+        pass
+
+
+    # Enter a parse tree produced by lsystemParser#push.
+    def enterPush(self, ctx:lsystemParser.PushContext):
+        pass
+
+    # Exit a parse tree produced by lsystemParser#push.
+    def exitPush(self, ctx:lsystemParser.PushContext):
+        pass
+
+
+    # Enter a parse tree produced by lsystemParser#pop.
+    def enterPop(self, ctx:lsystemParser.PopContext):
+        pass
+
+    # Exit a parse tree produced by lsystemParser#pop.
+    def exitPop(self, ctx:lsystemParser.PopContext):
+        pass
+
+
     # Enter a parse tree produced by lsystemParser#term.
     def enterTerm(self, ctx:lsystemParser.TermContext):
         pass

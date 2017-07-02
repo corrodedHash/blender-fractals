@@ -5,6 +5,7 @@ Clear lexer and parser errors
 Relative size modulation
 Keep symbols even if they have no transitions
 Relative to cursor
+Grammar defines
 
 Done:
 Progress bar
