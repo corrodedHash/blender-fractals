@@ -1,5 +1,5 @@
 init:
-start: X
+start: X;
 rules:
 X: F push L X pop push X pop F push L X pop R F X;
 F: F F;
