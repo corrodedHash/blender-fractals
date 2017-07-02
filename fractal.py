@@ -19,7 +19,6 @@ class FractalGen:
         self._mesh = bpy.data.meshes.new('fractalMesh')
         self._ob = bpy.data.objects.new('Fractal', self._mesh)
 
-
         bpy.context.scene.objects.link(self._ob)
         self._bm = bmesh.new()
         self._bm.from_mesh(self._mesh)
@@ -78,8 +77,6 @@ class FractalGen:
                 count = count % tick_count
                 bpy.context.window_manager.progress_update(ticks)
 
-                print('ticks: ' + str(ticks))
-
             if type(command) is RotateTerminal:
                 self._rotate(command)
             elif type(command) is MoveTerminal:
@@ -129,13 +126,16 @@ class Fractal_add_object(bpy.types.Operator,
         subtype='UNSIGNED',
         description="Number of iterations of the fractal")
 
+    def reset_iteration(self, context):
+        self.iteration = 2
     grammar_path = bpy.props.StringProperty(
-            name="Grammar path",
-            default=os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_grammars", "dragon.txt"),
-            description="The grammar for the fractal you want to draw",
-            subtype='FILE_PATH',
-            update=(lambda self, context: self.iteration = 2)
-        )
+        name="Grammar path",
+        default=os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                             "test_grammars", "dragon.txt"),
+        description="The grammar for the fractal you want to draw",
+        subtype='FILE_PATH',
+        update=reset_iteration
+    )
 
     def execute(self, context):
 

@@ -1,6 +1,0 @@
-init:
-start: A;
-rules:
-A: A A;
-final:
-A: m2.0;
