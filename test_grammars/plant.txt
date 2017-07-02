@@ -1,0 +1,11 @@
+init:
+start: X
+rules:
+X: F push L X pop push X pop F push L X pop R F X;
+F: F F;
+L: r-25;
+R: r25;
+final:
+F: m1;
+L: r-25;
+R: r25;
