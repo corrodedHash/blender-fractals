@@ -74,7 +74,8 @@ class lgrammarVisitor(antlr4.ParseTreeVisitor):
                                ctx:
                                lsp.lsystemParser.Final_rule_entityContext):
         self.lsystem.get_non_terminal(
-            ctx.NT().getText()).final_transition = ctx.final_rule_res().accept(self)
+            ctx.NT().getText()).final_transition = \
+            ctx.final_rule_res().accept(self)
 
     # Visit a parse tree produced by lsystemParser#final_rule_res.
     def visitFinal_rule_res(self,

@@ -3,7 +3,7 @@ class RotateTerminal:
     def __init__(self, rotation=None):
         if rotation is None:
             rotation = 90
-        self.rotation = rotation
+        self.rotation = rotation * 0.0174533
 
     def __str__(self):
         return "r" + str(self.rotation)
