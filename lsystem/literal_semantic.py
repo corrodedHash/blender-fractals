@@ -47,6 +47,7 @@ class NonTerminal:
     def __init__(self):
         self.transition = []
         self.final_transition = []
+        self.result_len_cache = dict()
 
     def append_trans(self, trans):
         assert trans is RotateTerminal \
@@ -62,6 +63,19 @@ class NonTerminal:
             or trans is PushTerminal \
             or trans is PopTerminal
         self.final_transition.append(trans)
+
+    def result_len(self, iteration):
+        if iteration == 0:
+            return len(self.final_transition)
+        if iteration not in self.result_len_cache:
+            self.result_len_cache[iteration] = 0
+            for literal in self.transition:
+                if type(literal) is NonTerminal:
+                    self.result_len_cache[iteration] += \
+                        literal.result_len(iteration - 1)
+                else:
+                    self.result_len_cache[iteration] += 1
+        return self.result_len_cache[iteration]
 
     def iterate(self, level: int):
         if level < 0:

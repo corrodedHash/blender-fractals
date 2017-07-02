@@ -7,6 +7,7 @@ from lsystem.literal_semantic import (RotateTerminal, MoveTerminal,
                                       PushTerminal, PopTerminal)
 import lsystem.lsystem_parse
 import math
+import os
 
 
 class FractalGen:
@@ -17,6 +18,7 @@ class FractalGen:
     def __enter__(self):
         self._mesh = bpy.data.meshes.new('fractalMesh')
         self._ob = bpy.data.objects.new('Fractal', self._mesh)
+
 
         bpy.context.scene.objects.link(self._ob)
         self._bm = bmesh.new()
@@ -62,7 +64,22 @@ class FractalGen:
         self.rotation_stack[-1] = (new_x, new_y, new_z)
 
     def draw_vertices(self, level):
+        max_count = self._lsystem.approx_steps(level)
+        bpy.context.window_manager.progress_begin(0, 99)
+        tick_count = max(max_count // 100, 1)
+        ticks = 0
+        count = 0
+        print(max_count)
+        print(tick_count)
         for command in self._lsystem.start.iterate(level):
+            count += 1
+            if count > tick_count:
+                ticks += count // tick_count
+                count = count % tick_count
+                bpy.context.window_manager.progress_update(ticks)
+
+                print('ticks: ' + str(ticks))
+
             if type(command) is RotateTerminal:
                 self._rotate(command)
             elif type(command) is MoveTerminal:
@@ -77,14 +94,21 @@ class FractalGen:
                 self.vertex_stack.pop()
             else:
                 raise RuntimeError(str(command))
+        bpy.context.window_manager.progress_end()
+        print("Needed ticks: " + str(ticks * tick_count + count))
+        print("Expected ticks: " + str(max_count))
 
 
 def _create_fractal(self, context):
     x = None
     if self.grammar_path == "":
         return
-    with open(self.grammar_path) as f:
-        x = lsystem.lsystem_parse.parse(f.read())
+    try:
+        with open(self.grammar_path) as f:
+            x = lsystem.lsystem_parse.parse(f.read())
+    except FileNotFoundError:
+        self.grammar_path = ""
+
     with FractalGen(x) as frac:
         frac.draw_vertices(self.iteration)
 
@@ -105,12 +129,12 @@ class Fractal_add_object(bpy.types.Operator,
         subtype='UNSIGNED',
         description="Number of iterations of the fractal")
 
-    grammar_path = bpy.props.StringProperty \
-        (
+    grammar_path = bpy.props.StringProperty(
             name="Grammar path",
-            default="",
+            default=os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_grammars", "dragon.txt"),
             description="The grammar for the fractal you want to draw",
-            subtype='FILE_PATH'
+            subtype='FILE_PATH',
+            update=(lambda self, context: self.iteration = 2)
         )
 
     def execute(self, context):

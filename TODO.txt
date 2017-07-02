@@ -2,7 +2,9 @@ Seperate move and draw commands
 Propabalistic grammar
 3d rotation
 Clear lexer and parser errors
-Progress bar
 Relative size modulation
 Keep symbols even if they have no transitions
 Relative to cursor
+
+Done:
+Progress bar
