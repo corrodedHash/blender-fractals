@@ -1,0 +1,12 @@
+init:
+start: A;
+rules:
+A: R B L A L B R;
+B: L A R B R A L;
+L: r-60;
+R: r60;
+final:
+L: r-60;
+R: r60;
+A: m0.1;
+B: m0.1;

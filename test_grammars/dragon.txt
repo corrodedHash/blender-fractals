@@ -1,0 +1,6 @@
+init:
+start: A;
+rules:
+A: m X;
+X: X r90 Y m1 r90;
+Y: r-90 m1 X r-90 Y;

@@ -1,0 +1,8 @@
+init:
+start: A;
+rules:
+A: B;
+B: m;
+B: m A;
+final:
+C: r m push pop ;
