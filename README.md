@@ -14,3 +14,7 @@ In the "New entity properties" - toolbox you first have to specify a [Lindenmaye
 A few examples are in this repository, in the directory `test_grammars`.  
 Then, just iterate away.  
 **Be careful though, these fractals can grow exponentially, iterate away in a _slow_ manner**
+
+### A million thanks to the wonderful people of ANTLR4
+Who provided the parser generator I used, which made this project a thousand times easier.  
+Their [project](http://www.antlr.org/)
