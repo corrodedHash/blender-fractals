@@ -26,8 +26,9 @@ class FractalGen:
         self.position_stack = [(0, 0, 0)]
         self.rotation_stack = [(1, 0, 0)]
         self.degree_stack = [(0, 0, 0)]
-        self.vertex_stack = [(self._bm.verts.new(self.position_stack[-1]),
-                              self._bm.verts.new(self._shift_pos()))]
+        #self.vertex_stack = [(self._bm.verts.new(self.position_stack[-1]),
+        #                      self._bm.verts.new(self._shift_pos()))]
+        self.vertex_stack = [self._bm.verts.new(self.position_stack[-1])]
 
         self.stacks = [self.position_stack,
                        self.rotation_stack,
@@ -45,10 +46,12 @@ class FractalGen:
 
     def _add_vertex(self):
         new_vertex = self._bm.verts.new(self.position_stack[-1])
-        new_vertex2 = self._bm.verts.new(self._shift_pos())
-        self._bm.faces.new((self.vertex_stack[-1][0], self.vertex_stack[-1][1],
-                            new_vertex2, new_vertex))
-        self.vertex_stack[-1] = (new_vertex, new_vertex2)
+        #new_vertex2 = self._bm.verts.new(self._shift_pos())
+        #self._bm.faces.new((self.vertex_stack[-1][0], self.vertex_stack[-1][1],
+        #                    new_vertex2, new_vertex))
+        #self.vertex_stack[-1] = (new_vertex, new_vertex2)
+        self._bm.edges.new((self.vertex_stack[-1], new_vertex))
+        self.vertex_stack[-1] = new_vertex
         self._bm.verts.index_update()
 
     def _move(self, terminal: MoveTerminal):
@@ -89,7 +92,8 @@ class FractalGen:
     def _rotate(self, terminal: RotateTerminal):
         new_x = (self.degree_stack[-1][0] + terminal.rotation[0]) % 360
         new_y = (self.degree_stack[-1][1] + terminal.rotation[1]) % 360
-        new_rot = self._rotate_y((1, 0, 0), new_x * 0.0174533)
+        new_rot = (1, 0, 0)
+        new_rot = self._rotate_y(new_rot, new_x * 0.0174533)
         new_rot = self._rotate_z(new_rot, new_y * 0.0174533)
 
         self.rotation_stack[-1] = new_rot
@@ -109,9 +113,9 @@ class FractalGen:
         tick_count = max(max_count // 100, 1)
         ticks = 0
         count = 0
-        print(max_count)
-        print(tick_count)
+        print("Expected ticks: " + str(max_count))
         for command in self._lsystem.start.iterate(level):
+            print(command)
             count += 1
             if count > tick_count:
                 ticks += count // tick_count
@@ -130,7 +134,6 @@ class FractalGen:
                 raise RuntimeError(str(command))
         bpy.context.window_manager.progress_end()
         print("Needed ticks: " + str(ticks * tick_count + count))
-        print("Expected ticks: " + str(max_count))
 
 
 def _create_fractal(self, context):
@@ -167,7 +170,7 @@ class Fractal_add_object(bpy.types.Operator):
     grammar_path = bpy.props.StringProperty(
         name="Grammar path",
         default=os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                             "test_grammars", "dragon.txt"),
+                             "test_grammars", "3d", "cube_chain.txt"),
         description="The grammar for the fractal you want to draw",
         subtype='FILE_PATH',
         update=reset_iteration

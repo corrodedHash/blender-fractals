@@ -1,0 +1,4 @@
+start: A;
+rules:
+A : X X X X X X X r(0, 10) X r(0, -10) A
+X: m1 r45;
