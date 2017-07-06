@@ -8,6 +8,24 @@ else:
 # This class defines a complete listener for a parse tree produced by lsystemParser.
 class lsystemListener(ParseTreeListener):
 
+    # Enter a parse tree produced by lsystemParser#probability.
+    def enterProbability(self, ctx:lsystemParser.ProbabilityContext):
+        pass
+
+    # Exit a parse tree produced by lsystemParser#probability.
+    def exitProbability(self, ctx:lsystemParser.ProbabilityContext):
+        pass
+
+
+    # Enter a parse tree produced by lsystemParser#rand_entry.
+    def enterRand_entry(self, ctx:lsystemParser.Rand_entryContext):
+        pass
+
+    # Exit a parse tree produced by lsystemParser#rand_entry.
+    def exitRand_entry(self, ctx:lsystemParser.Rand_entryContext):
+        pass
+
+
     # Enter a parse tree produced by lsystemParser#rotation.
     def enterRotation(self, ctx:lsystemParser.RotationContext):
         pass
@@ -23,6 +41,15 @@ class lsystemListener(ParseTreeListener):
 
     # Exit a parse tree produced by lsystemParser#move.
     def exitMove(self, ctx:lsystemParser.MoveContext):
+        pass
+
+
+    # Enter a parse tree produced by lsystemParser#draw.
+    def enterDraw(self, ctx:lsystemParser.DrawContext):
+        pass
+
+    # Exit a parse tree produced by lsystemParser#draw.
+    def exitDraw(self, ctx:lsystemParser.DrawContext):
         pass
 
 
@@ -53,6 +80,24 @@ class lsystemListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by lsystemParser#non_term.
+    def enterNon_term(self, ctx:lsystemParser.Non_termContext):
+        pass
+
+    # Exit a parse tree produced by lsystemParser#non_term.
+    def exitNon_term(self, ctx:lsystemParser.Non_termContext):
+        pass
+
+
+    # Enter a parse tree produced by lsystemParser#define_term.
+    def enterDefine_term(self, ctx:lsystemParser.Define_termContext):
+        pass
+
+    # Exit a parse tree produced by lsystemParser#define_term.
+    def exitDefine_term(self, ctx:lsystemParser.Define_termContext):
+        pass
+
+
     # Enter a parse tree produced by lsystemParser#init_sec.
     def enterInit_sec(self, ctx:lsystemParser.Init_secContext):
         pass
@@ -68,6 +113,33 @@ class lsystemListener(ParseTreeListener):
 
     # Exit a parse tree produced by lsystemParser#init_start.
     def exitInit_start(self, ctx:lsystemParser.Init_startContext):
+        pass
+
+
+    # Enter a parse tree produced by lsystemParser#define_sec.
+    def enterDefine_sec(self, ctx:lsystemParser.Define_secContext):
+        pass
+
+    # Exit a parse tree produced by lsystemParser#define_sec.
+    def exitDefine_sec(self, ctx:lsystemParser.Define_secContext):
+        pass
+
+
+    # Enter a parse tree produced by lsystemParser#define_entity.
+    def enterDefine_entity(self, ctx:lsystemParser.Define_entityContext):
+        pass
+
+    # Exit a parse tree produced by lsystemParser#define_entity.
+    def exitDefine_entity(self, ctx:lsystemParser.Define_entityContext):
+        pass
+
+
+    # Enter a parse tree produced by lsystemParser#define_res.
+    def enterDefine_res(self, ctx:lsystemParser.Define_resContext):
+        pass
+
+    # Exit a parse tree produced by lsystemParser#define_res.
+    def exitDefine_res(self, ctx:lsystemParser.Define_resContext):
         pass
 
 

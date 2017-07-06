@@ -1,10 +1,8 @@
-init:
 start: F;
+define:
+_L: r-90;
+_R: r90;
 rules:
-F: F R F L F L F R F;
-L: r-90;
-R: r90;
+F: F _R F _L F _L F _R F;
 final:
-F: m0.1;
-L: r-90;
-R: r90;
+F: d0.1;

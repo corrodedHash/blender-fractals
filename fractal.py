@@ -2,7 +2,8 @@ import bpy
 import bmesh
 
 from lsystem.lsystem_class import Lsystem
-from lsystem.literal_semantic import (RotateTerminal, MoveTerminal,
+from lsystem.literal_semantic import (RotateTerminal,
+                                      MoveTerminal, DrawTerminal,
                                       PushTerminal, PopTerminal)
 
 from vector import Vector, rot_matrix
@@ -55,7 +56,7 @@ class FractalGen:
         self.vertex_stack[-1] = new_vertex
         self._bm.verts.index_update()
 
-    def _move(self, terminal: MoveTerminal):
+    def _move(self, terminal: (MoveTerminal, DrawTerminal)):
         self.position_stack[-1] += self.rotation_stack[-1] * terminal.distance
         self._add_vertex()
 
@@ -95,6 +96,8 @@ class FractalGen:
                 self._rotate(command)
             elif type(command) is MoveTerminal:
                 self._move(command)
+            elif type(command) is DrawTerminal:
+                self._move(command)
             elif type(command) is PushTerminal:
                 self._push()
             elif type(command) is PopTerminal:
@@ -114,6 +117,7 @@ def _create_fractal(self, context):
             x = lsystem.lsystem_parse.parse(f.read())
     except FileNotFoundError:
         self.grammar_path = ""
+        return
 
     with FractalGen(x) as frac:
         frac.draw_vertices(self.iteration)
@@ -139,7 +143,7 @@ class Fractal_add_object(bpy.types.Operator):
     grammar_path = bpy.props.StringProperty(
         name="Grammar path",
         default=os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                             "test_grammars", "3d", "cube_chain.txt"),
+                             "test_grammars", "sierpinski.txt"),
         description="The grammar for the fractal you want to draw",
         subtype='FILE_PATH',
         update=reset_iteration

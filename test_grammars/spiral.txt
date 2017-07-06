@@ -1,8 +1,10 @@
-init:
 start: Y;
+define:
+_Long: d2 A r90
+_Short: d1 A r90
 rules:
-Y: m2 A r90 m2 A r90 m1 A r90 m1 A r90 Y;
+Y: _Long _Long _Short _Short Y;
 X: A r90 X;
-A: m2 A;
+A: d2 A;
 final:
-A: m2;
+A: d2;

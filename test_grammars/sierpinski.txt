@@ -1,12 +1,11 @@
 init:
 start: A;
+define:
+_L: r-60 ;
+_R: r60 ;
 rules:
-A: R B L A L B R;
-B: L A R B R A L;
-L: r-60;
-R: r60;
+A: _R B _L A _L B _R;
+B: _L A _R B _R A _L;
 final:
-L: r-60;
-R: r60;
-A: m0.1;
-B: m0.1;
+A: d0.1;
+B: d0.1;

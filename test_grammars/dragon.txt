@@ -1,6 +1,5 @@
-init:
 start: A;
 rules:
-A: m X;
-X: X r90 Y m1 r90;
-Y: r-90 m1 X r-90 Y;
+A: d1 X;
+X: X r90 Y d1 r90;
+Y: r-90 d1 X r-90 Y;
