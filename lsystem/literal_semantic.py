@@ -65,7 +65,7 @@ class NonTerminal:
         self.final_transition.append(trans)
 
     def result_len(self, iteration):
-        if iteration == 0:
+        if iteration == 0 or not self.transition:
             return len(self.final_transition)
         if iteration not in self.result_len_cache:
             self.result_len_cache[iteration] = 0
@@ -81,17 +81,16 @@ class NonTerminal:
         if level < 0:
             raise ValueError("Level cannot be below 0")
 
-        if level == 0:
+        if level == 0 or not self.transition:
             for x in self.final_transition:
                 yield x
             return
 
-        if level > 0:
-            for literal in self.transition:
-                if type(literal) is NonTerminal:
-                    for l2literal in literal.iterate(level - 1):
-                        yield l2literal
+        for literal in self.transition:
+            if type(literal) is NonTerminal:
+                for l2literal in literal.iterate(level - 1):
+                    yield l2literal
 
-                else:
-                    yield literal
-            return
+            else:
+                yield literal
+        return
