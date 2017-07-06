@@ -1,4 +1,4 @@
 start: A;
 rules:
-A : X X X X X X X r(0, 10) X r(0, -10) A
+A : X X X X X X X r(-45) r(0, -90) m0.1 r(0, 90) r(45) A;
 X: m1 r45;

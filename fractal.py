@@ -1,12 +1,13 @@
 import bpy
-import bpy_extras
 import bmesh
 
 from lsystem.lsystem_class import Lsystem
 from lsystem.literal_semantic import (RotateTerminal, MoveTerminal,
                                       PushTerminal, PopTerminal)
+
+from vector import Vector, rot_matrix
+
 import lsystem.lsystem_parse
-import math
 import os
 
 
@@ -23,10 +24,10 @@ class FractalGen:
         self._bm = bmesh.new()
         self._bm.from_mesh(self._mesh)
 
-        self.position_stack = [(0, 0, 0)]
-        self.rotation_stack = [(1, 0, 0)]
-        self.degree_stack = [(0, 0, 0)]
-        #self.vertex_stack = [(self._bm.verts.new(self.position_stack[-1]),
+        self.position_stack = [Vector(0, 0, 0)]
+        self.rotation_stack = [Vector(1, 0, 0)]
+        self.degree_stack = [Vector(0, 0, 0)]
+        # self.vertex_stack = [(self._bm.verts.new(self.position_stack[-1]),
         #                      self._bm.verts.new(self._shift_pos()))]
         self.vertex_stack = [self._bm.verts.new(self.position_stack[-1])]
 
@@ -41,63 +42,31 @@ class FractalGen:
         self._bm.to_mesh(self._mesh)
 
     def _shift_pos(self):
-        return (self.position_stack[-1][0], self.position_stack[-1][1] + 1,
-                self.position_stack[-1][2])
+        return self.position_stack[-1] + Vector(0, 1, 0)
 
     def _add_vertex(self):
         new_vertex = self._bm.verts.new(self.position_stack[-1])
-        #new_vertex2 = self._bm.verts.new(self._shift_pos())
-        #self._bm.faces.new((self.vertex_stack[-1][0], self.vertex_stack[-1][1],
+        # new_vertex2 = self._bm.verts.new(self._shift_pos())
+        # self._bm.faces.new(
+        # (self.vertex_stack[-1][0], self.vertex_stack[-1][1],
         #                    new_vertex2, new_vertex))
-        #self.vertex_stack[-1] = (new_vertex, new_vertex2)
+        # self.vertex_stack[-1] = (new_vertex, new_vertex2)
         self._bm.edges.new((self.vertex_stack[-1], new_vertex))
         self.vertex_stack[-1] = new_vertex
         self._bm.verts.index_update()
 
     def _move(self, terminal: MoveTerminal):
-        rot = self.rotation_stack[-1]
-        new_pos = (self.position_stack[-1][0] + rot[0] * terminal.distance,
-                   self.position_stack[-1][1] + rot[1] * terminal.distance,
-                   self.position_stack[-1][2] + rot[2] * terminal.distance)
-        self.position_stack[-1] = new_pos
+        self.position_stack[-1] += self.rotation_stack[-1] * terminal.distance
         self._add_vertex()
 
-    def _rotate_x(self, vector, rotation):
-        new_x = vector[0]
-        new_y = vector[1] * math.cos(rotation) - \
-            vector[2] * math.sin(rotation)
-
-        new_z = vector[1] * math.sin(rotation) + \
-            vector[2] * math.cos(rotation)
-        return (new_x, new_y, new_z)
-
-    def _rotate_y(self, vector, rotation):
-        new_x = vector[0] * math.cos(rotation) - \
-            vector[2] * math.sin(rotation)
-
-        new_y = vector[1]
-        new_z = vector[0] * math.sin(rotation) + \
-            vector[2] * math.cos(rotation)
-        return (new_x, new_y, new_z)
-
-    def _rotate_z(self, vector, rotation):
-        new_x = vector[0] * math.cos(rotation) - \
-            vector[1] * math.sin(rotation)
-
-        new_y = vector[0] * math.sin(rotation) + \
-            vector[1] * math.cos(rotation)
-        new_z = vector[2]
-        return (new_x, new_y, new_z)
-
     def _rotate(self, terminal: RotateTerminal):
-        new_x = (self.degree_stack[-1][0] + terminal.rotation[0]) % 360
-        new_y = (self.degree_stack[-1][1] + terminal.rotation[1]) % 360
-        new_rot = (1, 0, 0)
-        new_rot = self._rotate_y(new_rot, new_x * 0.0174533)
-        new_rot = self._rotate_z(new_rot, new_y * 0.0174533)
-
-        self.rotation_stack[-1] = new_rot
-        self.degree_stack[-1] = (new_x, new_y, 0)
+        self.degree_stack[-1] = self.degree_stack[-1] + \
+            Vector(terminal.rotation[0], terminal.rotation[1], 0)
+        print(self.degree_stack[-1])
+        y_mat = rot_matrix(axis='y', rotation=self.degree_stack[-1][0])
+        z_mat = rot_matrix(axis='z', rotation=self.degree_stack[-1][1])
+        self.rotation_stack[-1] = Vector(1, 0, 0).\
+            matrix_mult(y_mat).matrix_mult(z_mat)
 
     def _push(self):
         for stack in self.stacks:
