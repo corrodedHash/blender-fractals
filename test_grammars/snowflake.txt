@@ -1,7 +1,6 @@
-init:
 start: X;
 rules:
-X: A r-120 A r-120 A
-A: A r60 A r-120 A r60 A
+X: A r-120 A r-120 A;
+A: A r60 A r-120 A r60 A;
 final:
-A: d1
+A: d1;

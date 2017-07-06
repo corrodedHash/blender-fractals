@@ -10,6 +10,7 @@ from vector import Vector, rot_matrix
 
 import lsystem.lsystem_parse
 import os
+import time
 
 
 class FractalGen:
@@ -63,7 +64,6 @@ class FractalGen:
     def _rotate(self, terminal: RotateTerminal):
         self.degree_stack[-1] = self.degree_stack[-1] + \
             Vector(terminal.rotation[0], terminal.rotation[1], 0)
-        print(self.degree_stack[-1])
         y_mat = rot_matrix(axis='y', rotation=self.degree_stack[-1][0])
         z_mat = rot_matrix(axis='z', rotation=self.degree_stack[-1][1])
         self.rotation_stack[-1] = Vector(1, 0, 0).\
@@ -84,8 +84,9 @@ class FractalGen:
         ticks = 0
         count = 0
         print("Expected ticks: " + str(max_count))
+        time1 = time.time()
+
         for command in self._lsystem.start.iterate(level):
-            print(command)
             count += 1
             if count > tick_count:
                 ticks += count // tick_count
@@ -105,6 +106,8 @@ class FractalGen:
             else:
                 raise RuntimeError(str(command))
         bpy.context.window_manager.progress_end()
+        time2 = time.time()
+        print("Needed time: %0.3f ms" % ((time2 - time1) * 1000))
         print("Needed ticks: " + str(ticks * tick_count + count))
 
 

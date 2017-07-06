@@ -131,6 +131,4 @@ class lgrammarVisitor(antlr4.ParseTreeVisitor):
     def visitCode(self, ctx: lsystemParser.CodeContext):
         self.lsystem = Lsystem()
         self.visitChildren(ctx)
-        for x in self.lsystem._defines:
-            print(x + " " + str(self.lsystem._defines[x]))
         return self.lsystem
