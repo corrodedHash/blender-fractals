@@ -146,7 +146,7 @@ class Fractal_add_object(bpy.types.Operator):
     grammar_path = bpy.props.StringProperty(
         name="Grammar path",
         default=os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                             "test_grammars", "sierpinski.txt"),
+                             "examples", "sierpinski.txt"),
         description="The grammar for the fractal you want to draw",
         subtype='FILE_PATH',
         update=reset_iteration
