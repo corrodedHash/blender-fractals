@@ -3,8 +3,6 @@ from .lgrammar.lsystemParser import lsystemParser
 from .lgrammarVisitor import lgrammarVisitor
 import antlr4
 
-import sys
-
 
 def parse(text):
     my_lexer = lsystemLexer(antlr4.InputStream(text))

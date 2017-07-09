@@ -23,7 +23,6 @@ THE SOFTWARE.
 """
 
 import math
-import itertools
 
 
 class Vector(object):
