@@ -25,4 +25,4 @@ Then, just iterate away.<br>
 ## A million thanks to the wonderful people of ANTLR
 
 Who provided the parser generator I used, which made this project a thousand times easier.<br>
-Their [project](http://www.antlr.org/)
+Their [project](http://www.antlr.org/).
