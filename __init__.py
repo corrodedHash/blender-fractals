@@ -10,21 +10,18 @@ bl_info = {
     "category": "Add Mesh",
 }
 
-import os, sys  # NOQA
-cur_dir = os.path.dirname(os.path.realpath(__file__))
-sys.path.append(cur_dir)
-sys.path.append(os.path.join(cur_dir, "lsystem", "lgrammar"))
+import bpy  # NOQA
 
 # import dragon  # NOQA
-from fractal import Fractal_add_object  # NOQA
-import bpy  # NOQA
+from .fractal import Fractal_add_object  # NOQA
+from .dragon import DragonCurve_add_object # NOQA
 
 # Registration
 
 
 def add_dragon_button(self, context):
     self.layout.operator(
-        dragon.DragonCurve_add_object.bl_idname,
+        DragonCurve_add_object.bl_idname,
         text="Dragon Curve",
         icon='PLUGIN')
 

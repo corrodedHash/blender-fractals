@@ -1,14 +1,14 @@
 import bpy
 import bmesh
 
-from lsystem.lsystem_class import Lsystem
-from lsystem.literal_semantic import (RotateTerminal,
-                                      MoveTerminal, DrawTerminal,
-                                      PushTerminal, PopTerminal)
+from .lsystem.lsystem_class import Lsystem
+from .lsystem.literal_semantic import (RotateTerminal,
+                                       MoveTerminal, DrawTerminal,
+                                       PushTerminal, PopTerminal)
 
-from vector import Vector, rot_matrix
+from .vector import Vector, rot_matrix
 
-import lsystem.lsystem_parse
+from .lsystem.lsystem_parse import parse as lparse
 import os
 import time
 
@@ -117,7 +117,7 @@ def _create_fractal(self, context):
         return
     try:
         with open(self.grammar_path) as f:
-            x = lsystem.lsystem_parse.parse(f.read())
+            x = lparse(f.read())
     except FileNotFoundError:
         self.grammar_path = ""
         return

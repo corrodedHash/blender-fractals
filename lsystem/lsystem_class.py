@@ -1,4 +1,4 @@
-from lsystem.literal_semantic import NonTerminal, Define
+from .literal_semantic import NonTerminal, Define
 
 
 class Lsystem:

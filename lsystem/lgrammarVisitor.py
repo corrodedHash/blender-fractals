@@ -1,11 +1,11 @@
 # Generated from lsystem.g4 by ANTLR 4.6
-from lsystem.lgrammar.lsystemParser import lsystemParser
-import lsystem.lgrammar.antlr4 as antlr4
+from .lgrammar.lsystemParser import lsystemParser
+from .lgrammar import antlr4
 
-from lsystem.literal_semantic import (RotateTerminal,
-                                      MoveTerminal, DrawTerminal,
-                                      PushTerminal, PopTerminal)
-from lsystem.lsystem_class import Lsystem
+from .literal_semantic import (RotateTerminal,
+                               MoveTerminal, DrawTerminal,
+                               PushTerminal, PopTerminal)
+from .lsystem_class import Lsystem
 
 # This class defines a complete generic visitor for a parse tree produced by
 # lsystemParser. ctx.accept(self) visits the ctx
