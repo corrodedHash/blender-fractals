@@ -1,7 +1,7 @@
-Seperate move and draw commands
 Clear lexer and parser errors
 Relative size modulation
-Relative to cursor
+Rotation relative to cursor
+Multithreading
 
 Done:
 Progress bar
@@ -9,3 +9,4 @@ Progress bar
 Keep symbols even if they have no transitions
 Propabalistic grammar
 Grammar defines
+Seperate move and draw commands
