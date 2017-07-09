@@ -1,0 +1,12 @@
+Clear lexer and parser errors
+Relative size modulation
+Rotation relative to cursor
+Multithreading
+
+Done:
+Progress bar
+3d rotation
+Keep symbols even if they have no transitions
+Propabalistic grammar
+Grammar defines
+Seperate move and draw commands

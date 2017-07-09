@@ -10,20 +10,18 @@ bl_info = {
     "category": "Add Mesh",
 }
 
-import os, sys  # NOQA
-sys.path.append(os.path.dirname(__file__))
-sys.path.append(os.path.dirname(__file__) + "/lsystem/lgrammar")
+import bpy  # NOQA
 
 # import dragon  # NOQA
-from fractal import Fractal_add_object  # NOQA
-import bpy  # NOQA
+from .fractal import Fractal_add_object  # NOQA
+from .dragon import DragonCurve_add_object # NOQA
 
 # Registration
 
 
 def add_dragon_button(self, context):
     self.layout.operator(
-        dragon.DragonCurve_add_object.bl_idname,
+        DragonCurve_add_object.bl_idname,
         text="Dragon Curve",
         icon='PLUGIN')
 
@@ -48,6 +46,7 @@ def register():
     # bpy.utils.register_class(dragon.DragonCurve_add_object)
     # bpy.utils.register_manual_map(add_object_manual_map)
     # bpy.types.INFO_MT_mesh_add.append(add_dragon_button)
+
     bpy.utils.register_class(Fractal_add_object)
     # bpy.utils.register_manual_map(add_object_manual_map)
     bpy.types.INFO_MT_mesh_add.append(add_fractal_button)
@@ -57,6 +56,7 @@ def unregister():
     # bpy.utils.unregister_class(dragon.DragonCurve_add_object)
     # bpy.utils.unregister_manual_map(add_object_manual_map)
     # bpy.types.INFO_MT_mesh_add.remove(add_dragon_button)
+
     bpy.utils.unregister_class(Fractal_add_object)
     # bpy.utils.unregister_manual_map(add_object_manual_map)
     bpy.types.INFO_MT_mesh_add.remove(add_fractal_button)

@@ -9,8 +9,53 @@ else:
 
 class lsystemVisitor(ParseTreeVisitor):
 
+    # Visit a parse tree produced by lsystemParser#probability.
+    def visitProbability(self, ctx:lsystemParser.ProbabilityContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by lsystemParser#rand_entry.
+    def visitRand_entry(self, ctx:lsystemParser.Rand_entryContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by lsystemParser#rotation.
+    def visitRotation(self, ctx:lsystemParser.RotationContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by lsystemParser#move.
+    def visitMove(self, ctx:lsystemParser.MoveContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by lsystemParser#draw.
+    def visitDraw(self, ctx:lsystemParser.DrawContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by lsystemParser#push.
+    def visitPush(self, ctx:lsystemParser.PushContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by lsystemParser#pop.
+    def visitPop(self, ctx:lsystemParser.PopContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by lsystemParser#term.
     def visitTerm(self, ctx:lsystemParser.TermContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by lsystemParser#non_term.
+    def visitNon_term(self, ctx:lsystemParser.Non_termContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by lsystemParser#define_term.
+    def visitDefine_term(self, ctx:lsystemParser.Define_termContext):
         return self.visitChildren(ctx)
 
 
@@ -21,6 +66,21 @@ class lsystemVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by lsystemParser#init_start.
     def visitInit_start(self, ctx:lsystemParser.Init_startContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by lsystemParser#define_sec.
+    def visitDefine_sec(self, ctx:lsystemParser.Define_secContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by lsystemParser#define_entity.
+    def visitDefine_entity(self, ctx:lsystemParser.Define_entityContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by lsystemParser#define_res.
+    def visitDefine_res(self, ctx:lsystemParser.Define_resContext):
         return self.visitChildren(ctx)
 
 

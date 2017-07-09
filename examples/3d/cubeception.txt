@@ -1,0 +1,13 @@
+start:A;
+rules:
+A: Rectangle M R Rectangle M R Rectangle M R Rectangle B;
+B: r(-45, 45) M r(45, -45) Rectangle M R Rectangle M R Rectangle M R Rectangle B;
+M: M M M;
+R: r(90);
+D: r(0, 90);
+Rectangle : push r(-45, 45) M pop M D push r(-45, 45) M pop M D push r(-45, 45) M pop M D push r(-45, 45) M pop M D;
+final:
+Rectangle : m1 r(0, 90) m1 r(0, 90) m1 r(0, 90) m1 r(0, 90);
+M: m1;
+R: r(90);
+D: r(0, 90);
