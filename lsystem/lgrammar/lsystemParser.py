@@ -245,14 +245,6 @@ class lsystemParser ( Parser ):
         def getRuleIndex(self):
             return lsystemParser.RULE_probability
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterProbability" ):
-                listener.enterProbability(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitProbability" ):
-                listener.exitProbability(self)
-
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitProbability" ):
                 return visitor.visitProbability(self)
@@ -298,14 +290,6 @@ class lsystemParser ( Parser ):
 
         def getRuleIndex(self):
             return lsystemParser.RULE_rand_entry
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterRand_entry" ):
-                listener.enterRand_entry(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitRand_entry" ):
-                listener.exitRand_entry(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitRand_entry" ):
@@ -406,14 +390,6 @@ class lsystemParser ( Parser ):
 
         def getRuleIndex(self):
             return lsystemParser.RULE_rotation
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterRotation" ):
-                listener.enterRotation(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitRotation" ):
-                listener.exitRotation(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitRotation" ):
@@ -568,14 +544,6 @@ class lsystemParser ( Parser ):
         def getRuleIndex(self):
             return lsystemParser.RULE_move
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterMove" ):
-                listener.enterMove(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitMove" ):
-                listener.exitMove(self)
-
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitMove" ):
                 return visitor.visitMove(self)
@@ -626,14 +594,6 @@ class lsystemParser ( Parser ):
         def getRuleIndex(self):
             return lsystemParser.RULE_draw
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterDraw" ):
-                listener.enterDraw(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitDraw" ):
-                listener.exitDraw(self)
-
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitDraw" ):
                 return visitor.visitDraw(self)
@@ -680,14 +640,6 @@ class lsystemParser ( Parser ):
         def getRuleIndex(self):
             return lsystemParser.RULE_push
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterPush" ):
-                listener.enterPush(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitPush" ):
-                listener.exitPush(self)
-
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitPush" ):
                 return visitor.visitPush(self)
@@ -724,14 +676,6 @@ class lsystemParser ( Parser ):
 
         def getRuleIndex(self):
             return lsystemParser.RULE_pop
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterPop" ):
-                listener.enterPop(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitPop" ):
-                listener.exitPop(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitPop" ):
@@ -786,14 +730,6 @@ class lsystemParser ( Parser ):
 
         def getRuleIndex(self):
             return lsystemParser.RULE_term
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterTerm" ):
-                listener.enterTerm(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitTerm" ):
-                listener.exitTerm(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitTerm" ):
@@ -860,14 +796,6 @@ class lsystemParser ( Parser ):
         def getRuleIndex(self):
             return lsystemParser.RULE_non_term
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterNon_term" ):
-                listener.enterNon_term(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitNon_term" ):
-                listener.exitNon_term(self)
-
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitNon_term" ):
                 return visitor.visitNon_term(self)
@@ -904,14 +832,6 @@ class lsystemParser ( Parser ):
 
         def getRuleIndex(self):
             return lsystemParser.RULE_define_term
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterDefine_term" ):
-                listener.enterDefine_term(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitDefine_term" ):
-                listener.exitDefine_term(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitDefine_term" ):
@@ -956,14 +876,6 @@ class lsystemParser ( Parser ):
 
         def getRuleIndex(self):
             return lsystemParser.RULE_init_sec
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterInit_sec" ):
-                listener.enterInit_sec(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitInit_sec" ):
-                listener.exitInit_sec(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitInit_sec" ):
@@ -1023,14 +935,6 @@ class lsystemParser ( Parser ):
         def getRuleIndex(self):
             return lsystemParser.RULE_init_start
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterInit_start" ):
-                listener.enterInit_start(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitInit_start" ):
-                listener.exitInit_start(self)
-
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitInit_start" ):
                 return visitor.visitInit_start(self)
@@ -1083,14 +987,6 @@ class lsystemParser ( Parser ):
 
         def getRuleIndex(self):
             return lsystemParser.RULE_define_sec
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterDefine_sec" ):
-                listener.enterDefine_sec(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitDefine_sec" ):
-                listener.exitDefine_sec(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitDefine_sec" ):
@@ -1155,14 +1051,6 @@ class lsystemParser ( Parser ):
         def getRuleIndex(self):
             return lsystemParser.RULE_define_entity
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterDefine_entity" ):
-                listener.enterDefine_entity(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitDefine_entity" ):
-                listener.exitDefine_entity(self)
-
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitDefine_entity" ):
                 return visitor.visitDefine_entity(self)
@@ -1222,14 +1110,6 @@ class lsystemParser ( Parser ):
 
         def getRuleIndex(self):
             return lsystemParser.RULE_define_res
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterDefine_res" ):
-                listener.enterDefine_res(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitDefine_res" ):
-                listener.exitDefine_res(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitDefine_res" ):
@@ -1336,14 +1216,6 @@ class lsystemParser ( Parser ):
         def getRuleIndex(self):
             return lsystemParser.RULE_rule_sec
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterRule_sec" ):
-                listener.enterRule_sec(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitRule_sec" ):
-                listener.exitRule_sec(self)
-
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitRule_sec" ):
                 return visitor.visitRule_sec(self)
@@ -1419,14 +1291,6 @@ class lsystemParser ( Parser ):
 
         def getRuleIndex(self):
             return lsystemParser.RULE_rule_entity
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterRule_entity" ):
-                listener.enterRule_entity(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitRule_entity" ):
-                listener.exitRule_entity(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitRule_entity" ):
@@ -1523,14 +1387,6 @@ class lsystemParser ( Parser ):
 
         def getRuleIndex(self):
             return lsystemParser.RULE_rule_res
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterRule_res" ):
-                listener.enterRule_res(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitRule_res" ):
-                listener.exitRule_res(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitRule_res" ):
@@ -1645,14 +1501,6 @@ class lsystemParser ( Parser ):
         def getRuleIndex(self):
             return lsystemParser.RULE_final_sec
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterFinal_sec" ):
-                listener.enterFinal_sec(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitFinal_sec" ):
-                listener.exitFinal_sec(self)
-
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitFinal_sec" ):
                 return visitor.visitFinal_sec(self)
@@ -1716,14 +1564,6 @@ class lsystemParser ( Parser ):
         def getRuleIndex(self):
             return lsystemParser.RULE_final_rule_entity
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterFinal_rule_entity" ):
-                listener.enterFinal_rule_entity(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitFinal_rule_entity" ):
-                listener.exitFinal_rule_entity(self)
-
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitFinal_rule_entity" ):
                 return visitor.visitFinal_rule_entity(self)
@@ -1783,14 +1623,6 @@ class lsystemParser ( Parser ):
 
         def getRuleIndex(self):
             return lsystemParser.RULE_final_rule_res
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterFinal_rule_res" ):
-                listener.enterFinal_rule_res(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitFinal_rule_res" ):
-                listener.exitFinal_rule_res(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitFinal_rule_res" ):
@@ -1899,14 +1731,6 @@ class lsystemParser ( Parser ):
 
         def getRuleIndex(self):
             return lsystemParser.RULE_code
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterCode" ):
-                listener.enterCode(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitCode" ):
-                listener.exitCode(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitCode" ):
