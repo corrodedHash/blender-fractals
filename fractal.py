@@ -1,16 +1,66 @@
 import bpy
-import bmesh
 
 from .lsystem.lsystem_class import Lsystem
 from .lsystem.literal_semantic import (RotateTerminal,
                                        MoveTerminal, DrawTerminal,
                                        PushTerminal, PopTerminal)
 
-from .vector import Vector, rot_matrix
+from .vector import Vector
 
 from .lsystem.lsystem_parse import parse as lparse
 import os
 import time
+import math
+
+
+class Timer(object):
+    def __init__(self, name=None, verbose=False):
+        self.verbose = verbose
+        self.name = name
+
+    def __enter__(self):
+        self.start = time.time()
+        return self
+
+    def __exit__(self, *args):
+        self.end = time.time()
+        self.secs = self.end - self.start
+        self.msecs = self.secs * 1000  # millisecs
+        if self.verbose:
+            print('%s elapsed time: %f ms' % (self.name, self.msecs))
+
+
+class CommandTimer(object):
+    timing_dict = dict()
+
+    def __init__(self, name=None, verbose=False):
+        self.verbose = verbose
+        self.name = name
+
+    def __enter__(self):
+        self.start = time.time()
+        return self
+
+    def __exit__(self, *args):
+        self.end = time.time()
+        self.secs = self.end - self.start
+        self.msecs = self.secs * 1000  # millisecs
+        if self.verbose:
+            print('%s elapsed time: %f ms' % (self.name, self.msecs))
+        if self.name not in self.timing_dict:
+            self.timing_dict[self.name] = []
+        self.timing_dict[self.name].append(self.msecs)
+
+    @classmethod
+    def reset(cls):
+        cls.timing_dict = dict()
+
+    @classmethod
+    def get_timings(cls):
+        for x in cls.timing_dict:
+            print("%s: %0.4f %5d" % (x.ljust(10), sum(cls.timing_dict[x]) /
+                                     len(cls.timing_dict[x]),
+                                     len(cls.timing_dict[x])))
 
 
 class FractalGen:
@@ -18,56 +68,40 @@ class FractalGen:
     def __init__(self, lsystem: Lsystem):
         self._lsystem = lsystem
 
-    def __enter__(self):
-        self._mesh = bpy.data.meshes.new('fractalMesh')
-        self._ob = bpy.data.objects.new('Fractal', self._mesh)
-
-        bpy.context.scene.objects.link(self._ob)
-        self._bm = bmesh.new()
-        self._bm.from_mesh(self._mesh)
-
         self.position_stack = [Vector(0, 0, 0)]
         self.rotation_stack = [Vector(1, 0, 0)]
         self.degree_stack = [Vector(0, 0, 0)]
-        # self.vertex_stack = [(self._bm.verts.new(self.position_stack[-1]),
-        #                      self._bm.verts.new(self._shift_pos()))]
-        self.vertex_stack = [self._bm.verts.new(self.position_stack[-1])]
+        self.verts_stack = [0]
+
+        self.verts = [self.position_stack[-1].values]
+        self.edges = []
 
         self.stacks = [self.position_stack,
                        self.rotation_stack,
                        self.degree_stack,
-                       self.vertex_stack]
-        self._bm.verts.index_update()
-        return self
-
-    def __exit__(self, *bla):
-        self._bm.to_mesh(self._mesh)
-
-    def _shift_pos(self):
-        return self.position_stack[-1] + Vector(0, 1, 0)
-
-    def _add_vertex(self):
-        new_vertex = self._bm.verts.new(self.position_stack[-1])
-        # new_vertex2 = self._bm.verts.new(self._shift_pos())
-        # self._bm.faces.new(
-        # (self.vertex_stack[-1][0], self.vertex_stack[-1][1],
-        #                    new_vertex2, new_vertex))
-        # self.vertex_stack[-1] = (new_vertex, new_vertex2)
-        self._bm.edges.new((self.vertex_stack[-1], new_vertex))
-        self.vertex_stack[-1] = new_vertex
-        self._bm.verts.index_update()
+                       self.verts_stack]
 
     def _move(self, terminal: (MoveTerminal, DrawTerminal)):
         self.position_stack[-1] += self.rotation_stack[-1] * terminal.distance
-        self._add_vertex()
+        self.verts.append(self.position_stack[-1].values)
+        self.edges.append((self.verts_stack[-1], len(self.verts) - 1))
+        self.verts_stack[-1] = len(self.verts) - 1
+
+    def _yz_rot(self):
+        y = math.radians(self.degree_stack[-1][0])
+        z = math.radians(self.degree_stack[-1][1])
+
+        a = math.cos(z)
+        c = math.sin(z)
+        e = math.cos(y)
+        g = math.sin(y)
+
+        self.rotation_stack[-1] = Vector(e * a, e * c, g)
 
     def _rotate(self, terminal: RotateTerminal):
         self.degree_stack[-1] = self.degree_stack[-1] + \
             Vector(terminal.rotation[0], terminal.rotation[1], 0)
-        y_mat = rot_matrix(axis='y', rotation=self.degree_stack[-1][0])
-        z_mat = rot_matrix(axis='z', rotation=self.degree_stack[-1][1])
-        self.rotation_stack[-1] = Vector(1, 0, 0).\
-            matrix_mult(y_mat).matrix_mult(z_mat)
+        self._yz_rot()
 
     def _push(self):
         for stack in self.stacks:
@@ -84,31 +118,48 @@ class FractalGen:
         ticks = 0
         count = 0
         print("Expected ticks: " + str(max_count))
-        time1 = time.time()
 
-        for command in self._lsystem.start.iterate(level):
-            count += 1
-            if count > tick_count:
-                ticks += count // tick_count
-                count = count % tick_count
-                bpy.context.window_manager.progress_update(ticks)
+        CommandTimer.reset()
+        with Timer("Node gen", True):
+            for command in self._lsystem.start.iterate(level):
+                count += 1
+                if count > tick_count:
+                    ticks += count // tick_count
+                    count = count % tick_count
+                    bpy.context.window_manager.progress_update(ticks)
 
-            if type(command) is RotateTerminal:
-                self._rotate(command)
-            elif type(command) is MoveTerminal:
-                self._move(command)
-            elif type(command) is DrawTerminal:
-                self._move(command)
-            elif type(command) is PushTerminal:
-                self._push()
-            elif type(command) is PopTerminal:
-                self._pop()
-            else:
-                raise RuntimeError(str(command))
+                if type(command) is RotateTerminal:
+                    with CommandTimer("Rotate"):
+                        self._rotate(command)
+                elif type(command) is MoveTerminal:
+                    with CommandTimer("Move"):
+                        self._move(command)
+                elif type(command) is DrawTerminal:
+                    with CommandTimer("Draw"):
+                        self._move(command)
+                elif type(command) is PushTerminal:
+                    with CommandTimer("Push"):
+                        self._push()
+                elif type(command) is PopTerminal:
+                    with CommandTimer("Pop"):
+                        self._pop()
+                else:
+                    raise RuntimeError(str(command))
         bpy.context.window_manager.progress_end()
-        time2 = time.time()
-        print("Needed time: %0.3f ms" % ((time2 - time1) * 1000))
         print("Needed ticks: " + str(ticks * tick_count + count))
+        with Timer("Node apply", True):
+            profile_mesh = bpy.data.meshes.new("FractalMesh")
+            profile_mesh.from_pydata(self.verts, self.edges, [])
+            profile_mesh.update()
+
+            profile_object = bpy.data.objects.new("Fractal", profile_mesh)
+            profile_object.data = profile_mesh
+
+            scene = bpy.context.scene
+            scene.objects.link(profile_object)
+            profile_object.select = True
+
+        CommandTimer.get_timings()
 
 
 def _create_fractal(self, context):
@@ -122,8 +173,7 @@ def _create_fractal(self, context):
         self.grammar_path = ""
         return
 
-    with FractalGen(x) as frac:
-        frac.draw_vertices(self.iteration)
+    FractalGen(x).draw_vertices(self.iteration)
 
 
 class Fractal_add_object(bpy.types.Operator):
