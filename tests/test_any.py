@@ -4,7 +4,7 @@ import lsystem.lsystem_parse
 
 class TestSystem(unittest.TestCase):
 
-    def test_general(self):
+    def test_parsing(self):
         x = None
         with open("examples/dragon.txt") as f:
             x = lsystem.lsystem_parse.parse(f.read())
