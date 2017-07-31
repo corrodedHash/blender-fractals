@@ -18,22 +18,7 @@ class Timer(object):
         self.verbose = verbose
         self.name = name
 
-    def __enter__(self):
-        self.start = time.time()
-        return self
-
-    def __exit__(self, *args):
-        self.end = time.time()
-        self.secs = self.end - self.start
-        self.msecs = self.secs * 1000  # millisecs
-        if self.verbose:
-            print('%s elapsed time: %f ms' % (self.name, self.msecs))
-
-
-class CommandTimer(object):
-    timing_dict = dict()
-
-    def __init__(self, name=None, verbose=False):
+    def __call__(self, name=None, verbose=False):
         self.verbose = verbose
         self.name = name
 
@@ -47,20 +32,6 @@ class CommandTimer(object):
         self.msecs = self.secs * 1000  # millisecs
         if self.verbose:
             print('%s elapsed time: %f ms' % (self.name, self.msecs))
-        if self.name not in self.timing_dict:
-            self.timing_dict[self.name] = []
-        self.timing_dict[self.name].append(self.msecs)
-
-    @classmethod
-    def reset(cls):
-        cls.timing_dict = dict()
-
-    @classmethod
-    def get_timings(cls):
-        for x in cls.timing_dict:
-            print("%s: %0.4f %5d" % (x.ljust(10), sum(cls.timing_dict[x]) /
-                                     len(cls.timing_dict[x]),
-                                     len(cls.timing_dict[x])))
 
 
 class FractalGen:
@@ -80,6 +51,9 @@ class FractalGen:
                        self.rotation_stack,
                        self.degree_stack,
                        self.verts_stack]
+
+        self._timings = {x: 0 for x in (
+            "Rotate", "Move", "Draw", "Push", "Pop")}
 
     def _move(self, terminal: (MoveTerminal, DrawTerminal)):
         self.position_stack[-1] += self.rotation_stack[-1] * terminal.distance
@@ -111,6 +85,34 @@ class FractalGen:
         for stack in self.stacks:
             stack.pop()
 
+    _terminal_mapping = {RotateTerminal: ("Rotate", _rotate),
+                         MoveTerminal: ("Move", _move),
+                         DrawTerminal: ("Draw", _move),
+                         PushTerminal: ("Push", _push),
+                         PopTerminal: ("Pop", _pop)}
+
+    def _handle_command(self, command):
+        timer = Timer()
+        if type(command) not in self._terminal_mapping:
+            raise RuntimeError(str(command))
+
+        handler_name, handler_func = self._terminal_mapping[type(command)]
+        with timer:
+            handler_func(self, command)
+        self._timings[handler_name] += timer.msecs
+
+    def _apply_node(self):
+        profile_mesh = bpy.data.meshes.new("FractalMesh")
+        profile_mesh.from_pydata(self.verts, self.edges, [])
+        profile_mesh.update()
+
+        profile_object = bpy.data.objects.new("Fractal", profile_mesh)
+        profile_object.data = profile_mesh
+
+        scene = bpy.context.scene
+        scene.objects.link(profile_object)
+        profile_object.select = True
+
     def draw_vertices(self, level):
         max_count = self._lsystem.approx_steps(level)
         bpy.context.window_manager.progress_begin(0, 99)
@@ -119,7 +121,6 @@ class FractalGen:
         count = 0
         print("Expected ticks: " + str(max_count))
 
-        CommandTimer.reset()
         with Timer("Node gen", True):
             for command in self._lsystem.start.iterate(level):
                 count += 1
@@ -128,39 +129,13 @@ class FractalGen:
                     count = count % tick_count
                     bpy.context.window_manager.progress_update(ticks)
 
-                if type(command) is RotateTerminal:
-                    with CommandTimer("Rotate"):
-                        self._rotate(command)
-                elif type(command) is MoveTerminal:
-                    with CommandTimer("Move"):
-                        self._move(command)
-                elif type(command) is DrawTerminal:
-                    with CommandTimer("Draw"):
-                        self._move(command)
-                elif type(command) is PushTerminal:
-                    with CommandTimer("Push"):
-                        self._push()
-                elif type(command) is PopTerminal:
-                    with CommandTimer("Pop"):
-                        self._pop()
-                else:
-                    raise RuntimeError(str(command))
+                self._handle_command(command)
+
         bpy.context.window_manager.progress_end()
         print("Needed ticks: " + str(ticks * tick_count + count))
+
         with Timer("Node apply", True):
-            profile_mesh = bpy.data.meshes.new("FractalMesh")
-            profile_mesh.from_pydata(self.verts, self.edges, [])
-            profile_mesh.update()
-
-            profile_object = bpy.data.objects.new("Fractal", profile_mesh)
-            profile_object.data = profile_mesh
-
-            scene = bpy.context.scene
-            scene.objects.link(profile_object)
-            profile_object.select = True
-
-        CommandTimer.get_timings()
-
+            self._apply_node()
 
 def _create_fractal(self, context):
     x = None
