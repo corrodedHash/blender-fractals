@@ -101,6 +101,10 @@ class FractalGen:
             handler_func(self, command)
         self._timings[handler_name] += timer.msecs
 
+    def _print_timings(self):
+        for command in self._timings:
+            print("%7s: %.4f" % (command, self._timings[command]))
+
     def _apply_node(self):
         profile_mesh = bpy.data.meshes.new("FractalMesh")
         profile_mesh.from_pydata(self.verts, self.edges, [])
@@ -133,6 +137,8 @@ class FractalGen:
 
         bpy.context.window_manager.progress_end()
         print("Needed ticks: " + str(ticks * tick_count + count))
+
+        self._print_timings()
 
         with Timer("Node apply", True):
             self._apply_node()
