@@ -77,11 +77,11 @@ class FractalGen:
             Vector(terminal.rotation[0], terminal.rotation[1], 0)
         self._yz_rot()
 
-    def _push(self):
+    def _push(self, terminal: PushTerminal):
         for stack in self.stacks:
             stack.append(stack[-1])
 
-    def _pop(self):
+    def _pop(self, terminal: PopTerminal):
         for stack in self.stacks:
             stack.pop()
 
@@ -92,11 +92,12 @@ class FractalGen:
                          PopTerminal: ("Pop", _pop)}
 
     def _handle_command(self, command):
-        timer = Timer()
         if type(command) not in self._terminal_mapping:
             raise RuntimeError(str(command))
 
         handler_name, handler_func = self._terminal_mapping[type(command)]
+
+        timer = Timer()
         with timer:
             handler_func(self, command)
         self._timings[handler_name] += timer.msecs
