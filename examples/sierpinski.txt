@@ -1,4 +1,3 @@
-init:
 start: A;
 define:
 _L: r-60 ;
