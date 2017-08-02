@@ -17,8 +17,8 @@ def _create_fractal(self, context):
         return
 
     bpy.context.window_manager.progress_begin(0, 99)
-    FractalGen().draw_vertices(self.iteration, x,
-                               bpy.context.window_manager.progress_update)
+    FractalGen(self.iteration, x, bpy.context.window_manager.progress_update,
+               bpy.context.scene.cursor_location).draw_vertices()
     bpy.context.window_manager.progress_end()
 
 

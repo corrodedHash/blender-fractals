@@ -12,9 +12,18 @@ import math
 class FractalGen:
 
 
-    def __init__(self):
+    def __init__(self, level: int, lsystem: Lsystem, update_callback, start_point = (0, 0, 0)):
 
-        self.position_stack = [Vector(0, 0, 0)]
+        self._lsystem = lsystem
+        self._update_callback = update_callback
+        self._level = level
+
+        self._max_count = self._lsystem.approx_steps(level)
+        self._tick_count = max(self._max_count // 100, 1)
+        self._ticks = 0
+        self._count = 0
+
+        self.position_stack = [Vector(*start_point)]
         self.rotation_stack = [Vector(1, 0, 0)]
         self.degree_stack = [Vector(0, 0, 0)]
         self.verts_stack = [0]
@@ -81,6 +90,13 @@ class FractalGen:
         for command in self._timings:
             print("%7s: %.4f" % (command, self._timings[command]))
 
+    def _update_tick(self):
+        self._count += 1
+        if self._count > self._tick_count:
+            self._ticks += self._count // self._tick_count
+            self._count = self._count % self._tick_count
+            self._update_callback(self._ticks)
+
     def _apply_node(self):
         profile_mesh = bpy.data.meshes.new("FractalMesh")
         profile_mesh.from_pydata(self.verts, self.edges, [])
@@ -93,24 +109,15 @@ class FractalGen:
         scene.objects.link(profile_object)
         profile_object.select = True
 
-    def draw_vertices(self, level, lsystem, update_callback):
-        max_count = lsystem.approx_steps(level)
-        tick_count = max(max_count // 100, 1)
-        ticks = 0
-        count = 0
-        print("Expected ticks: " + str(max_count))
+    def draw_vertices(self):
+        print("Expected ticks: " + str(self._max_count))
 
         with Timer("Node gen", True):
-            for command in lsystem.start.iterate(level):
-                count += 1
-                if count > tick_count:
-                    ticks += count // tick_count
-                    count = count % tick_count
-                    update_callback(ticks)
-
+            for command in self._lsystem.start.iterate(self._level):
+                self._update_tick()
                 self._handle_command(command)
 
-        print("Needed ticks: " + str(ticks * tick_count + count))
+        print("Needed ticks: " + str(self._ticks * self._tick_count + self._count))
 
         self._print_timings()
 
