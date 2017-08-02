@@ -13,7 +13,14 @@ def _create_fractal(self, context):
         with open(self.grammar_path) as f:
             x = lparse(f.read())
     except FileNotFoundError:
-        self.grammar_path = ""
+        self.grammar_path = self.standard_path
+        return
+    except RuntimeError as run_err:
+        msg = ""
+        for err_line in run_err.args:
+            msg += err_line + "\n"
+        self.report({'ERROR_INVALID_INPUT'}, msg)
+        self.grammar_path = self.standard_path
         return
 
     bpy.context.window_manager.progress_begin(0, 99)
@@ -37,12 +44,16 @@ class Fractal_add_object(bpy.types.Operator):
         subtype='UNSIGNED',
         description="Number of iterations of the fractal")
 
+    standard_path = os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                                 "examples", "sierpinski.txt")
+
     def reset_iteration(self, context):
+        print(context)
         self.iteration = 2
+
     grammar_path = bpy.props.StringProperty(
         name="Grammar path",
-        default=os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                             "examples", "sierpinski.txt"),
+        default= standard_path,
         description="The grammar for the fractal you want to draw",
         subtype='FILE_PATH',
         update=reset_iteration
