@@ -1,18 +1,22 @@
-from .util.vector import Vector
-from .util.timer import Timer
-
-from .lsystem.lsystem_class import Lsystem
-from .lsystem.literal_semantic import (RotateTerminal,
-                                       MoveTerminal, DrawTerminal,
-                                       PushTerminal, PopTerminal)
-import bpy
 import math
+
+from util.vector import Vector
+from util.timer import Timer
+
+from lsystem.lsystem_class import Lsystem
+from lsystem.literal_semantic import (RotateTerminal,
+                                      MoveTerminal, DrawTerminal,
+                                      PushTerminal, PopTerminal)
+
+try:
+    import bpy
+except ImportError:
+    print("Could not locate blender python module, testing environment only")
 
 
 class FractalGen:
 
-
-    def __init__(self, level: int, lsystem: Lsystem, update_callback, start_point = (0, 0, 0)):
+    def __init__(self, level: int, lsystem: Lsystem, update_callback, start_point=(0, 0, 0)):
 
         self._lsystem = lsystem
         self._update_callback = update_callback
@@ -61,11 +65,11 @@ class FractalGen:
             Vector(terminal.rotation[0], terminal.rotation[1], 0)
         self._yz_rot()
 
-    def _push(self, terminal: PushTerminal):
+    def _push(self, _terminal: PushTerminal):
         for stack in self.stacks:
             stack.append(stack[-1])
 
-    def _pop(self, terminal: PopTerminal):
+    def _pop(self, _terminal: PopTerminal):
         for stack in self.stacks:
             stack.pop()
 
@@ -79,7 +83,8 @@ class FractalGen:
         if type(command) not in FractalGen._terminal_mapping:
             raise RuntimeError(str(command))
 
-        handler_name, handler_func = FractalGen._terminal_mapping[type(command)]
+        handler_name, handler_func = FractalGen._terminal_mapping[type(
+            command)]
 
         timer = Timer()
         with timer:
@@ -110,6 +115,7 @@ class FractalGen:
         profile_object.select = True
 
     def draw_vertices(self):
+        """Generates the vertices based on the given lsystem and level"""
         print("Expected ticks: " + str(self._max_count))
 
         with Timer("Node gen", True):
