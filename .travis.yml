@@ -8,4 +8,4 @@ python:
   - 3.6
 
 script:
- - if [[ $TRAVIS_PYTHON_VERSION == '3.6' ]]; then python -m unittest discover; fi
+ - [[ $TRAVIS_PYTHON_VERSION == '3.6' ]] && then python -m unittest discover -s tests
