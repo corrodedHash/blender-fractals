@@ -1,0 +1,11 @@
+# After changing this file, check it on:
+#   http://lint.travis-ci.org/
+language: python
+sudo: required
+dist: trusty
+
+python:
+  - 3.6
+
+script:
+ - if [[ $TRAVIS_PYTHON_VERSION == '3.6' ]]; then python -m unittest discover; fi
