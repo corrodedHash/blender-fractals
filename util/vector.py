@@ -109,6 +109,13 @@ class Vector(object):
         """
         return sum(a * b for a, b in zip(self, other))
 
+    def cross(self, other):
+        """ Returns the cross product of this and another vector"""
+        x = self[1] * other[2] - self[2] * other[1]
+        y = self[2] * other[0] - self[0] * other[2]
+        z = self[0] * other[1] - self[1] * other[0]
+        return Vector(x, y, z)
+
     def __mul__(self, other):
         """ Returns the dot product of self and other if multiplied
             by another Vector.  If multiplied by an int or float,
