@@ -5,7 +5,7 @@ from .lsystem.lsystem_parse import parse as lparse
 from .fractalgen import FractalGen
 
 
-def _create_fractal(self, context):
+def _create_fractal(self, _context):
     parsed_lsystem = None
     if self.grammar_path == "":
         return
