@@ -27,9 +27,9 @@ FINAL_SECTION : 'final' ;
 
 probability : FLOAT ;
 
-rand_entry : FLOAT | '{' SPACE * FLOAT SPACE * FLOAT SPACE *  '}' ;
+rand_entry : FLOAT | '{' SPACE * FLOAT SPACE * ',' SPACE * FLOAT SPACE *  '}' ;
 
-rotation : ROT SPACE * ( '(' ( ( SPACE * rand_entry SPACE * ',' ) ?  SPACE * rand_entry SPACE * ',' ) ? SPACE * rand_entry SPACE * ')' | rand_entry | );
+rotation : ROT ( '(' ( ( SPACE * rand_entry SPACE * ',' ) ?  SPACE * rand_entry SPACE * ',' ) ? SPACE * rand_entry SPACE * ')' | rand_entry );
 move: MOVE rand_entry ?;
 draw: DRAW rand_entry ?;
 push: PUSH;
@@ -47,7 +47,7 @@ define_entity : define_term CONTENT_START define_res CONTENT_END ;
 define_res : ( (non_term | term) SPACE + ) * (non_term | term) SPACE * ;
 
 rule_sec : RULES_SECTION SECTION_START rule_entity + ;
-rule_entity : non_term (SPACE +  probability*)? CONTENT_START rule_res CONTENT_END ;
+rule_entity : non_term (SPACE +  probability)? CONTENT_START rule_res CONTENT_END ;
 rule_res : ( (non_term | term | define_term ) SPACE + ) * (non_term | term | define_term) SPACE * ;
 
 final_sec : FINAL_SECTION SECTION_START final_rule_entity + ;

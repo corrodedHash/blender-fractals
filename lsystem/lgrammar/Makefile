@@ -1,4 +1,5 @@
-ANTLR_EXE=/usr/share/java/antlr-complete.jar
+#ANTLR_EXE=/usr/share/java/antlr-complete.jar
+ANTLR_EXE=antlr-complete.jar
 EXE_CALL=java -jar $(ANTLR_EXE)
 
 python:

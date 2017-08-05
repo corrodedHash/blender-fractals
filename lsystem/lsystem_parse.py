@@ -17,6 +17,10 @@ class LoggingErrorListener(antlr4.error.ErrorListener.ErrorListener):
         return self._log_dest
 
 def parse(text):
+    my_lexer = lsystemLexer(antlr4.InputStream(text))
+    my_parser = lsystemParser(antlr4.CommonTokenStream(my_lexer))
+    return lgrammarVisitor().visit(my_parser.code())
+    
     my_error_log = LoggingErrorListener()
     my_lexer = lsystemLexer(antlr4.InputStream(text))
     my_lexer.addErrorListener(my_error_log)

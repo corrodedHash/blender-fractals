@@ -48,7 +48,6 @@ class Fractal_add_object(bpy.types.Operator):
                                  "examples", "sierpinski.txt")
 
     def reset_iteration(self, context):
-        print(context)
         self.iteration = 2
 
     grammar_path = bpy.props.StringProperty(

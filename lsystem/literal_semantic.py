@@ -1,18 +1,27 @@
+from random import randint
+
+
 class Terminal:
 
-    def result_len(self, iteration):
+    def result_len(self, _iteration):
         return 1
 
 
 class RotateTerminal(Terminal):
 
     def __init__(self, rot_x=0, rot_y=0, rot_z=0):
-        self.rotation = (rot_x,
-                         rot_y,
-                         rot_z)
+        self._rotation = (rot_x, rot_y, rot_z)
+
+    def __getitem__(self, key):
+        assert key < 3 and key >= 0
+        try:
+            start, end = self._rotation[key]
+            return randint(round(start), round(end))
+        except TypeError:
+            return self._rotation[key]
 
     def __str__(self):
-        return "r" + str(self.rotation)
+        return "r" + str(self._rotation)
 
     __repr__ = __str__
 
@@ -97,20 +106,17 @@ class NonTerminal:
         self.final_transition = []
         self.result_len_cache = dict()
 
-    def append_trans(self, trans):
-        assert trans is RotateTerminal \
-            or trans is MoveTerminal \
-            or trans is PushTerminal \
-            or trans is PopTerminal \
-            or trans is NonTerminal
-        self.transition.append(trans)
+    def _choose_transition(self):
+        return self.transition[0][1]
 
-    def append_final_trans(self, trans):
-        assert trans is RotateTerminal \
-            or trans is MoveTerminal \
-            or trans is PushTerminal \
-            or trans is PopTerminal
-        self.final_transition.append(trans)
+    def _choose_final_transition(self):
+        return self.final_transition[0][1]
+
+    def append_trans(self, trans, probability=1):
+        self.transition.append((probability, trans))
+
+    def append_final_trans(self, trans, probability=1):
+        self.transition.append((probability, trans))
 
     def result_len(self, iteration):
         if iteration == 0 or not self.transition:
@@ -127,7 +133,7 @@ class NonTerminal:
             raise ValueError("Level cannot be below 0")
 
         if level == 0 or not self.transition:
-            for x in self.final_transition:
+            for x in self._choose_final_transition():
                 if isinstance(x, Define):
                     for y in x.iterate(level):
                         yield y
@@ -135,7 +141,7 @@ class NonTerminal:
                     yield x
             return
 
-        for literal in self.transition:
+        for literal in self._choose_transition():
             if isinstance(literal, NonTerminal):
                 for l2literal in literal.iterate(level - 1):
                     yield l2literal
