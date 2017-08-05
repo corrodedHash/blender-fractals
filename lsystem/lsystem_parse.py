@@ -10,7 +10,7 @@ class LoggingErrorListener(antlr4.error.ErrorListener.ErrorListener):
     def __init__(self):
         self._log_dest = []
 
-    def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
+    def syntaxError(self, _recognizer, _offendingSymbol, line, column, msg, e):
         self._log_dest.append("line " + str(line) + ":" + str(column) + " " + msg)
 
     def getErrors(self):
