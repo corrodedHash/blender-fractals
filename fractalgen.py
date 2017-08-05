@@ -61,6 +61,8 @@ class FractalGen:
         self.look_at_stack = [Vector(1, 0, 0)]
         self.verts_stack = [0]
 
+        self.moved = False
+
         self.verts = [self.position_stack[-1].values]
         self.edges = []
 
@@ -72,11 +74,20 @@ class FractalGen:
         self._timings = {x: 0 for x in (
             "Rotate", "Move", "Draw", "Push", "Pop")}
 
-    def _move(self, terminal: (MoveTerminal, DrawTerminal)):
+    def _move(self, terminal: MoveTerminal):
+        self.moved = True
+        self.position_stack[-1] += self.rotation_stack[-1] * terminal.distance
+
+    def _draw(self, terminal: DrawTerminal):
+        if self.moved:
+            self.verts.append(self.position_stack[-1].values)
+            self.verts_stack[-1] = len(self.verts) - 1
+            self.moved = False
         self.position_stack[-1] += self.rotation_stack[-1] * terminal.distance
         self.verts.append(self.position_stack[-1].values)
         self.edges.append((self.verts_stack[-1], len(self.verts) - 1))
         self.verts_stack[-1] = len(self.verts) - 1
+
 
     @staticmethod
     def _axis_rotate(rot_axis, axis, degree):
@@ -112,7 +123,7 @@ class FractalGen:
 
     _terminal_mapping = {RotateTerminal: ("Rotate", _rotate),
                          MoveTerminal: ("Move", _move),
-                         DrawTerminal: ("Draw", _move),
+                         DrawTerminal: ("Draw", _draw),
                          PushTerminal: ("Push", _push),
                          PopTerminal: ("Pop", _pop)}
 
