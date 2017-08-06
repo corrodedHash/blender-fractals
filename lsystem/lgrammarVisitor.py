@@ -12,6 +12,9 @@ from .lsystem_class import Lsystem
 class lgrammarVisitor(antlr4.ParseTreeVisitor):
     # Visit a parse tree produced by lsystemParser#probability.
 
+    def __init__(self):
+        self.lsystem = Lsystem()
+
     def visitProbability(self, ctx: lsystemParser.ProbabilityContext):
         return ctx.FLOAT()
 
@@ -135,10 +138,5 @@ class lgrammarVisitor(antlr4.ParseTreeVisitor):
 
     # Visit a parse tree produced by lsystemParser#code.
     def visitCode(self, ctx: lsystemParser.CodeContext):
-        self.lsystem = Lsystem()
-        print("a")
-        print(self.lsystem)
         self.visitChildren(ctx)
-        print("a")
-        print(self.lsystem)
         return self.lsystem

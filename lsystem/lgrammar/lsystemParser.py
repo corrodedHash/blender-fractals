@@ -8,7 +8,7 @@ import sys
 def serializedATN():
     with StringIO() as buf:
         buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\32")
-        buf.write("\u0127\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7")
+        buf.write("\u0129\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7")
         buf.write("\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4\f\t\f\4\r\t\r\4\16")
         buf.write("\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22\4\23\t\23")
         buf.write("\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\3\2\3\2\3\3\3")
@@ -38,13 +38,13 @@ def serializedATN():
         buf.write("\16\26\u010d\7\26\u0110\n\26\f\26\16\26\u0113\13\26\3")
         buf.write("\26\3\26\5\26\u0117\n\26\3\26\7\26\u011a\n\26\f\26\16")
         buf.write("\26\u011d\13\26\3\27\3\27\5\27\u0121\n\27\3\27\3\27\5")
-        buf.write("\27\u0125\n\27\3\27\2\2\30\2\4\6\b\n\f\16\20\22\24\26")
-        buf.write("\30\32\34\36 \"$&(*,\2\2\2\u013d\2.\3\2\2\2\4N\3\2\2\2")
-        buf.write("\6P\3\2\2\2\b\u0086\3\2\2\2\n\u008a\3\2\2\2\f\u008e\3")
-        buf.write("\2\2\2\16\u0090\3\2\2\2\20\u0097\3\2\2\2\22\u0099\3\2")
-        buf.write("\2\2\24\u009b\3\2\2\2\26\u009f\3\2\2\2\30\u00a3\3\2\2")
-        buf.write("\2\32\u00a8\3\2\2\2\34\u00af\3\2\2\2\36\u00bf\3\2\2\2")
-        buf.write(" \u00cc\3\2\2\2\"\u00d3\3\2\2\2$\u00ec\3\2\2\2&\u00fa")
+        buf.write("\27\u0125\n\27\3\27\3\27\3\27\2\2\30\2\4\6\b\n\f\16\20")
+        buf.write("\22\24\26\30\32\34\36 \"$&(*,\2\2\2\u013f\2.\3\2\2\2\4")
+        buf.write("N\3\2\2\2\6P\3\2\2\2\b\u0086\3\2\2\2\n\u008a\3\2\2\2\f")
+        buf.write("\u008e\3\2\2\2\16\u0090\3\2\2\2\20\u0097\3\2\2\2\22\u0099")
+        buf.write("\3\2\2\2\24\u009b\3\2\2\2\26\u009f\3\2\2\2\30\u00a3\3")
+        buf.write("\2\2\2\32\u00a8\3\2\2\2\34\u00af\3\2\2\2\36\u00bf\3\2")
+        buf.write("\2\2 \u00cc\3\2\2\2\"\u00d3\3\2\2\2$\u00ec\3\2\2\2&\u00fa")
         buf.write("\3\2\2\2(\u0101\3\2\2\2*\u0111\3\2\2\2,\u011e\3\2\2\2")
         buf.write("./\7\b\2\2/\3\3\2\2\2\60O\7\b\2\2\61\65\7\3\2\2\62\64")
         buf.write("\7\13\2\2\63\62\3\2\2\2\64\67\3\2\2\2\65\63\3\2\2\2\65")
@@ -136,11 +136,11 @@ def serializedATN():
         buf.write("\u011b\3\2\2\2\u011e\u0120\5\26\f\2\u011f\u0121\5\32\16")
         buf.write("\2\u0120\u011f\3\2\2\2\u0120\u0121\3\2\2\2\u0121\u0122")
         buf.write("\3\2\2\2\u0122\u0124\5 \21\2\u0123\u0125\5&\24\2\u0124")
-        buf.write("\u0123\3\2\2\2\u0124\u0125\3\2\2\2\u0125-\3\2\2\2*\65")
-        buf.write("<CJNU\\afmrw~\u0084\u0088\u008c\u0097\u009f\u00ad\u00b6")
-        buf.write("\u00bb\u00bf\u00c4\u00c9\u00d1\u00d7\u00da\u00e3\u00e8")
-        buf.write("\u00ec\u00f2\u00f7\u00ff\u0108\u010d\u0111\u0116\u011b")
-        buf.write("\u0120\u0124")
+        buf.write("\u0123\3\2\2\2\u0124\u0125\3\2\2\2\u0125\u0126\3\2\2\2")
+        buf.write("\u0126\u0127\7\2\2\3\u0127-\3\2\2\2*\65<CJNU\\afmrw~\u0084")
+        buf.write("\u0088\u008c\u0097\u009f\u00ad\u00b6\u00bb\u00bf\u00c4")
+        buf.write("\u00c9\u00d1\u00d7\u00da\u00e3\u00e8\u00ec\u00f2\u00f7")
+        buf.write("\u00ff\u0108\u010d\u0111\u0116\u011b\u0120\u0124")
         return buf.getvalue()
 
 
@@ -242,6 +242,12 @@ class lsystemParser ( Parser ):
         def getRuleIndex(self):
             return lsystemParser.RULE_probability
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitProbability" ):
+                return visitor.visitProbability(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -281,6 +287,12 @@ class lsystemParser ( Parser ):
 
         def getRuleIndex(self):
             return lsystemParser.RULE_rand_entry
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitRand_entry" ):
+                return visitor.visitRand_entry(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -387,6 +399,12 @@ class lsystemParser ( Parser ):
 
         def getRuleIndex(self):
             return lsystemParser.RULE_rotation
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitRotation" ):
+                return visitor.visitRotation(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -522,6 +540,12 @@ class lsystemParser ( Parser ):
         def getRuleIndex(self):
             return lsystemParser.RULE_move
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitMove" ):
+                return visitor.visitMove(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -566,6 +590,12 @@ class lsystemParser ( Parser ):
         def getRuleIndex(self):
             return lsystemParser.RULE_draw
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitDraw" ):
+                return visitor.visitDraw(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -606,6 +636,12 @@ class lsystemParser ( Parser ):
         def getRuleIndex(self):
             return lsystemParser.RULE_push
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitPush" ):
+                return visitor.visitPush(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -636,6 +672,12 @@ class lsystemParser ( Parser ):
 
         def getRuleIndex(self):
             return lsystemParser.RULE_pop
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitPop" ):
+                return visitor.visitPop(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -684,6 +726,12 @@ class lsystemParser ( Parser ):
 
         def getRuleIndex(self):
             return lsystemParser.RULE_term
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitTerm" ):
+                return visitor.visitTerm(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -744,6 +792,12 @@ class lsystemParser ( Parser ):
         def getRuleIndex(self):
             return lsystemParser.RULE_non_term
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitNon_term" ):
+                return visitor.visitNon_term(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -774,6 +828,12 @@ class lsystemParser ( Parser ):
 
         def getRuleIndex(self):
             return lsystemParser.RULE_define_term
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitDefine_term" ):
+                return visitor.visitDefine_term(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -812,6 +872,12 @@ class lsystemParser ( Parser ):
 
         def getRuleIndex(self):
             return lsystemParser.RULE_init_sec
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitInit_sec" ):
+                return visitor.visitInit_sec(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -865,6 +931,12 @@ class lsystemParser ( Parser ):
         def getRuleIndex(self):
             return lsystemParser.RULE_init_start
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitInit_start" ):
+                return visitor.visitInit_start(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -911,6 +983,12 @@ class lsystemParser ( Parser ):
 
         def getRuleIndex(self):
             return lsystemParser.RULE_define_sec
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitDefine_sec" ):
+                return visitor.visitDefine_sec(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -969,6 +1047,12 @@ class lsystemParser ( Parser ):
         def getRuleIndex(self):
             return lsystemParser.RULE_define_entity
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitDefine_entity" ):
+                return visitor.visitDefine_entity(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -1022,6 +1106,12 @@ class lsystemParser ( Parser ):
 
         def getRuleIndex(self):
             return lsystemParser.RULE_define_res
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitDefine_res" ):
+                return visitor.visitDefine_res(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -1122,6 +1212,12 @@ class lsystemParser ( Parser ):
         def getRuleIndex(self):
             return lsystemParser.RULE_rule_sec
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitRule_sec" ):
+                return visitor.visitRule_sec(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -1188,6 +1284,12 @@ class lsystemParser ( Parser ):
 
         def getRuleIndex(self):
             return lsystemParser.RULE_rule_entity
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitRule_entity" ):
+                return visitor.visitRule_entity(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -1270,6 +1372,12 @@ class lsystemParser ( Parser ):
 
         def getRuleIndex(self):
             return lsystemParser.RULE_rule_res
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitRule_res" ):
+                return visitor.visitRule_res(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -1378,6 +1486,12 @@ class lsystemParser ( Parser ):
         def getRuleIndex(self):
             return lsystemParser.RULE_final_sec
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitFinal_sec" ):
+                return visitor.visitFinal_sec(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -1435,6 +1549,12 @@ class lsystemParser ( Parser ):
         def getRuleIndex(self):
             return lsystemParser.RULE_final_rule_entity
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitFinal_rule_entity" ):
+                return visitor.visitFinal_rule_entity(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -1488,6 +1608,12 @@ class lsystemParser ( Parser ):
 
         def getRuleIndex(self):
             return lsystemParser.RULE_final_rule_res
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitFinal_rule_res" ):
+                return visitor.visitFinal_rule_res(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -1580,6 +1706,9 @@ class lsystemParser ( Parser ):
             return self.getTypedRuleContext(lsystemParser.Rule_secContext,0)
 
 
+        def EOF(self):
+            return self.getToken(lsystemParser.EOF, 0)
+
         def define_sec(self):
             return self.getTypedRuleContext(lsystemParser.Define_secContext,0)
 
@@ -1590,6 +1719,12 @@ class lsystemParser ( Parser ):
 
         def getRuleIndex(self):
             return lsystemParser.RULE_code
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitCode" ):
+                return visitor.visitCode(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -1621,6 +1756,8 @@ class lsystemParser ( Parser ):
                 self.final_sec()
 
 
+            self.state = 292
+            self.match(lsystemParser.EOF)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)

@@ -54,4 +54,4 @@ final_sec : FINAL_SECTION SECTION_START final_rule_entity + ;
 final_rule_entity : non_term CONTENT_START final_rule_res  CONTENT_END ;
 final_rule_res : ( ( term | define_term ) SPACE + ) * ( term | define_term ) SPACE *;
 
-code : init_sec define_sec ? rule_sec final_sec ? ;
+code : init_sec define_sec ? rule_sec final_sec ? EOF;

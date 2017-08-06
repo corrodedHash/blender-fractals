@@ -95,23 +95,23 @@ class FractalGen:
             math.cos(math.radians(degree)) * (rot_axis.cross(axis)).cross(rot_axis) + \
             math.sin(math.radians(degree)) * (rot_axis.cross(axis))
 
-    def _rotate(self, terminal: RotateTerminal):
+    def _rotate(self, rotation: RotateTerminal):
         self.rotation_stack[-1] = \
             self._axis_rotate(self.look_at_stack[-1],
                               self.rotation_stack[-1],
-                              terminal.rotation[0])
+                              rotation[0])
 
-        if terminal.rotation[1] != 0:
+        if rotation[1] != 0:
             rot_axis = self.rotation_stack[-1].cross(self.look_at_stack[-1])
             self.rotation_stack[-1] = \
                 self._axis_rotate(rot_axis,
                                   self.rotation_stack[-1],
-                                  terminal.rotation[1])
+                                  rotation[1])
 
             self.look_at_stack[-1] = \
                 self._axis_rotate(rot_axis,
                                   self.look_at_stack[-1],
-                                  terminal.rotation[1])
+                                  rotation[1])
 
     def _push(self, _terminal: PushTerminal):
         for stack in self.stacks:

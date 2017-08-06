@@ -107,23 +107,28 @@ class NonTerminal:
         self.result_len_cache = dict()
 
     def _choose_transition(self):
-        return self.transition[0][1]
+        if self.transition:
+            return self.transition[0][1]
+        return []
 
     def _choose_final_transition(self):
-        return self.final_transition[0][1]
+        if self.final_transition:
+            return self.final_transition[0][1]
+        return []
+
 
     def append_trans(self, trans, probability=1):
         self.transition.append((probability, trans))
 
     def append_final_trans(self, trans, probability=1):
-        self.transition.append((probability, trans))
+        self.final_transition.append((probability, trans))
 
     def result_len(self, iteration):
         if iteration == 0 or not self.transition:
             return len(self.final_transition)
         if iteration not in self.result_len_cache:
             self.result_len_cache[iteration] = 0
-            for literal in self.transition:
+            for literal in self.transition[0][1]:
                 self.result_len_cache[iteration] += \
                     literal.result_len(iteration - 1)
         return self.result_len_cache[iteration]

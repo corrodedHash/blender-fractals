@@ -13,8 +13,8 @@ java:
 	javac -cp '$(ANTLR_EXE):$$CLASSPATH' lsystem*.java
 
 
-test:
-	cat testfile.txt | grun lsystem code -gui
+test: java
+	cat ../../examples/sierpinski.txt | java -cp .:$(ANTLR_EXE) org.antlr.v4.gui.TestRig lsystem code -gui
 
 clean:
 	rm -f lsystemParser.py lsystemLexer.py lsystemListener.py lsystemVisitor.py lsystem.tokens lsystemLexer.tokens

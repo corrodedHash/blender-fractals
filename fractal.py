@@ -1,8 +1,9 @@
 import os
+
 import bpy
 
-from .lsystem.lsystem_parse import parse as lparse
 from .fractalgen import FractalGen
+from .lsystem.lsystem_parse import parse as lparse
 
 
 def _create_fractal(self, _context):

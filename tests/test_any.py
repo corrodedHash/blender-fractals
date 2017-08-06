@@ -14,4 +14,4 @@ class TestSystem(unittest.TestCase):
         self.assertTrue('Y' in x._non_terminals)
 
         self.assertEqual(x.start, x._non_terminals['A'])
-        self.assertEqual(x._non_terminals['A'].transition[0].distance, 1)
+        self.assertEqual(x._non_terminals['A'].transition[0][1][0].distance, 1)
