@@ -108,7 +108,12 @@ class NonTerminal:
 
     def _choose_transition(self):
         if self.transition:
-            return self.transition[0][1]
+            chosen_weight = randint(1, self.transition[-1][0])
+            for weight, trans in self.transition:
+                if chosen_weight <= weight:
+                    return trans
+            else:
+                raise RuntimeError("Chosen weight was higher than max weight")
         return []
 
     def _choose_final_transition(self):
@@ -118,10 +123,17 @@ class NonTerminal:
 
 
     def append_trans(self, trans, probability=1):
-        self.transition.append((probability, trans))
+        if not self.transition:
+            self.transition.append((probability, trans))
+        else:
+            self.transition.append((self.transition[-1][0] + probability, trans))
 
     def append_final_trans(self, trans, probability=1):
-        self.final_transition.append((probability, trans))
+        assert probability > 0
+        if not self.final_transition:
+            self.final_transition.append((probability, trans))
+        else:
+            self.final_transition.append((self.final_transition[-1][0] + probability, trans))
 
     def result_len(self, iteration):
         if iteration == 0 or not self.transition:

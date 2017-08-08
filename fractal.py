@@ -46,7 +46,7 @@ class Fractal_add_object(bpy.types.Operator):
         description="Number of iterations of the fractal")
 
     standard_path = os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                                 "examples", "sierpinski.txt")
+                                 "examples", "standard", "sierpinski.txt")
 
     def reset_iteration(self, context):
         self.iteration = 2
