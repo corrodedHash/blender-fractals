@@ -5,6 +5,7 @@
 | --- | --- |
 | [![Master branch - Build Status](https://travis-ci.org/corrodedHash/blender-fractals.svg?branch=master)](https://travis-ci.org/corrodedHash/blender-fractals) | [![Build Status](https://travis-ci.org/corrodedHash/blender-fractals.svg?branch=develop)](https://travis-ci.org/corrodedHash/blender-fractals) |
 
+![Sierpinsky Triangle](images/sierpinski.png)
 ## How to install and enable an add-on (v.2.78)
 
 ### Install add-on
