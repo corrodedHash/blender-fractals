@@ -11,10 +11,12 @@ class Lsystem:
     def approx_steps(self, iteration):
         return self.start.result_len(iteration)
 
-    def get_define(self, name):
+    def get_define(self, name, create=False):
         if name in self._defines:
             return self._defines[name]
         else:
+            if not create:
+                raise RuntimeError("Can't use a define before declaring it")
             self._defines[name] = Define()
             return self._defines[name]
 

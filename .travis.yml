@@ -1,0 +1,10 @@
+# After changing this file, check it on:
+#   http://lint.travis-ci.org/
+language: python
+dist: trusty
+
+python:
+  - 3.6
+
+script:
+ - python -m unittest discover -s tests

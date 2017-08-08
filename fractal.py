@@ -1,17 +1,18 @@
-import bpy
-
-from .lsystem.lsystem_parse import parse as lparse
-from .fractalgen import FractalGen
 import os
 
+import bpy
 
-def _create_fractal(self, context):
-    x = None
+from .fractalgen import FractalGen
+from .lsystem.lsystem_parse import parse as lparse
+
+
+def _create_fractal(self, _context):
+    parsed_lsystem = None
     if self.grammar_path == "":
         return
     try:
-        with open(self.grammar_path) as f:
-            x = lparse(f.read())
+        with open(self.grammar_path) as grammar_file:
+            parsed_lsystem = lparse(grammar_file.read())
     except FileNotFoundError:
         self.grammar_path = self.standard_path
         return
@@ -24,7 +25,7 @@ def _create_fractal(self, context):
         return
 
     bpy.context.window_manager.progress_begin(0, 99)
-    FractalGen(self.iteration, x, bpy.context.window_manager.progress_update,
+    FractalGen(self.iteration, parsed_lsystem, bpy.context.window_manager.progress_update,
                bpy.context.scene.cursor_location).draw_vertices()
     bpy.context.window_manager.progress_end()
 
@@ -45,15 +46,14 @@ class Fractal_add_object(bpy.types.Operator):
         description="Number of iterations of the fractal")
 
     standard_path = os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                                 "examples", "sierpinski.txt")
+                                 "examples", "standard", "sierpinski.txt")
 
     def reset_iteration(self, context):
-        print(context)
         self.iteration = 2
 
     grammar_path = bpy.props.StringProperty(
         name="Grammar path",
-        default= standard_path,
+        default=standard_path,
         description="The grammar for the fractal you want to draw",
         subtype='FILE_PATH',
         update=reset_iteration

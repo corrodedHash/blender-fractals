@@ -1,10 +1,8 @@
 # Generated from lsystem.g4 by ANTLR 4.6
-from .lgrammar.lsystemParser import lsystemParser
 from .lgrammar import antlr4
-
-from .literal_semantic import (RotateTerminal,
-                               MoveTerminal, DrawTerminal,
-                               PushTerminal, PopTerminal)
+from .lgrammar.lsystemParser import lsystemParser
+from .literal_semantic import (DrawTerminal, MoveTerminal, PopTerminal,
+                               PushTerminal, RotateTerminal)
 from .lsystem_class import Lsystem
 
 # This class defines a complete generic visitor for a parse tree produced by
@@ -13,6 +11,9 @@ from .lsystem_class import Lsystem
 
 class lgrammarVisitor(antlr4.ParseTreeVisitor):
     # Visit a parse tree produced by lsystemParser#probability.
+
+    def __init__(self):
+        self.lsystem = Lsystem()
 
     def visitProbability(self, ctx: lsystemParser.ProbabilityContext):
         return ctx.FLOAT()
@@ -23,6 +24,10 @@ class lgrammarVisitor(antlr4.ParseTreeVisitor):
         if len(floats) == 1:
             return floats[0]
         elif len(floats) == 2:
+            if floats[0] > floats[1]:
+                raise RuntimeError("Range is not in order. " + str(floats))
+            elif floats[0] == floats[1]:
+                return floats[0]
             return floats
         raise RuntimeError
 
@@ -79,7 +84,8 @@ class lgrammarVisitor(antlr4.ParseTreeVisitor):
 
     # Visit a parse tree produced by lsystemParser#define_entity.
     def visitDefine_entity(self, ctx: lsystemParser.Define_entityContext):
-        define = ctx.define_term().accept(self)
+        define = self.lsystem.get_define(ctx.define_term().DEFINE().getText(), True)
+        #define = ctx.define_term().accept(self)
         define.transition = ctx.define_res().accept(self)
 
     # Visit a parse tree produced by lsystemParser#define_res.
@@ -97,7 +103,11 @@ class lgrammarVisitor(antlr4.ParseTreeVisitor):
     # Visit a parse tree produced by lsystemParser#rule_entity.
     def visitRule_entity(self, ctx: lsystemParser.Rule_entityContext):
         nt = ctx.non_term().accept(self)
-        nt.transition = ctx.rule_res().accept(self)
+        if ctx.probability() is not None:
+            nt.append_trans(ctx.rule_res().accept(self),
+                            ctx.probability.accept(self))
+        else:
+            nt.append_trans(ctx.rule_res().accept(self))
 
     # Visit a parse tree produced by lsystemParser#rule_res.
     def visitRule_res(self, ctx: lsystemParser.Rule_resContext):
@@ -116,7 +126,7 @@ class lgrammarVisitor(antlr4.ParseTreeVisitor):
     def visitFinal_rule_entity(self,
                                ctx: lsystemParser.Final_rule_entityContext):
         nt = ctx.non_term().accept(self)
-        nt.final_transition = ctx.final_rule_res().accept(self)
+        nt.append_final_trans(ctx.final_rule_res().accept(self))
 
     # Visit a parse tree produced by lsystemParser#final_rule_res.
     def visitFinal_rule_res(self, ctx: lsystemParser.Final_rule_resContext):
@@ -129,6 +139,5 @@ class lgrammarVisitor(antlr4.ParseTreeVisitor):
 
     # Visit a parse tree produced by lsystemParser#code.
     def visitCode(self, ctx: lsystemParser.CodeContext):
-        self.lsystem = Lsystem()
         self.visitChildren(ctx)
         return self.lsystem
