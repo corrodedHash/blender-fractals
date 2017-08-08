@@ -12,7 +12,7 @@ import grammar_output
 class TestLsystemIterate(unittest.TestCase):
     def test_iterate(self):
         for grammar_path, grammar_level, grammar_result in grammar_output.TEST_OUTPUTS:
-            real_path = os.path.join("examples", grammar_path)
+            real_path = os.path.join("examples", "standard", grammar_path)
         with open(real_path) as grammar_file:
             my_lsystem = lparse(grammar_file.read())
             self.assertListEqual(

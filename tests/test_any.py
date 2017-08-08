@@ -6,7 +6,7 @@ class TestSystem(unittest.TestCase):
 
     def test_parsing(self):
         x = None
-        with open("examples/dragon.txt") as f:
+        with open("examples/standard/dragon.txt") as f:
             x = lsystem.lsystem_parse.parse(f.read())
 
         self.assertTrue('A' in x._non_terminals)
