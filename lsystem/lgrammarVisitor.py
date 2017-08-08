@@ -84,7 +84,8 @@ class lgrammarVisitor(antlr4.ParseTreeVisitor):
 
     # Visit a parse tree produced by lsystemParser#define_entity.
     def visitDefine_entity(self, ctx: lsystemParser.Define_entityContext):
-        define = ctx.define_term().accept(self)
+        define = self.lsystem.get_define(ctx.define_term().DEFINE().getText(), True)
+        #define = ctx.define_term().accept(self)
         define.transition = ctx.define_res().accept(self)
 
     # Visit a parse tree produced by lsystemParser#define_res.
