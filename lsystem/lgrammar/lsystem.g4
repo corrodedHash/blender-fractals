@@ -16,6 +16,8 @@ SECTION_START : ':' '\n' ;
 ROT : 'r' ;
 DRAW : 'd' ;
 MOVE : 'm' ;
+FACE: 'f' ;
+ENDFACE: 'endf' ;
 PUSH : 'push' ;
 POP : 'pop' ;
 
@@ -32,10 +34,12 @@ rand_entry : FLOAT | '{' SPACE * FLOAT SPACE * ',' SPACE * FLOAT SPACE *  '}' ;
 rotation : ROT ( '(' ( ( SPACE * rand_entry SPACE * ',' ) ?  SPACE * rand_entry SPACE * ',' ) ? SPACE * rand_entry SPACE * ')' | rand_entry );
 move: MOVE rand_entry ?;
 draw: DRAW rand_entry ?;
-push: PUSH;
-pop: POP;
+face: FACE rand_entry ?;
+endface: ENDFACE ;
+push: PUSH ;
+pop: POP ;
 
-term : rotation | move | draw | push | pop;
+term : rotation | move | draw | face | endface | push | pop;
 non_term : NT ;
 define_term: DEFINE ;
 

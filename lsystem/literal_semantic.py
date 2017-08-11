@@ -51,9 +51,27 @@ class DrawTerminal(Terminal):
 
     __repr__ = __str__
 
+class FaceTerminal(Terminal):
+
+    def __init__(self, distance=None):
+        if distance is None:
+            distance = 1
+        self.distance = distance
+
+    def __str__(self):
+        return "f" + str(self.distance)
+
+    __repr__ = __str__
+
+
+class EndFaceTerminal(Terminal):
+
+    def __str__(self):
+        return "push"
+
+    __repr__ = __str__
 
 class PushTerminal(Terminal):
-    pass
 
     def __str__(self):
         return "push"
@@ -62,7 +80,6 @@ class PushTerminal(Terminal):
 
 
 class PopTerminal(Terminal):
-    pass
 
     def __str__(self):
         return "pop"
@@ -142,7 +159,9 @@ class NonTerminal:
 
     def result_len(self, iteration):
         if iteration == 0 or not self.transition:
-            return len(self.final_transition)
+            if not self.final_transition:
+                return 0
+            return len(self.final_transition[0][1])
         if iteration not in self.result_len_cache:
             self.result_len_cache[iteration] = 0
             for literal in self.transition[0][1]:

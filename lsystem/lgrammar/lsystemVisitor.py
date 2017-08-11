@@ -34,6 +34,16 @@ class lsystemVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by lsystemParser#face.
+    def visitFace(self, ctx:lsystemParser.FaceContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by lsystemParser#endface.
+    def visitEndface(self, ctx:lsystemParser.EndfaceContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by lsystemParser#push.
     def visitPush(self, ctx:lsystemParser.PushContext):
         return self.visitChildren(ctx)

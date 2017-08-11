@@ -1,20 +1,21 @@
-# Generated from lsystem.g4 by ANTLR 4.6
-from .lgrammar import antlr4
+# Generated from lsystem.g4 by ANTLR 4.7
+from .lgrammar.antlr4 import ParseTreeVisitor
 from .lgrammar.lsystemParser import lsystemParser
-from .literal_semantic import (DrawTerminal, MoveTerminal, PopTerminal,
-                               PushTerminal, RotateTerminal)
+from .literal_semantic import (DrawTerminal, EndFaceTerminal, FaceTerminal,
+                               MoveTerminal, PopTerminal, PushTerminal,
+                               RotateTerminal)
 from .lsystem_class import Lsystem
 
 # This class defines a complete generic visitor for a parse tree produced by
 # lsystemParser. ctx.accept(self) visits the ctx
 
 
-class lgrammarVisitor(antlr4.ParseTreeVisitor):
-    # Visit a parse tree produced by lsystemParser#probability.
+class lgrammarVisitor(ParseTreeVisitor):
 
     def __init__(self):
         self.lsystem = Lsystem()
 
+    # Visit a parse tree produced by lsystemParser#probability.
     def visitProbability(self, ctx: lsystemParser.ProbabilityContext):
         return ctx.FLOAT()
 
@@ -50,6 +51,16 @@ class lgrammarVisitor(antlr4.ParseTreeVisitor):
             return DrawTerminal()
         return DrawTerminal(ctx.rand_entry().accept(self))
 
+    # Visit a parse tree produced by lsystemParser#face.
+    def visitFace(self, ctx: lsystemParser.FaceContext):
+        if ctx.rand_entry() is None:
+            return FaceTerminal()
+        return FaceTerminal(ctx.rand_entry().accept(self))
+
+    # Visit a parse tree produced by lsystemParser#endface.
+    def visitEndface(self, ctx: lsystemParser.EndfaceContext):
+        return EndFaceTerminal()
+
     # Visit a parse tree produced by lsystemParser#push.
     def visitPush(self, ctx: lsystemParser.PushContext):
         return PushTerminal()
@@ -84,7 +95,8 @@ class lgrammarVisitor(antlr4.ParseTreeVisitor):
 
     # Visit a parse tree produced by lsystemParser#define_entity.
     def visitDefine_entity(self, ctx: lsystemParser.Define_entityContext):
-        define = self.lsystem.get_define(ctx.define_term().DEFINE().getText(), True)
+        define = self.lsystem.get_define(
+            ctx.define_term().DEFINE().getText(), True)
         #define = ctx.define_term().accept(self)
         define.transition = ctx.define_res().accept(self)
 

@@ -2,13 +2,16 @@ import math
 
 if __name__ is not None and "." in __name__:
     from .lsystem.literal_semantic import (DrawTerminal, MoveTerminal, PopTerminal,
-                                           PushTerminal, RotateTerminal)
+                                          PushTerminal, RotateTerminal, FaceTerminal,
+                                          EndFaceTerminal)
     from .lsystem.lsystem_class import Lsystem
     from .util.timer import Timer
     from .util.vector import Vector
 else:
     from lsystem.literal_semantic import (DrawTerminal, MoveTerminal, PopTerminal,
-                                          PushTerminal, RotateTerminal)
+                                          PushTerminal, RotateTerminal, FaceTerminal,
+                                          EndFaceTerminal)
+
     from lsystem.lsystem_class import Lsystem
     from util.timer import Timer
     from util.vector import Vector
@@ -65,6 +68,7 @@ class FractalGen:
 
         self.verts = [self.position_stack[-1].values]
         self.edges = []
+        self.faces = [[]]
 
         self.stacks = [self.position_stack,
                        self.rotation_stack,
@@ -72,13 +76,15 @@ class FractalGen:
                        self.verts_stack]
 
         self._timings = {x: 0 for x in (
-            "Rotate", "Move", "Draw", "Push", "Pop")}
+            "Rotate", "Move", "Draw", "Face", "EndFace", "Push", "Pop")}
 
     def _move(self, terminal: MoveTerminal):
+        self._endface()
         self.moved = True
         self.position_stack[-1] += self.rotation_stack[-1] * terminal.distance
 
     def _draw(self, terminal: DrawTerminal):
+        self._endface()
         if self.moved:
             self.verts.append(self.position_stack[-1].values)
             self.verts_stack[-1] = len(self.verts) - 1
@@ -88,6 +94,21 @@ class FractalGen:
         self.edges.append((self.verts_stack[-1], len(self.verts) - 1))
         self.verts_stack[-1] = len(self.verts) - 1
 
+    def _face(self, terminal: FaceTerminal):
+        if self.moved:
+            self.verts.append(self.position_stack[-1].values)
+            self.verts_stack[-1] = len(self.verts) - 1
+            self.faces[-1].append(self.verts_stack[-1])
+            self.moved = False
+        self.position_stack[-1] += self.rotation_stack[-1] * terminal.distance
+        self.verts.append(self.position_stack[-1].values)
+        self.verts_stack[-1] = len(self.verts) - 1
+        self.faces[-1].append(self.verts_stack[-1])
+
+
+    def _endface(self, _terminal=None):
+        if self.faces[-1]:
+            self.faces.append([])
 
     @staticmethod
     def _axis_rotate(rot_axis, axis, degree):
@@ -114,16 +135,20 @@ class FractalGen:
                                   rotation[1])
 
     def _push(self, _terminal: PushTerminal):
+        self._endface()
         for stack in self.stacks:
             stack.append(stack[-1])
 
     def _pop(self, _terminal: PopTerminal):
+        self._endface()
         for stack in self.stacks:
             stack.pop()
 
     _terminal_mapping = {RotateTerminal: ("Rotate", _rotate),
                          MoveTerminal: ("Move", _move),
                          DrawTerminal: ("Draw", _draw),
+                         FaceTerminal: ("Face", _face),
+                         EndFaceTerminal: ("EndFace", _endface),
                          PushTerminal: ("Push", _push),
                          PopTerminal: ("Pop", _pop)}
 
@@ -144,8 +169,10 @@ class FractalGen:
             print("%7s: %.4f" % (command, self._timings[command]))
 
     def _apply_node(self):
+        if not self.faces[-1]:
+            self.faces.pop()
         profile_mesh = bpy.data.meshes.new("FractalMesh")
-        profile_mesh.from_pydata(self.verts, self.edges, [])
+        profile_mesh.from_pydata(self.verts, self.edges, self.faces)
         profile_mesh.update()
 
         profile_object = bpy.data.objects.new("Fractal", profile_mesh)
@@ -163,7 +190,6 @@ class FractalGen:
                 for command in self._lsystem.start.iterate(self._level):
                     self._updater.update_tick()
                     self._handle_command(command)
-
 
         self._print_timings()
 
