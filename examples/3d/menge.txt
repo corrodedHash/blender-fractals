@@ -1,0 +1,21 @@
+start: A;
+define:
+_Up: r(90);
+_Down: r(-90);
+_Right: r(0, 90);
+_Left: r(0, -90);
+_Rectangle: Line r(90) Line r(90) Line r(90) Line r(90);
+_Cube: _Rectangle Move _Right _Rectangle Move _Right _Rectangle Move _Right _Rectangle Move _Right;
+_CubeLine: A Move A Move A;
+_CubeBF: A Move Move A;
+_MengeTB: push _CubeLine pop _Right Move _Left push _CubeBF pop _Right Move _Left _CubeLine;
+_MengeMid: push _CubeBF pop _Right Move Move _Left _CubeBF;
+_Menge: push _MengeTB pop _Up Move _Down push _MengeMid pop _Up Move _Down push _MengeTB pop;
+rules:
+A: push _Menge pop;
+Line: d1 Line d1;
+Move: m1 Move m1;
+final:
+A: d1 r90 d1 r90 d1 r90 d1 r90 m1 r(0, 90) d1 r90 d1 r90 d1 r90 d1 r90 m1 r(0, 90) d1 r90 d1 r90 d1 r90 d1 r90 m1 r(0, 90) d1 r90 d1 r90 d1 r90 d1 r90 m1 r(0, 90);
+Line: d1;
+Move: m1;
