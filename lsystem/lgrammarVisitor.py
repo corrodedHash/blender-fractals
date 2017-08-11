@@ -93,7 +93,8 @@ class lgrammarVisitor(antlr4.ParseTreeVisitor):
         childs = ctx.getChildren(
             lambda x: isinstance(
                 x, (lsystemParser.Non_termContext,
-                    lsystemParser.TermContext)))
+                    lsystemParser.TermContext,
+                    lsystemParser.Define_termContext)))
         return [x.accept(self) for x in childs]
 
     # Visit a parse tree produced by lsystemParser#rule_sec.

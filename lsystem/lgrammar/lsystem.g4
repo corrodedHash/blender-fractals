@@ -44,7 +44,7 @@ init_start : INIT_START CONTENT_START non_term CONTENT_END ;
 
 define_sec : DEFINE_SECTION SECTION_START define_entity + ;
 define_entity : define_term CONTENT_START define_res CONTENT_END ;
-define_res : ( (non_term | term) SPACE + ) * (non_term | term | define_term) SPACE * ;
+define_res : ( (non_term | term | define_term) SPACE + ) * (non_term | term | define_term) SPACE * ;
 
 rule_sec : RULES_SECTION SECTION_START rule_entity + ;
 rule_entity : non_term (SPACE +  probability)? CONTENT_START rule_res CONTENT_END ;
