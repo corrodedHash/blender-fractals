@@ -17,11 +17,6 @@ else:
     from util.vector import Vector
 
 
-try:
-    import bpy
-except ImportError:
-    print("Could not locate blender python module, testing environment only")
-
 
 class FractalUpdate:
     """Helper to update the callback"""
@@ -169,18 +164,7 @@ class FractalGen:
             print("%7s: %.4f" % (command, self._timings[command]))
 
     def _apply_node(self):
-        if not self.faces[-1]:
-            self.faces.pop()
-        profile_mesh = bpy.data.meshes.new("FractalMesh")
-        profile_mesh.from_pydata(self.verts, self.edges, self.faces)
-        profile_mesh.update()
-
-        profile_object = bpy.data.objects.new("Fractal", profile_mesh)
-        profile_object.data = profile_mesh
-
-        scene = bpy.context.scene
-        scene.objects.link(profile_object)
-        profile_object.select = True
+        pass
 
     def draw_vertices(self):
         """Generates the vertices based on the given lsystem and level"""
@@ -193,5 +177,5 @@ class FractalGen:
 
         self._print_timings()
 
-        with Timer("Node apply", True):
-            self._apply_node()
+        if not self.faces[-1]:
+            self.faces.pop()
