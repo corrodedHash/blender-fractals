@@ -1,41 +1,63 @@
 #include <functional>
+#include <iterator>
 #include <stack>
+#include <string>
 #include <utility>
 #include <vector>
 
 class Terminal {
 public:
-  enum TerminalType { RTERM, MTERM, DTERM, PUTERM, POTERM };
+  enum TerminalType {
+    ROTATE_TERM,
+    MOVE_TERM,
+    DRAW_TERM,
+    FACE_TERM,
+    ENDFACE_TERM,
+    PUSH_TERM,
+    POP_TERM,
+    EMPTY
+  };
 
 private:
   TerminalType ttype;
+
+public:
+  Terminal(TerminalType _ttype) : ttype(_ttype) {}
 };
 
 class NonTerminal;
-class Define;
 struct NTHolder {
   std::vector<NonTerminal *> list_NT;
-  std::vector<Define *> list_DEF;
   std::vector<Terminal> list_T;
 
-  bool isTerminal(std::size_t index) const {
-    return not (list_NT[index] or list_DEF[index]);
+  bool isTerminal(std::size_t index) const { return not(list_NT[index]); }
+
+  void appendHolder(const NTHolder &nth) {
+    list_NT.insert(std::begin(list_NT), std::begin(nth.list_NT),
+                   std::end(nth.list_NT));
+    list_T.insert(std::begin(list_T), std::begin(nth.list_T),
+                  std::end(nth.list_T));
   }
 
-  bool isDefine(std::size_t index) const { return not list_DEF[index]; }
+  void appendNT(NonTerminal *nt) {
+    list_NT.push_back(nt);
+    list_T.push_back(Terminal(Terminal::EMPTY));
+  }
+  void appendT(Terminal &&t) {
+    list_NT.push_back(nullptr);
+    list_T.push_back(t);
+  }
 
   std::size_t size() const { return list_NT.size(); }
 };
 
-class Define {
-public:
-  NTHolder trans;
-};
-
 class NonTerminal {
 public:
+  std::string name;
   NTHolder trans;
   NTHolder final_trans;
+  NonTerminal(const std::string &&_name) : name(_name){};
+
   class iterator;
   iterator iterate(unsigned int level);
 
@@ -43,15 +65,12 @@ public:
   private:
     unsigned int wanted_level;
     std::stack<std::pair<unsigned int, const NTHolder &>> iterator_stack;
-    std::stack<unsigned int> define_stack;
 
     void findTerminal();
     void push_holder(const NTHolder &trans) {
       iterator_stack.push(std::make_pair(0, trans));
     }
-    unsigned int getCurrentLevel() {
-      return iterator_stack.size() - define_stack.size();
-    }
+    unsigned int getCurrentLevel() { return iterator_stack.size(); }
     void decreaseCurrentLevel();
 
   public:
