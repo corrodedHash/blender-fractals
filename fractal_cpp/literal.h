@@ -1,3 +1,10 @@
+#pragma once
+#ifndef LITERAL_H
+#define LITERAL_H
+
+
+
+
 #include <functional>
 #include <iterator>
 #include <stack>
@@ -56,8 +63,11 @@ public:
   std::string name;
   NTHolder trans;
   NTHolder final_trans;
-  NonTerminal(const std::string &&_name) : name(_name){};
+  NonTerminal(const std::string &_name) : name(_name){};
+  NonTerminal(std::string &&_name) : name(_name){};
 
+  void addTrans(NTHolder _trans) { trans = _trans; }
+  void addFinalTrans(NTHolder _final_trans) { final_trans = _final_trans; }
   class iterator;
   iterator iterate(unsigned int level);
 
@@ -82,3 +92,6 @@ public:
     iterator &operator++();
   };
 };
+
+
+#endif /* end of include guard: LITERAL_H */

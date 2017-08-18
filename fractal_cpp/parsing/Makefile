@@ -8,7 +8,9 @@ H_TARGETS=lsystemParser.h lsystemLexer.h lsystemVisitor.h lsystemBaseVisitor.h
 
 TARGETS=$(TOKEN_TARGETS) $(CPP_TARGETS) $(H_TARGETS)
 
-OBJECTS=$(patsubst %.c,%.o, $(CPP_TARGETS))
+OBJECTS=$(patsubst %.cpp,%.o, $(CPP_TARGETS))
+
+CXXFLAGS=-Iantlr-runtime/runtime/src/
 
 all: parser.a antlr4.a
 
@@ -16,7 +18,10 @@ antlr4.a: antlr-runtime/dist/libantlr4-runtime.a
 	ln -s $^ $@
 
 parser.a: $(TARGETS) $(OBJECTS) 
+	echo $(OBJECTS)
 	ar rcs $@ $(OBJECTS)
+
+$(OBJECTS): 
 
 antlr-runtime/dist/libantlr4-runtime.a: antlr-runtime/build
 	cd antlr-runtime/build && \
