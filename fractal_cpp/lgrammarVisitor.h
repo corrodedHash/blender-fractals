@@ -138,6 +138,7 @@ public:
   }
 
   antlrcpp::Any visitCode(lsystemParser::CodeContext *ctx) override {
-    return visitChildren(ctx);
+    visitChildren(ctx);
+    return start;
   }
 };
