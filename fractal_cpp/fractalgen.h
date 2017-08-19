@@ -2,43 +2,66 @@
 #ifndef FRACTALGEN_H
 #define FRACTALGEN_H
 
-#include <cstdint>
 #include <algorithm>
+#include <array>
+#include <cstdint>
+#include <stack>
 
+#include <valarray>
+
+#include "literal.h"
+
+template <typename U> struct mesh_info {
+  U *verts;
+  std::size_t vert_size;
+  std::size_t *edges;
+  std::size_t edge_size;
+  std::size_t *faces;
+  std::size_t face_size;
+};
 
 template <typename U>
-struct dynarr {
-  U* raw;
-  std::size_t count;
-  std::size_t capacity;
+std::valarray<U> cross(const std::valarray<U> &lhs,
+                       const std::valarray<U> &rhs) {
+  std::valarray<U> result = lhs;
+  result[0] += rhs[0];
+  result[1] += rhs[1];
+  result[2] += rhs[2];
+  return result;
+}
 
-  void push_back(const U& _pushback){
-    if (count == capacity){
-      resize(capacity * 2);
-    }
-    raw[count] = _pushback;
-    ++count;
-  }
-
-  void resize(std::size_t new_size){
-    assert(new_size > capacity);
-    U* new_raw = new U[new_size];
-    std::copy(raw, raw + count, new_raw);
-    delete[] raw;
-    raw = new_raw;
-    capacity = new_size;
-  }
-
-};
-
-class fractalgen {
+template <typename U> class FractalGen {
 private:
-  dynarr<std::uint64_t> verts;
-  dynarr<std::uint64_t> edges;
-  dynarr<std::uint64_t> faces;
+  std::stack<std::valarray<U>> position_stack;
+  std::stack<std::valarray<U>> rotation_stack;
+  std::stack<std::valarray<U>> look_at_stack;
+  std::stack<std::size_t> verts_stack;
+
+  std::vector<U> verts;
+  std::vector<std::size_t> edges;
+  std::vector<std::size_t> faces;
+
+  bool moved;
+
+  static std::valarray<U> axis_rotate(const std::valarray<U> &input,
+                                      const std::valarray<U> &axis, U degree);
+
+  void move(U distance);
+  void draw(U distance);
+  void face(U distance);
+  void rotate(std::array<U, 3> rotation);
+
+  void push();
+  void pop();
+  void endface();
 
 public:
-  dynarr<std::uint64_t> 
+  mesh_info<U> output;
+  void rotate(const std::array<U, 3> &rotation);
+
+  void handle_command(const Terminal& term);
 };
+
+mesh_info<std::uint64_t> generateMesh();
 
 #endif /* end of include guard: FRACTALGEN_H */

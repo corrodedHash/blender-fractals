@@ -12,7 +12,7 @@
 #include <utility>
 #include <vector>
 
-class Terminal {
+struct Terminal {
 public:
   enum TerminalType {
     ROTATE_TERM,
@@ -25,7 +25,7 @@ public:
     EMPTY
   };
 
-private:
+  std::array<double, 3> values;
   TerminalType ttype;
 
 public:
