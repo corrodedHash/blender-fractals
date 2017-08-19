@@ -9,8 +9,11 @@ from Cython.Build import cythonize
 def bla():
     """Build the stuff"""
     my_ex = Extension(name="fractal",
-                      sources=["literal.cpp", "lgrammarVisitor.cpp", "fractal.pyx"],
-                      extra_compile_args=['-std=c++11', "-Iparsing/antlr-runtime/runtime/src/"],
+                      sources=["fractalgen.cpp", "literal.cpp",
+                               "lgrammarVisitor.cpp", "fractal.pyx"],
+                      extra_compile_args=[
+                          '-std=c++11', "-Iparsing/antlr-runtime/runtime/src/"],
+                      extra_link_args=["-std=c++11"],
                       extra_objects=["parsing/antlr4.a", "parsing/parser.a"],
                       language="c++")
     setup(

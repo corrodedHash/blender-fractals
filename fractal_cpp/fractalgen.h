@@ -10,7 +10,6 @@
 #include <valarray>
 
 #include "literal.h"
-#include "lgrammarVisitor.h"
 
 template <typename U> struct mesh_info {
   U *verts;
@@ -61,6 +60,6 @@ public:
   void handle_command(const Terminal* term);
 };
 
-mesh_info<double> generateMesh(const std::string& filename, unsigned int level);
+inline mesh_info<double> generateMesh(const std::string& filename, unsigned int level);
 
 #endif /* end of include guard: FRACTALGEN_H */

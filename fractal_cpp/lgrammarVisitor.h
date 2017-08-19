@@ -1,9 +1,14 @@
 #pragma once
+#ifndef LGRAMMARVISITOR_H
+#define LGRAMMARVISITOR_H
+
+
 #include "literal.h"
 #include "parsing/lsystemBaseVisitor.h"
 
 #include <memory>
 #include <stdexcept>
+#include <map>
 
 
 struct NonTerminalManager {
@@ -154,3 +159,5 @@ public:
     return ntm;
   }
 };
+
+#endif /* end of include guard: lgrammarVisitor */
