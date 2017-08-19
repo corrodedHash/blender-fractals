@@ -14,7 +14,6 @@ def bla():
                       extra_objects=["parsing/antlr4.a", "parsing/parser.a"],
                       language="c++")
     setup(
-        name="fractal",
         ext_modules=cythonize(my_ex)
     )
 

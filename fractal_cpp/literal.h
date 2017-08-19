@@ -2,9 +2,6 @@
 #ifndef LITERAL_H
 #define LITERAL_H
 
-
-
-
 #include <functional>
 #include <iterator>
 #include <stack>
@@ -90,8 +87,8 @@ public:
     };
     const Terminal *operator*() const;
     iterator &operator++();
+    bool end() { return iterator_stack.empty(); }
   };
 };
-
 
 #endif /* end of include guard: LITERAL_H */

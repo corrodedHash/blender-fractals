@@ -10,14 +10,12 @@
 #include <valarray>
 
 #include "literal.h"
+#include "lgrammarVisitor.h"
 
 template <typename U> struct mesh_info {
   U *verts;
-  std::size_t vert_size;
-  std::size_t *edges;
-  std::size_t edge_size;
-  std::size_t *faces;
-  std::size_t face_size;
+  std::size_t* edges, *faces;
+  std::size_t vert_size, edge_size, face_size;
 };
 
 template <typename U>
@@ -32,6 +30,7 @@ std::valarray<U> cross(const std::valarray<U> &lhs,
 
 template <typename U> class FractalGen {
 private:
+
   std::stack<std::valarray<U>> position_stack;
   std::stack<std::valarray<U>> rotation_stack;
   std::stack<std::valarray<U>> look_at_stack;
@@ -49,19 +48,19 @@ private:
   void move(U distance);
   void draw(U distance);
   void face(U distance);
-  void rotate(std::array<U, 3> rotation);
+  void rotate(const std::array<U, 3>& rotation);
 
   void push();
   void pop();
   void endface();
 
 public:
-  mesh_info<U> output;
-  void rotate(const std::array<U, 3> &rotation);
 
-  void handle_command(const Terminal& term);
+  mesh_info<U> output();
+
+  void handle_command(const Terminal* term);
 };
 
-mesh_info<std::uint64_t> generateMesh();
+mesh_info<double> generateMesh(const std::string& filename, unsigned int level);
 
 #endif /* end of include guard: FRACTALGEN_H */

@@ -10,7 +10,7 @@ TARGETS=$(TOKEN_TARGETS) $(CPP_TARGETS) $(H_TARGETS)
 
 OBJECTS=$(patsubst %.cpp,%.o, $(CPP_TARGETS))
 
-CXXFLAGS=-Iantlr-runtime/runtime/src/
+CXXFLAGS=-Iantlr-runtime/runtime/src/ -fPIC
 
 all: parser.a antlr4.a
 
@@ -30,7 +30,7 @@ antlr-runtime/dist/libantlr4-runtime.a: antlr-runtime/build
 antlr-runtime/build:
 	mkdir antlr-runtime/build && \
 	cd antlr-runtime/build && \
-	cmake .. 
+	cmake -DCMAKE_CXX_FLAGS='-fPIC' .. 
 
 
 $(TARGETS): lsystem.g4

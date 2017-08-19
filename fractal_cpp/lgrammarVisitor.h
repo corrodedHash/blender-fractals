@@ -5,9 +5,20 @@
 #include <memory>
 #include <stdexcept>
 
+
+struct NonTerminalManager {
+  NonTerminal* start;
+  std::vector<NonTerminal*> nts;
+  ~NonTerminalManager(){
+    for (NonTerminal* it: nts){
+      delete it;
+    }
+  }
+};
+
 class lgrammarVisitor : public lsystemBaseVisitor {
 private:
-  NonTerminal *start;
+  NonTerminalManager ntm;
   std::map<std::string, NonTerminal *> nts;
   std::map<std::string, NTHolder> defines;
 
@@ -57,6 +68,7 @@ public:
     } else {
       NonTerminal *result = new NonTerminal(nt_name);
       nts.insert(std::make_pair(nt_name, result));
+      ntm.nts.push_back(result);
       return result;
     }
   }
@@ -77,7 +89,7 @@ public:
 
   antlrcpp::Any
   visitInit_start(lsystemParser::Init_startContext *ctx) override {
-    start = visitNon_term(ctx->non_term());
+    ntm.start = visitNon_term(ctx->non_term());
     return nullptr;
   }
 
@@ -139,6 +151,6 @@ public:
 
   antlrcpp::Any visitCode(lsystemParser::CodeContext *ctx) override {
     visitChildren(ctx);
-    return start;
+    return ntm;
   }
 };
