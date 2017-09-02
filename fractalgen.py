@@ -112,7 +112,8 @@ class FractalGen:
             math.sin(math.radians(degree)) * (rot_axis.cross(axis))
 
     def _rotate(self, rotation: RotateTerminal):
-        self.rotation_stack[-1] = \
+        if rotation[0] != 0:
+            self.rotation_stack[-1] = \
             self._axis_rotate(self.look_at_stack[-1],
                               self.rotation_stack[-1],
                               rotation[0])
@@ -128,6 +129,10 @@ class FractalGen:
                 self._axis_rotate(rot_axis,
                                   self.look_at_stack[-1],
                                   rotation[1])
+        if rotation[2] != 0:
+            self.look_at_stack[-1] = \
+                    self._axis_rotate(self.rotation_stack[-1],
+                            self.look_at_stack[-1], rotation[2])
 
     def _push(self, _terminal: PushTerminal):
         self._endface()
