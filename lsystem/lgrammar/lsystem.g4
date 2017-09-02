@@ -10,9 +10,11 @@ SPACE : ' ' | '\t';
 NT : [A-Z]([a-z] | [A-Z] | [0-9])*;
 DEFINE : '_' NT ;
 
-CONTENT_END : ';' '\n' ? ;
+NEW_LINE : '\n' | '\r\n' ;
+
+CONTENT_END : ';' NEW_LINE * ;
 CONTENT_START : SPACE * ':' SPACE * ;
-SECTION_START : ':' '\n' ;
+SECTION_START : ':' NEW_LINE + ;
 ROT : 'r' ;
 DRAW : 'd' ;
 MOVE : 'm' ;
