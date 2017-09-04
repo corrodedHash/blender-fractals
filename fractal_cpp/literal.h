@@ -38,9 +38,9 @@ struct NTHolder {
   bool isTerminal(std::size_t index) const { return not(list_NT[index]); }
 
   void appendHolder(const NTHolder &nth) {
-    list_NT.insert(std::begin(list_NT), std::begin(nth.list_NT),
+    list_NT.insert(std::end(list_NT), std::begin(nth.list_NT),
                    std::end(nth.list_NT));
-    list_T.insert(std::begin(list_T), std::begin(nth.list_T),
+    list_T.insert(std::end(list_T), std::begin(nth.list_T),
                   std::end(nth.list_T));
   }
 
