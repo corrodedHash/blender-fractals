@@ -56,7 +56,6 @@ class NTHolder {
     }
 
     std::size_t size() const { 
-      std::cout << list_NT.size() << " " << list_T.size() << " " << std::endl;
       assert(list_NT.size() == list_T.size()); 
       return list_NT.size(); 
     }
@@ -74,7 +73,6 @@ class NonTerminal {
     void addFinalTrans(NTHolder _final_trans) { final_trans = _final_trans; }
     class iterator;
     iterator iterate(unsigned int level){
-      std::cout << name << " " << level << std::endl;
       if (level == 0){
         return iterator(final_trans, 0);
       } else {
@@ -89,9 +87,7 @@ class NonTerminal {
 
         void findTerminal();
         void push_holder(const NTHolder trans) {
-          std::cout << "push stack #" << iterator_stack.size() + 1 << std::endl;
           iterator_stack.push(std::make_pair(0, trans));
-          std::cout << "posh" << std::endl;
         }
         unsigned int getCurrentLevel() { return iterator_stack.size(); }
         void decreaseCurrentLevel();

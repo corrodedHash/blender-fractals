@@ -1,7 +1,7 @@
 SOURCES=main.o literal.o fractalgen.o #lgrammarVisitor.cpp
 HEADER=fractalgen.h lgrammarVisitor.h literal.h
 LIBS=-L$$(pwd) -l:parsing/parser.a -l:parsing/antlr4.a
-CXXFLAGS=-std=c++14 -Iparsing/antlr-runtime/runtime/src/ 
+CXXFLAGS=-std=c++14 -O3 -Iparsing/antlr-runtime/runtime/src/ 
 
 
 a.out: $(SOURCES) parsing/parser.a parsing/antlr4.a

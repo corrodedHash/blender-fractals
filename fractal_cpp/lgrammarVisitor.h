@@ -165,24 +165,6 @@ public:
 
   antlrcpp::Any visitCode(lsystemParser::CodeContext *ctx) override {
     visitChildren(ctx);
-    for (auto x: ntm.nts){
-      std::cout << x->name << "\n";
-      for (auto y: x->trans.list_NT){
-        std::cout << y << " ";
-      }
-      std::cout << "\n";
-      for (auto y: x->final_trans.list_NT){
-        std::cout << y << " ";
-      }
-      std::cout << std::endl;
-    }
-    for (auto x: nts){
-      std::cout << x.second->name << "\n";
-      x.second->trans.size();
-      x.second->final_trans.size();
-    }
-    std::cout << "check passed" << std::endl;
-
     return ntm;
   }
 };

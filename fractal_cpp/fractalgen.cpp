@@ -73,7 +73,6 @@ template <typename U> void FractalGen<U>::pop() {
 template <typename U> void FractalGen<U>::endface() {}
 
 template <typename U> void FractalGen<U>::handle_command(const Terminal *term) {
-  std::cout << "Command: " << term->ttype << std::endl;
   switch (term->ttype) {
   case Terminal::ROTATE_TERM:
     this->rotate(term->values);
