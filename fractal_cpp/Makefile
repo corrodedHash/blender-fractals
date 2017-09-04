@@ -5,7 +5,7 @@ CXXFLAGS=-std=c++14 -Iparsing/antlr-runtime/runtime/src/
 
 
 a.out: $(SOURCES) parsing/parser.a parsing/antlr4.a
-	clang++ $(FLAGS) $(SOURCES) $(LIBS) 
+	clang++ -std=c++14 $(SOURCES) $(LIBS) 
 
 parsing/parser.a parsing/antlr4.a:
 	make -C parsing

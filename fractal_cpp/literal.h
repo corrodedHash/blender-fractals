@@ -56,7 +56,7 @@ class NTHolder {
     }
 
     std::size_t size() const { 
-      std::cout << list_NT.size() << " " << list_T.size() << std::endl;
+      std::cout << list_NT.size() << " " << list_T.size() << " " << std::endl;
       assert(list_NT.size() == list_T.size()); 
       return list_NT.size(); 
     }
@@ -85,10 +85,10 @@ class NonTerminal {
     class iterator : public std::iterator<std::output_iterator_tag, Terminal *> {
       private:
         unsigned int wanted_level;
-        std::stack<std::pair<unsigned int, const NTHolder &>> iterator_stack;
+        std::stack<std::pair<unsigned int, const NTHolder>> iterator_stack;
 
         void findTerminal();
-        void push_holder(const NTHolder &trans) {
+        void push_holder(const NTHolder trans) {
           std::cout << "push stack #" << iterator_stack.size() + 1 << std::endl;
           iterator_stack.push(std::make_pair(0, trans));
           std::cout << "posh" << std::endl;
@@ -97,8 +97,9 @@ class NonTerminal {
         void decreaseCurrentLevel();
 
       public:
-        explicit iterator(const NTHolder &trans, unsigned int depth) {
-          iterator_stack.push(std::make_pair(0, std::cref(trans)));
+        explicit iterator(const NTHolder trans, unsigned int depth) {
+          //iterator_stack.push(std::make_pair(0, std::cref(trans)));
+          iterator_stack.push(std::make_pair(0, trans));
           wanted_level = depth;
         };
         const Terminal *operator*() const;

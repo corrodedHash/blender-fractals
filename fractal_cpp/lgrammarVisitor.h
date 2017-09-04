@@ -176,6 +176,12 @@ public:
       }
       std::cout << std::endl;
     }
+    for (auto x: nts){
+      std::cout << x.second->name << "\n";
+      x.second->trans.size();
+      x.second->final_trans.size();
+    }
+    std::cout << "check passed" << std::endl;
 
     return ntm;
   }

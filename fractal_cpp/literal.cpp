@@ -1,6 +1,7 @@
 #include "literal.h"
 
 #include <stdexcept>
+#include <cassert>
 
 #include "lgrammarVisitor.h"
 
@@ -17,6 +18,8 @@ void NonTerminal::iterator::findTerminal() {
         return;
       ++iterator_stack.top().first;
     } else {
+      assert(not iterator_stack.top().second.isTerminal(
+              iterator_stack.top().first));
       if (getCurrentLevel() < wanted_level) {
       std::cout << "appending nt trans " << iterator_stack.top()
                         .second.list_NT[iterator_stack.top().first]
