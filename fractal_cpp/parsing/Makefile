@@ -25,7 +25,7 @@ $(OBJECTS):
 
 antlr-runtime/dist/libantlr4-runtime.a: antlr-runtime/build
 	cd antlr-runtime/build && \
-	make -j4 antlr4_static
+	make antlr4_static
 
 antlr-runtime/build:
 	mkdir antlr-runtime/build && \

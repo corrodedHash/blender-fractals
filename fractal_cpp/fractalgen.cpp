@@ -7,13 +7,26 @@
 #include "ANTLRInputStream.h"
 #include "CommonTokenStream.h"
 
-#include <cmath>
 #include <fstream>
+
+#include <typeinfo>
+#include <cmath>
 
 const double rad_degree_constant = (4. * std::atan(1.)) / 180.;
 
 template <typename U>
-std::valarray<U> FractalGen<U>::axis_rotate(const std::valarray<U> &input,
+static std::valarray<U> cross(const std::valarray<U> &lhs,
+                       const std::valarray<U> &rhs) {
+  std::valarray<U> result = lhs;
+  result[0] += rhs[0];
+  result[1] += rhs[1];
+  result[2] += rhs[2];
+  return result;
+}
+
+
+template <typename U>
+static std::valarray<U> axis_rotate(const std::valarray<U> &input,
                                             const std::valarray<U> &axis,
                                             U degree) {
   return input * (input * axis) +
@@ -73,27 +86,35 @@ template <typename U> void FractalGen<U>::pop() {
 template <typename U> void FractalGen<U>::endface() {}
 
 template <typename U> void FractalGen<U>::handle_command(const Terminal *term) {
+  ftime.com_start();
   switch (term->ttype) {
   case Terminal::ROTATE_TERM:
     this->rotate(term->values);
+    ftime.rot_diff += ftime.com_end();
     break;
   case Terminal::MOVE_TERM:
     this->move(term->values[0]);
+    ftime.move_diff += ftime.com_end();
     break;
   case Terminal::DRAW_TERM:
     this->draw(term->values[0]);
+    ftime.draw_diff += ftime.com_end();
     break;
   case Terminal::FACE_TERM:
     this->face(term->values[0]);
+    ftime.face_diff += ftime.com_end();
     break;
   case Terminal::ENDFACE_TERM:
     this->endface();
+    ftime.endf_diff += ftime.com_end();
     break;
   case Terminal::PUSH_TERM:
     this->push();
+    ftime.push_diff += ftime.com_end();
     break;
   case Terminal::POP_TERM:
     this->pop();
+    ftime.pop_diff += ftime.com_end();
     break;
   case Terminal::EMPTY:
     throw std::runtime_error("Iterated to empty terminal");
@@ -132,9 +153,15 @@ mesh_info<double> generateMesh(const std::string &filename,
                                unsigned int level) {
   NonTerminalManager ntm = parseGrammar(filename);
   FractalGen<double> myFrac;
+  myFrac.ftime.itcom_start();
   for (NonTerminal::iterator it = ntm.start->iterate(level); not it.end();
        ++it) {
-    myFrac.handle_command(*it);
+      myFrac.ftime.it_diff += myFrac.ftime.itcom_end();
+      myFrac.ftime.itcom_start();
+      myFrac.handle_command(*it);
+      myFrac.ftime.com_diff += myFrac.ftime.itcom_end();
+      myFrac.ftime.itcom_start();
   }
+  myFrac.ftime.print();
   return myFrac.output();
 }

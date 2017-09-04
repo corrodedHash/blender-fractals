@@ -6,6 +6,8 @@
 #include <array>
 #include <cstdint>
 #include <stack>
+#include <chrono>
+#include <iostream>
 
 #include <valarray>
 
@@ -17,15 +19,49 @@ template <typename U> struct mesh_info {
   std::size_t vert_size, edge_size, face_size;
 };
 
-template <typename U>
-std::valarray<U> cross(const std::valarray<U> &lhs,
-                       const std::valarray<U> &rhs) {
-  std::valarray<U> result = lhs;
-  result[0] += rhs[0];
-  result[1] += rhs[1];
-  result[2] += rhs[2];
-  return result;
-}
+class FractalTimer {
+  std::chrono::steady_clock::time_point itcom_begin;
+
+  std::chrono::steady_clock::time_point com_begin;
+  public:
+
+  long it_diff = 0;
+  long com_diff = 0;
+
+  long rot_diff = 0;
+  long move_diff = 0;
+  long draw_diff = 0;
+  long face_diff = 0;
+  long endf_diff = 0;
+  long push_diff = 0;
+  long pop_diff = 0;
+
+  void itcom_start(){
+    itcom_begin = std::chrono::steady_clock::now();
+  }
+  long itcom_end(){
+   return std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - itcom_begin).count();
+  }
+
+  void com_start(){
+    com_begin = std::chrono::steady_clock::now();
+  }
+  long com_end(){
+    return std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - com_begin).count();
+  }
+
+  void print(){
+  std::cout << "Rotation: " << rot_diff << "\n";
+  std::cout << "Move: " << move_diff << "\n";
+  std::cout << "Draw: " << draw_diff<< "\n";
+  std::cout << "Face: " << face_diff << "\n";
+  std::cout << "Endface: " << endf_diff << "\n";
+  std::cout << "Push: " << push_diff << "\n";
+  std::cout << "Pop: " << pop_diff << "\n";
+  std::cout << "Total: " << rot_diff + move_diff + draw_diff + face_diff + endf_diff +push_diff + pop_diff<< std::endl;
+  std::cout << "iterate: " << it_diff << "\n";
+  }
+};
 
 template <typename U> class FractalGen {
 private:
@@ -41,9 +77,6 @@ private:
 
   bool moved;
 
-  static std::valarray<U> axis_rotate(const std::valarray<U> &input,
-                                      const std::valarray<U> &axis, U degree);
-
   void move(U distance);
   void draw(U distance);
   void face(U distance);
@@ -54,6 +87,7 @@ private:
   void endface();
 
 public:
+  FractalTimer ftime;
   FractalGen<U>(){
     position_stack.push({0, 0, 0});
     rotation_stack.push({1, 0, 0});
