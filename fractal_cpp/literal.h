@@ -66,7 +66,13 @@ public:
   void addTrans(NTHolder _trans) { trans = _trans; }
   void addFinalTrans(NTHolder _final_trans) { final_trans = _final_trans; }
   class iterator;
-  iterator iterate(unsigned int level);
+  iterator iterate(unsigned int level){
+    if (level == 0){
+      return iterator(final_trans, 0);
+    } else {
+      return iterator(trans, level);
+    }
+  }
 
   class iterator : public std::iterator<std::output_iterator_tag, Terminal *> {
   private:

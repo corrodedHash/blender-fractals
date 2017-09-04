@@ -60,6 +60,6 @@ public:
   void handle_command(const Terminal* term);
 };
 
-inline mesh_info<double> generateMesh(const std::string& filename, unsigned int level);
+mesh_info<double> generateMesh(const std::string& filename, unsigned int level);
 
 #endif /* end of include guard: FRACTALGEN_H */

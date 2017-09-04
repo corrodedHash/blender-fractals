@@ -128,7 +128,7 @@ inline NonTerminalManager parseGrammar(const std::string &filename) {
   return my_visitor.visit(my_parser.code());
 }
 
-inline mesh_info<double> generateMesh(const std::string &filename,
+mesh_info<double> generateMesh(const std::string &filename,
                                unsigned int level) {
   NonTerminalManager ntm = parseGrammar(filename);
   FractalGen<double> myFrac;
