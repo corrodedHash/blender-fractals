@@ -13,12 +13,7 @@
 
 struct NonTerminalManager {
   NonTerminal* start;
-  std::vector<NonTerminal*> nts;
-  ~NonTerminalManager(){
-    for (NonTerminal* it: nts){
-      delete it;
-    }
-  }
+  std::vector<std::shared_ptr<NonTerminal>> nts;
 };
 
 class lgrammarVisitor : public lsystemBaseVisitor {
@@ -33,12 +28,12 @@ public:
   template <typename U> NTHolder buildTrans(U *ctx){
     NTHolder result;
     for (const auto &child : ctx->children) {
-      if (antlrcpp::is<lsystemParser::Define_termContext *>(child)) {
-        result.appendHolder(visitDefine_term(
-            dynamic_cast<lsystemParser::Define_termContext *>(child)));
-      } else if (antlrcpp::is<lsystemParser::Non_termContext *>(child)) {
+      if (antlrcpp::is<lsystemParser::Non_termContext *>(child)) {
         result.appendNT(
             visitNon_term(dynamic_cast<lsystemParser::Non_termContext *>(child)));
+      } else if (antlrcpp::is<lsystemParser::Define_termContext *>(child)) {
+        result.appendHolder(visitDefine_term(
+            dynamic_cast<lsystemParser::Define_termContext *>(child)));
       } else if (antlrcpp::is<lsystemParser::TermContext *>(child)) {
         result.appendT(
             visitTerm(dynamic_cast<lsystemParser::TermContext *>(child)));
@@ -86,20 +81,19 @@ public:
     if (nts.count(nt_name) > 0) {
       return nts[nt_name];
     } else {
-      NonTerminal *result = new NonTerminal(nt_name);
-      nts.insert(std::make_pair(nt_name, result));
-      ntm.nts.push_back(result);
-      return result;
+      ntm.nts.push_back(std::make_shared<NonTerminal>(nt_name));
+      nts.insert(std::make_pair(nt_name, ntm.nts.back().get()));
+      return ntm.nts.back().get();
     }
   }
 
   antlrcpp::Any
   visitDefine_term(lsystemParser::Define_termContext *ctx) override {
     std::string def_name = ctx->DEFINE()->getText();
-    if (nts.count(def_name) > 0) {
+    if (defines.count(def_name) > 0) {
       return defines[def_name];
     } else {
-      for (auto key: nts){
+      for (auto key: defines){
         std::cout << key.first << "\n";
       }
       std::cout << "---\n";
@@ -176,6 +170,18 @@ public:
 
   antlrcpp::Any visitCode(lsystemParser::CodeContext *ctx) override {
     visitChildren(ctx);
+    for (auto x: ntm.nts){
+      std::cout << x->name << "\n";
+      for (auto y: x->trans.list_NT){
+        std::cout << y << " ";
+      }
+      std::cout << "\n";
+      for (auto y: x->final_trans.list_NT){
+        std::cout << y << " ";
+      }
+      std::cout << std::endl;
+    }
+
     return ntm;
   }
 };

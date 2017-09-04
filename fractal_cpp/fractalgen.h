@@ -54,6 +54,12 @@ private:
   void endface();
 
 public:
+  FractalGen<U>(){
+    position_stack.push({0, 0, 0});
+    rotation_stack.push({1, 0, 0});
+    look_at_stack.push({0, 1, 0});
+    verts_stack.push(0);
+  }
 
   mesh_info<U> output();
 

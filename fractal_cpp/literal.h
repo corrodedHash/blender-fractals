@@ -2,6 +2,7 @@
 #ifndef LITERAL_H
 #define LITERAL_H
 
+#include <iostream>
 #include <functional>
 #include <iterator>
 #include <stack>
@@ -67,6 +68,7 @@ public:
   void addFinalTrans(NTHolder _final_trans) { final_trans = _final_trans; }
   class iterator;
   iterator iterate(unsigned int level){
+    std::cout << name << " " << level << std::endl;
     if (level == 0){
       return iterator(final_trans, 0);
     } else {
