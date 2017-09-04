@@ -93,11 +93,6 @@ public:
     if (defines.count(def_name) > 0) {
       return defines[def_name];
     } else {
-      for (auto key: defines){
-        std::cout << key.first << "\n";
-      }
-      std::cout << "---\n";
-      std::cout << def_name << std::endl;
       throw std::runtime_error("Define used is undefined");
     }
   }

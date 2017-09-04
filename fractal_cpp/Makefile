@@ -4,9 +4,12 @@ LIBS=-L$$(pwd) -l:parsing/parser.a -l:parsing/antlr4.a
 CXXFLAGS=-std=c++14 -Iparsing/antlr-runtime/runtime/src/ 
 
 
-a.out: $(SOURCES) $(HEADER) parsing/parser.a parsing/antlr4.a
+a.out: $(SOURCES) parsing/parser.a parsing/antlr4.a
 	clang++ $(FLAGS) $(SOURCES) $(LIBS) 
 
 parsing/parser.a parsing/antlr4.a:
 	make -C parsing
+
+clean:
+	rm $(SOURCES)
 
