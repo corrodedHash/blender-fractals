@@ -13,5 +13,9 @@ parsing/parser.a parsing/antlr4.a:
 	make -C parsing
 
 clean:
-	rm $(OBJECTS)
+	rm $(OBJECTS) .depend
 
+.depend: $(SOURCES)
+	$(CXX) $(CXXFLAGS) $(SOURCES) -MM > .depend
+
+include .depend
