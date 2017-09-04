@@ -34,7 +34,7 @@ NonTerminal::iterator &NonTerminal::iterator::operator++() {
   if (iterator_stack.empty())
     return *this;
 
-  ++iterator_stack.top().first;
+  ++(iterator_stack.top().first);
   findTerminal();
   return *this;
 }
