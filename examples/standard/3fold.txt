@@ -1,0 +1,8 @@
+start: A;
+rules:
+A: A r90 A r-90 A;
+B: B r-90 A r90 B;
+final:
+A: d1;
+B: d1;
+
