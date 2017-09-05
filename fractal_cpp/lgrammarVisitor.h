@@ -54,15 +54,34 @@ template <typename U> NTHolder buildTrans(U *ctx) {
   }
 
   antlrcpp::Any visitRotation(lsystemParser::RotationContext *ctx) override {
-    return Terminal(Terminal::ROTATE_TERM);
+    Terminal result(Terminal::ROTATE_TERM);
+    switch(ctx->rand_entry().size()){
+      case 3:
+    result.values[2] = std::stod(ctx->rand_entry(2)->FLOAT(0)->getText());
+      case 2:
+    result.values[1] = std::stod(ctx->rand_entry(1)->FLOAT(0)->getText());
+      case 1:
+    result.values[0] = std::stod(ctx->rand_entry(0)->FLOAT(0)->getText());
+    break;
+      case 0:
+    result.values[0] = 90.0;
+      default:
+    std::cout << ctx->rand_entry().size();
+      throw std::runtime_error("rotate entry weird");
+    }
+    return result;
   }
 
   antlrcpp::Any visitMove(lsystemParser::MoveContext *ctx) override {
-    return Terminal(Terminal::MOVE_TERM);
+    Terminal result(Terminal::MOVE_TERM);
+    result.values[0] = std::stod(ctx->rand_entry()->FLOAT(0)->getText());
+    return result;
   }
 
   antlrcpp::Any visitDraw(lsystemParser::DrawContext *ctx) override {
-    return Terminal(Terminal::DRAW_TERM);
+    Terminal result(Terminal::DRAW_TERM);
+    result.values[0] = std::stod(ctx->rand_entry()->FLOAT(0)->getText());
+    return result;
   }
 
   antlrcpp::Any visitPush(lsystemParser::PushContext *ctx) override {

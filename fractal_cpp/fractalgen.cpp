@@ -29,9 +29,10 @@ template <typename U>
 static std::valarray<U> axis_rotate(const std::valarray<U> &input,
                                             const std::valarray<U> &axis,
                                             U degree) {
-  return input * (input * axis) +
+  std::cout << degree << " is " << degree * rad_degree_constant << std::endl;
+  return axis * (axis * input) +
          std::cos(degree * rad_degree_constant) *
-             cross(cross(input, axis), input) +
+             cross(cross(input, axis), axis) +
          std::sin(degree * rad_degree_constant) * cross(input, axis);
 }
 
@@ -49,10 +50,11 @@ template <typename U> void FractalGen<U>::draw(U distance) {
   }
   position_stack.top() += (rotation_stack.top() * distance);
 
-  verts.insert(std::begin(verts), std::begin(position_stack.top()),
+  verts.insert(std::end(verts), std::begin(position_stack.top()),
                std::end(position_stack.top()));
   edges.push_back(verts_stack.top());
   edges.push_back(verts.size() / 3);
+  verts_stack.top() = verts.size() / 3;
 }
 
 template <typename U> void FractalGen<U>::face(U distance) {}
@@ -135,6 +137,9 @@ mesh_info<U> FractalGen<U>::output(){
   std::copy(std::begin(verts), std::end(verts), result.verts);
   std::copy(std::begin(edges), std::end(edges), result.edges);
   std::copy(std::begin(faces), std::end(faces), result.faces);
+  for (int i = 0; i < 10; ++i){
+    std::cout << result.verts[i * 3] << " " << result.verts[i * 3 + 1] << " " << result.verts[i * 3 + 2] << std::endl;
+  }
   return result;
 }
 

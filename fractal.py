@@ -3,6 +3,7 @@ import os
 import bpy
 import bmesh
 
+from .fractal_cpp.fractal import x
 from .fractalgen import FractalGen
 from .lsystem.lsystem_parse import parse as lparse
 
@@ -25,13 +26,10 @@ def _create_fractal(self, _context):
         self.grammar_path = self.standard_path
         return
 
-    bpy.context.window_manager.progress_begin(0, 99)
-    frac = FractalGen(self.iteration, parsed_lsystem, bpy.context.window_manager.progress_update,
-                      bpy.context.scene.cursor_location)
-    frac.draw_vertices()
+    verts, edges = x(self.grammar_path, self.iteration)
 
     profile_mesh = bpy.data.meshes.new("FractalMesh")
-    profile_mesh.from_pydata(frac.verts, frac.edges, frac.faces)
+    profile_mesh.from_pydata(verts, edges, [])
     profile_mesh.update()
     profile_object = bpy.data.objects.new("Fractal", profile_mesh)
     profile_object.data = profile_mesh

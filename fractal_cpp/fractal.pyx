@@ -1,33 +1,28 @@
 from libcpp.string cimport string
+from libc.stdint cimport uint64_t
+from libc.stdlib cimport free
 
-import numpy as np
-cimport numpy as np
-np.import_array()
-
+from cython cimport view
 from cpython cimport PyObject, Py_INCREF
 
 cdef extern from "fractalgen.cpp":
     cdef cppclass mesh_info[T]:
         T* verts
-        unsigned long * edges
-        unsigned long * faces
-        unsigned long vert_size, edge_size, face_size
+        uint64_t * edges
+        uint64_t * faces
+        uint64_t vert_size, edge_size, face_size
     mesh_info[double] generateMesh(string filename, unsigned int level)
 
-cdef extern from "numpy/arrayobject.h":
-    void PyArray_ENABLEFLAGS(np.ndarray arr, int flags)
-
-def p():
-    print("hello")
+cdef void notify_free(void* ptr):
+    free(ptr)
+    print("hola")
 
 def x(filename, level):
     cdef string cpp_file = bytes(filename, "utf8")
     cdef mesh_info[double] bla = generateMesh(cpp_file, level)
-    cdef np.npy_intp shape[1]
-    shape[0] = <np.npy_intp> bla.edge_size
+    cdef view.array vert_array = <double[:bla.vert_size // 3, :3]> bla.verts
+    cdef view.array edge_array = <uint64_t[:bla.edge_size // 2, :2]> bla.edges
+    vert_array.callback_free_data = notify_free 
+    edge_array.callback_free_data = notify_free 
 
-    cdef np.ndarray[np.uint64, ndim=1] arr = \
-            np.PyArray_SimpleNewFromData(1, shape, np.NPY_UINT64, bla.edges)
-    PyArray_ENABLEFLAGS(arr, np.NPY_OWNDATA)
-
-    return arr 
+    return (vert_array, edge_array)

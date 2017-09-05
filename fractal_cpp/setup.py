@@ -9,7 +9,7 @@ from Cython.Build import cythonize
 def bla():
     """Build the stuff"""
     my_ex = Extension(name="fractal",
-                      sources=["fractalgen.cpp", "literal.cpp", "fractal.pyx", "array_wrapper.pyx"],
+                      sources=["fractalgen.cpp", "literal.cpp", "fractal.pyx"],
                       extra_compile_args=[
                           '-std=c++14', "-Iparsing/antlr-runtime/runtime/src/"],
                       extra_link_args=["-std=c++11"],
