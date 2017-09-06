@@ -22,7 +22,7 @@ def x(filename, level):
     cdef mesh_info[double] bla = generateMesh(cpp_file, level)
     cdef view.array vert_array = <double[:bla.vert_size // 3, :3]> bla.verts
     cdef view.array edge_array = <uint64_t[:bla.edge_size // 2, :2]> bla.edges
-    vert_array.callback_free_data = notify_free 
-    edge_array.callback_free_data = notify_free 
+    #vert_array.callback_free_data = notify_free 
+    #edge_array.callback_free_data = notify_free 
 
     return (vert_array, edge_array)

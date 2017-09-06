@@ -137,8 +137,17 @@ mesh_info<U> FractalGen<U>::output(){
   std::copy(std::begin(verts), std::end(verts), result.verts);
   std::copy(std::begin(edges), std::end(edges), result.edges);
   std::copy(std::begin(faces), std::end(faces), result.faces);
-  for (int i = 0; i < 10; ++i){
-    std::cout << result.verts[i * 3] << " " << result.verts[i * 3 + 1] << " " << result.verts[i * 3 + 2] << std::endl;
+
+  std::cout << result.vert_size << " Verts\n";
+  std::cout << result.edge_size << " Edges\n";
+
+  for (int i = 0; i < result.vert_size / 3; ++i){
+    std::cout << "(" << result.verts[i * 3] << ", " << result.verts[i * 3 + 1] << ", " << result.verts[i * 3 + 2] << "), " ;
+  }
+  std::cout << std::endl;
+  for (int i = 0; i < result.edge_size / 2; ++i){
+    std::cout << "(" << result.edges[i * 2] << ", " << result.verts[i * 2 + 1] << "), " ;
+  std::cout << std::endl;
   }
   return result;
 }

@@ -4,26 +4,10 @@ import bpy
 import bmesh
 
 from .fractal_cpp.fractal import x
-from .fractalgen import FractalGen
-from .lsystem.lsystem_parse import parse as lparse
 
 
 def _create_fractal(self, _context):
-    parsed_lsystem = None
     if self.grammar_path == "":
-        return
-    try:
-        with open(self.grammar_path) as grammar_file:
-            parsed_lsystem = lparse(grammar_file.read())
-    except FileNotFoundError:
-        self.grammar_path = self.standard_path
-        return
-    except RuntimeError as run_err:
-        msg = ""
-        for err_line in run_err.args:
-            msg += err_line + "\n"
-        self.report({'ERROR_INVALID_INPUT'}, msg)
-        self.grammar_path = self.standard_path
         return
 
     verts, edges = x(self.grammar_path, self.iteration)
