@@ -17,10 +17,10 @@ const double rad_degree_constant = (4. * std::atan(1.)) / 180.;
 template <typename U>
 static std::valarray<U> cross(const std::valarray<U> &lhs,
                        const std::valarray<U> &rhs) {
-  std::valarray<U> result = lhs;
-  result[0] += rhs[0];
-  result[1] += rhs[1];
-  result[2] += rhs[2];
+  std::valarray<U> result = {0, 0, 0};
+  result[0] = lhs[1] * rhs[2] - lhs[2] * rhs[1];
+  result[1] = lhs[2] * rhs[0] - lhs[0] * rhs[2];
+  result[2] = lhs[0] * rhs[1] - lhs[1] * rhs[0];
   return result;
 }
 
@@ -29,11 +29,10 @@ template <typename U>
 static std::valarray<U> axis_rotate(const std::valarray<U> &input,
                                             const std::valarray<U> &axis,
                                             U degree) {
-  std::cout << degree << " is " << degree * rad_degree_constant << std::endl;
   return axis * (axis * input) +
          std::cos(degree * rad_degree_constant) *
-             cross(cross(input, axis), axis) +
-         std::sin(degree * rad_degree_constant) * cross(input, axis);
+             cross(cross(axis, input), axis) +
+         std::sin(degree * rad_degree_constant) * cross(axis, input);
 }
 
 template <typename U> void FractalGen<U>::move(U distance) {
@@ -61,8 +60,10 @@ template <typename U> void FractalGen<U>::face(U distance) {}
 
 template <typename U>
 void FractalGen<U>::rotate(const std::array<U, 3> &rotation) {
+  if (rotation[0] != 0) {
   rotation_stack.top() =
       axis_rotate(rotation_stack.top(), look_at_stack.top(), rotation[0]);
+  }
   if (rotation[1] != 0) {
     std::valarray<U> rot_axis =
         cross(rotation_stack.top(), look_at_stack.top());
@@ -88,35 +89,35 @@ template <typename U> void FractalGen<U>::pop() {
 template <typename U> void FractalGen<U>::endface() {}
 
 template <typename U> void FractalGen<U>::handle_command(const Terminal *term) {
-  ftime.com_start();
+  //ftime.com_start();
   switch (term->ttype) {
   case Terminal::ROTATE_TERM:
     this->rotate(term->values);
-    ftime.rot_diff += ftime.com_end();
+    //ftime.rot_diff += ftime.com_end();
     break;
   case Terminal::MOVE_TERM:
     this->move(term->values[0]);
-    ftime.move_diff += ftime.com_end();
+    //ftime.move_diff += ftime.com_end();
     break;
   case Terminal::DRAW_TERM:
     this->draw(term->values[0]);
-    ftime.draw_diff += ftime.com_end();
+    //ftime.draw_diff += ftime.com_end();
     break;
   case Terminal::FACE_TERM:
     this->face(term->values[0]);
-    ftime.face_diff += ftime.com_end();
+    //ftime.face_diff += ftime.com_end();
     break;
   case Terminal::ENDFACE_TERM:
     this->endface();
-    ftime.endf_diff += ftime.com_end();
+    //ftime.endf_diff += ftime.com_end();
     break;
   case Terminal::PUSH_TERM:
     this->push();
-    ftime.push_diff += ftime.com_end();
+    //ftime.push_diff += ftime.com_end();
     break;
   case Terminal::POP_TERM:
     this->pop();
-    ftime.pop_diff += ftime.com_end();
+    //ftime.pop_diff += ftime.com_end();
     break;
   case Terminal::EMPTY:
     throw std::runtime_error("Iterated to empty terminal");
@@ -138,6 +139,7 @@ mesh_info<U> FractalGen<U>::output(){
   std::copy(std::begin(edges), std::end(edges), result.edges);
   std::copy(std::begin(faces), std::end(faces), result.faces);
 
+  /*
   std::cout << result.vert_size << " Verts\n";
   std::cout << result.edge_size << " Edges\n";
 
@@ -146,9 +148,10 @@ mesh_info<U> FractalGen<U>::output(){
   }
   std::cout << std::endl;
   for (int i = 0; i < result.edge_size / 2; ++i){
-    std::cout << "(" << result.edges[i * 2] << ", " << result.verts[i * 2 + 1] << "), " ;
+    std::cout << "(" << result.edges[i * 2] << ", " << result.edges[i * 2 + 1] << "), " ;
   std::cout << std::endl;
   }
+  */
   return result;
 }
 
@@ -167,15 +170,22 @@ inline mesh_info<double> generateMesh(const std::string &filename,
                                unsigned int level) {
   NonTerminalManager ntm = parseGrammar(filename);
   FractalGen<double> myFrac;
-  myFrac.ftime.itcom_start();
+  //myFrac.ftime.all_start();
+  //myFrac.ftime.itcom_start();
   for (NonTerminal::iterator it = ntm.start->iterate(level); not it.end();
        ++it) {
-      myFrac.ftime.it_diff += myFrac.ftime.itcom_end();
-      myFrac.ftime.itcom_start();
+      //myFrac.ftime.it_diff += myFrac.ftime.itcom_end();
+      //myFrac.ftime.itcom_start();
       myFrac.handle_command(*it);
-      myFrac.ftime.com_diff += myFrac.ftime.itcom_end();
-      myFrac.ftime.itcom_start();
+      //myFrac.ftime.com_diff += myFrac.ftime.itcom_end();
+      //myFrac.ftime.itcom_start();
   }
-  myFrac.ftime.print();
-  return myFrac.output();
+  mesh_info<double> result;
+  //myFrac.ftime.cp_start();
+  result = myFrac.output();
+  //myFrac.ftime.cp_diff = myFrac.ftime.cp_end();
+  //myFrac.ftime.all_diff = myFrac.ftime.all_end();
+
+  //myFrac.ftime.print();
+  return result;
 }

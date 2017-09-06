@@ -28,13 +28,18 @@ def _create_fractal(self, _context):
     # bpy.ops.mesh.remove_doubles()
     # bpy.ops.object.editmode_toogle()
 
-    bm = bmesh.new()
-    bm.from_mesh(profile_mesh)
-    bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=0.001)
-    bm.to_mesh(profile_mesh)
-    profile_mesh.update()
+    #bm = bmesh.new()
+    #print("hi")
+    #bm.from_mesh(profile_mesh)
+    #print("hi")
+    #bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=0.001)
+    #print("hi")
+    #bm.to_mesh(profile_mesh)
+    #print("hi")
+    #profile_mesh.update()
+    #print("hi")
 
-    bpy.context.window_manager.progress_end()
+    #bpy.context.window_manager.progress_end()
 
 
 class Fractal_add_object(bpy.types.Operator):
