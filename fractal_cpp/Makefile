@@ -6,16 +6,12 @@ CXXFLAGS=-std=c++14 -O3 -Iparsing/antlr-runtime/runtime/src/
 CXX=clang++
 
 
-a.out: $(OBJECTS)
-	clang++ $(OBJECTS) $(LIBS) 
+all: $(LIBS)
+	python setup.py build_ext -i
+	
 
-parsing/parser.a parsing/antlr4.a:
+$(LIBS):
 	make -C parsing
 
 clean:
-	rm $(OBJECTS) .depend
-
-.depend: $(SOURCES)
-	$(CXX) $(CXXFLAGS) $(SOURCES) -MM > .depend
-
-include .depend
+	rm -rf fractal.cpp build/
