@@ -51,8 +51,8 @@ template <typename U> void FractalGen<U>::draw(U distance) {
 
   verts.insert(std::end(verts), std::begin(position_stack.top()),
                std::end(position_stack.top()));
-  edges.push_back(verts_stack.top());
-  edges.push_back(verts.size() / 3);
+  edges.push_back(verts_stack.top() - 1);
+  edges.push_back((verts.size() / 3) - 1);
   verts_stack.top() = verts.size() / 3;
 }
 

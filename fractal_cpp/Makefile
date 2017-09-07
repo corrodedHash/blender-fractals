@@ -8,6 +8,9 @@ CXX=clang++
 
 all: $(LIBS)
 	python setup.py build_ext -i
+
+test: all
+	blender --python-expr 'import bpy; bpy.ops.mesh.add_fractal()'
 	
 
 $(LIBS):

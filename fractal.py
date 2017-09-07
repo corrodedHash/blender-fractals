@@ -3,17 +3,20 @@ import os
 import bpy
 import bmesh
 
-from .fractal_cpp.fractal import x
+from .fractal_cpp.fractal import generate_fractal 
 from .util.timer import Timer
+
+import faulthandler
 
 
 def _create_fractal(self, _context):
+    faulthandler.enable()
     if self.grammar_path == "":
         return
 
     with Timer(name="all", verbose=True):
         with Timer(name="Generation", verbose=True):
-            verts, edges = x(self.grammar_path, self.iteration)
+            verts, edges = generate_fractal(self.grammar_path, self.iteration)
 
         profile_mesh = bpy.data.meshes.new("FractalMesh")
 
@@ -30,24 +33,19 @@ def _create_fractal(self, _context):
 
         scene = bpy.context.scene
         scene.objects.link(profile_object)
-        profile_object.select = True
-
+        
     # bpy.context.scene.objects.active = profile_object
     # bpy.ops.object.editmode_toogle()
     # bpy.ops.mesh.select_all(action='SELECT')
     # bpy.ops.mesh.remove_doubles()
     # bpy.ops.object.editmode_toogle()
 
-    #bm = bmesh.new()
-    #print("hi")
-    #bm.from_mesh(profile_mesh)
-    #print("hi")
-    #bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=0.001)
-    #print("hi")
-    #bm.to_mesh(profile_mesh)
-    #print("hi")
-    #profile_mesh.update()
-    #print("hi")
+        with Timer(name="Optimizing", verbose=True):
+            scene.objects.active = profile_object
+
+            bpy.ops.object.mode_set(mode='EDIT')
+            bpy.ops.mesh.remove_doubles(threshold=0.0001)
+            bpy.ops.object.mode_set(mode='OBJECT')
 
     #bpy.context.window_manager.progress_end()
 

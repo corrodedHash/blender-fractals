@@ -17,7 +17,7 @@ cdef void notify_free(void* ptr):
     free(ptr)
     print("hola")
 
-def x(filename, level):
+def generate_fractal(filename, level):
     cdef string cpp_file = bytes(filename, "utf8")
     cdef mesh_info[double] bla = generateMesh(cpp_file, level)
     cdef view.array vert_array = <double[:bla.vert_size // 3, :3]> bla.verts
