@@ -5,6 +5,7 @@ import bmesh
 
 from .fractalgen import FractalGen
 from .lsystem.lsystem_parse import parse as lparse
+from .util.timer import Timer
 
 
 def _create_fractal(self, _context):
@@ -26,19 +27,21 @@ def _create_fractal(self, _context):
         return
 
     bpy.context.window_manager.progress_begin(0, 99)
-    frac = FractalGen(self.iteration, parsed_lsystem, bpy.context.window_manager.progress_update,
-                      bpy.context.scene.cursor_location)
-    frac.draw_vertices()
+    with Timer(name="Gen", verbose=True):
+        frac = FractalGen(self.iteration, parsed_lsystem, bpy.context.window_manager.progress_update,
+                          bpy.context.scene.cursor_location)
+        frac.draw_vertices()
 
-    profile_mesh = bpy.data.meshes.new("FractalMesh")
-    profile_mesh.from_pydata(frac.verts, frac.edges, frac.faces)
-    profile_mesh.update()
-    profile_object = bpy.data.objects.new("Fractal", profile_mesh)
-    profile_object.data = profile_mesh
+    with Timer(name="Copy", verbose=True):
+        profile_mesh = bpy.data.meshes.new("FractalMesh")
+        profile_mesh.from_pydata(frac.verts, frac.edges, frac.faces)
+        profile_mesh.update()
+        profile_object = bpy.data.objects.new("Fractal", profile_mesh)
+        profile_object.data = profile_mesh
 
-    scene = bpy.context.scene
-    scene.objects.link(profile_object)
-    profile_object.select = True
+        scene = bpy.context.scene
+        scene.objects.link(profile_object)
+        profile_object.select = True
 
     # bpy.context.scene.objects.active = profile_object
     # bpy.ops.object.editmode_toogle()
@@ -46,11 +49,12 @@ def _create_fractal(self, _context):
     # bpy.ops.mesh.remove_doubles()
     # bpy.ops.object.editmode_toogle()
 
-    bm = bmesh.new()
-    bm.from_mesh(profile_mesh)
-    bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=0.001)
-    bm.to_mesh(profile_mesh)
-    profile_mesh.update()
+    with Timer(name="Optimize", verbose=True):
+        bm = bmesh.new()
+        bm.from_mesh(profile_mesh)
+        bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=0.001)
+        bm.to_mesh(profile_mesh)
+        profile_mesh.update()
 
     bpy.context.window_manager.progress_end()
 
