@@ -34,12 +34,6 @@ def _create_fractal(self, _context):
         scene = bpy.context.scene
         scene.objects.link(profile_object)
         
-    # bpy.context.scene.objects.active = profile_object
-    # bpy.ops.object.editmode_toogle()
-    # bpy.ops.mesh.select_all(action='SELECT')
-    # bpy.ops.mesh.remove_doubles()
-    # bpy.ops.object.editmode_toogle()
-
         with Timer(name="Optimizing", verbose=True):
             scene.objects.active = profile_object
 
@@ -61,7 +55,7 @@ class Fractal_add_object(bpy.types.Operator):
         default=2,
         min=1,
         soft_min=1,
-        soft_max=7,
+        soft_max=10,
         subtype='UNSIGNED',
         description="Number of iterations of the fractal")
 
