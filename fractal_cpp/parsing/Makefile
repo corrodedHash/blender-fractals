@@ -41,7 +41,7 @@ $(ANTLR_RUNTIME):
 	mkdir $(ANTLR_RUNTIME)
 	cd $(ANTLR_RUNTIME) && \
 	curl $(RUNTIME_URL) --output antlr-runtime.zip && \
-	unzip antlr-runtime.zip
+	unzip -q antlr-runtime.zip
 
 
 $(TARGETS): lsystem.g4
