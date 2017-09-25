@@ -1,12 +1,12 @@
+"""Uses the cpp fractal generator"""
 import os
+import faulthandler
 
 import bpy
-import bmesh
 
-from .fractal_cpp.fractal import generate_fractal 
+from .fractal_cpp.fractal import generate_fractal
 from .util.timer import Timer
 
-import faulthandler
 
 
 def _create_fractal(self, _context):
@@ -20,7 +20,7 @@ def _create_fractal(self, _context):
 
         profile_mesh = bpy.data.meshes.new("FractalMesh")
 
-        #with Timer(name="Copying", verbose=True):
+        # with Timer(name="Copying", verbose=True):
         #    profile_mesh.vertices.add(len(verts)/3)
         #    profile_mesh.vertices.foreach_set("co", verts)
         #    profile_mesh.edges.add(len(edges)/2)
@@ -33,7 +33,7 @@ def _create_fractal(self, _context):
 
         scene = bpy.context.scene
         scene.objects.link(profile_object)
-        
+
         with Timer(name="Optimizing", verbose=True):
             scene.objects.active = profile_object
 
@@ -41,7 +41,7 @@ def _create_fractal(self, _context):
             bpy.ops.mesh.remove_doubles(threshold=0.0001)
             bpy.ops.object.mode_set(mode='OBJECT')
 
-    #bpy.context.window_manager.progress_end()
+    # bpy.context.window_manager.progress_end()
 
 
 class Fractal_add_object(bpy.types.Operator):
@@ -63,6 +63,7 @@ class Fractal_add_object(bpy.types.Operator):
                                  "examples", "standard", "sierpinski.txt")
 
     def reset_iteration(self, _context):
+        """Resets iteration"""
         self.iteration = 2
 
     grammar_path = bpy.props.StringProperty(
@@ -74,7 +75,7 @@ class Fractal_add_object(bpy.types.Operator):
     )
 
     def execute(self, context):
-
+        """Create the fractal"""
         _create_fractal(self, context)
 
         return {'FINISHED'}
