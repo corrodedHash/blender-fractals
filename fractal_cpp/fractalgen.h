@@ -5,85 +5,37 @@
 #include <algorithm>
 #include <array>
 #include <cstdint>
-#include <stack>
-#include <chrono>
 #include <iostream>
+#include <stack>
 
 #include <valarray>
 
+#include "fractaltimer.h"
 #include "literal.h"
 
 template <typename U> struct mesh_info {
   U *verts;
-  std::size_t* edges, *faces;
-  std::size_t vert_size, edge_size, face_size;
+  std::size_t *edges;
+  std::size_t *face_verts;
+  std::size_t *face_bounds;
+  std::size_t vert_size, edge_size, face_vert_size, face_bound_size;
 };
 
-class FractalTimer {
-  std::chrono::steady_clock::time_point itcom_begin;
-  std::chrono::steady_clock::time_point com_begin;
-  std::chrono::steady_clock::time_point cp_begin;
-  std::chrono::steady_clock::time_point all_begin;
-  public:
-
-  long it_diff = 0;
-  long com_diff = 0;
-
-  long rot_diff = 0;
-  long move_diff = 0;
-  long draw_diff = 0;
-  long face_diff = 0;
-  long endf_diff = 0;
-  long push_diff = 0;
-  long pop_diff = 0;
-  long cp_diff = 0;
-  long all_diff = 0;
-
-  void itcom_start(){
-    itcom_begin = std::chrono::steady_clock::now();
+struct Faces {
+  std::vector<std::size_t> face_verts;
+  std::vector<std::size_t> face_bounds = {0};
+  void new_face() {
+    if (face_verts.size() > face_bounds.back()) {
+      face_bounds.push_back(face_verts.size());
+    }
   }
-  long itcom_end(){
-   return std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - itcom_begin).count();
-  }
-
-  void com_start(){
-    com_begin = std::chrono::steady_clock::now();
-  }
-  long com_end(){
-    return std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - com_begin).count();
-  }
-
-  void cp_start(){
-    cp_begin = std::chrono::steady_clock::now();
-  }
-  long cp_end(){
-    return std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - cp_begin).count();
-  }
-  void all_start(){
-    all_begin = std::chrono::steady_clock::now();
-  }
-  long all_end(){
-    return std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - all_begin).count();
-  }
-  void print(){
-  std::cout << "Rotation: " << rot_diff << "\n";
-  std::cout << "Move: " << move_diff << "\n";
-  std::cout << "Draw: " << draw_diff<< "\n";
-  std::cout << "Face: " << face_diff << "\n";
-  std::cout << "Endface: " << endf_diff << "\n";
-  std::cout << "Push: " << push_diff << "\n";
-  std::cout << "Pop: " << pop_diff << "\n";
-  std::cout << "Commands: " << rot_diff + move_diff + draw_diff + face_diff + endf_diff +push_diff + pop_diff << std::endl;
-  std::cout << "Iterate: " << it_diff << "\n";
-  std::cout << "Copy: " << cp_diff << "\n";
-  std::cout << "All: " << all_diff << "\n";
-  std::cout << "Total: " << rot_diff + move_diff + draw_diff + face_diff + endf_diff +push_diff + pop_diff + it_diff + cp_diff << std::endl;
+  void append_face_vert(std::size_t vert) { face_verts.push_back(vert); }
+  bool last_face_empty(){
+    return face_verts.size() < face_bounds.back();
   }
 };
-
 template <typename U> class FractalGen {
 private:
-
   std::stack<std::valarray<U>> position_stack;
   std::stack<std::valarray<U>> rotation_stack;
   std::stack<std::valarray<U>> look_at_stack;
@@ -91,14 +43,14 @@ private:
 
   std::vector<U> verts;
   std::vector<std::size_t> edges;
-  std::vector<std::size_t> faces;
+  Faces faces;
 
   bool moved;
 
   void move(U distance);
   void draw(U distance);
   void face(U distance);
-  void rotate(const std::array<U, 3>& rotation);
+  void rotate(const std::array<U, 3> &rotation);
 
   void push();
   void pop();
@@ -106,7 +58,7 @@ private:
 
 public:
   FractalTimer ftime;
-  FractalGen<U>(){
+  FractalGen<U>() {
     position_stack.push({0, 0, 0});
     rotation_stack.push({1, 0, 0});
     look_at_stack.push({0, 1, 0});
@@ -115,9 +67,10 @@ public:
 
   mesh_info<U> output();
 
-  void handle_command(const Terminal* term);
+  void handle_command(const Terminal *term);
 };
 
-inline mesh_info<double> generateMesh(const std::string& filename, unsigned int level);
+inline mesh_info<double> generateMesh(const std::string &filename,
+                                      unsigned int level);
 
 #endif /* end of include guard: FRACTALGEN_H */

@@ -16,7 +16,11 @@ def _create_fractal(self, _context):
 
     with Timer(name="all", verbose=True):
         with Timer(name="Generation", verbose=True):
-            verts, edges = generate_fractal(self.grammar_path, self.iteration)
+            verts, edges, faces = generate_fractal(self.grammar_path, self.iteration)
+            if edges is None:
+                edges = []
+            if faces is None:
+                faces = []
 
         profile_mesh = bpy.data.meshes.new("FractalMesh")
 
@@ -26,7 +30,7 @@ def _create_fractal(self, _context):
         #    profile_mesh.edges.add(len(edges)/2)
         #    profile_mesh.edges.foreach_set("vertices_raw", edges)
         with Timer(name="Copying", verbose=True):
-            profile_mesh.from_pydata(verts, edges, [])
+            profile_mesh.from_pydata(verts, edges, faces)
         profile_mesh.update()
         profile_object = bpy.data.objects.new("Fractal", profile_mesh)
         profile_object.data = profile_mesh

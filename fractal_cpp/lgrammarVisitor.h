@@ -84,6 +84,15 @@ template <typename U> NTHolder buildTrans(U *ctx) {
     return result;
   }
 
+  antlrcpp::Any visitFace(lsystemParser::FaceContext *ctx) override {
+    Terminal result(Terminal::FACE_TERM);
+    result.values[0] = std::stod(ctx->rand_entry()->FLOAT(0)->getText());
+    return result;
+  }
+
+  antlrcpp::Any visitEndface(lsystemParser::EndfaceContext *ctx) override {
+    return Terminal(Terminal::ENDFACE_TERM);
+  }
   antlrcpp::Any visitPush(lsystemParser::PushContext *ctx) override {
     return Terminal(Terminal::PUSH_TERM);
   }
