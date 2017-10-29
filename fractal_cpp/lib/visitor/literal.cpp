@@ -1,9 +1,10 @@
-#include "literal.h"
+#include "visitor/literal.h"
 
 #include <stdexcept>
 #include <cassert>
 
-#include "lgrammarVisitor.h"
+#include "visitor/lgrammarVisitor.h"
+
 
 void NonTerminal::iterator::findTerminal() {
   while (not iterator_stack.empty() and

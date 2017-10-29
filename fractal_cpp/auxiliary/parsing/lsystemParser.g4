@@ -1,37 +1,14 @@
-grammar lsystem;
+parser grammar lsystemParser;
 
-FLOAT : ( INT | NEG_INT ) ( '.' [0-9]+ )? ;
-
-INT : [1-9][0-9]* | '0';
-NEG_INT: '-' [1-9][0-9]*;
-
-SPACE : ' ' | '\t';
-
-NT : [A-Z]([a-z] | [A-Z] | [0-9])*;
-DEFINE : '_' NT ;
-
-CONTENT_END : ';' '\n' ? ;
-CONTENT_START : SPACE * ':' SPACE * ;
-SECTION_START : ':' '\n' ;
-ROT : 'r' ;
-DRAW : 'd' ;
-MOVE : 'm' ;
-FACE: 'f' ;
-ENDFACE: 'endf' ;
-PUSH : 'push' ;
-POP : 'pop' ;
-
-INIT_SECTION : 'init' ;
-INIT_START : 'start' ;
-DEFINE_SECTION : 'define' ;
-RULES_SECTION : 'rules' ;
-FINAL_SECTION : 'final' ;
+options {
+	tokenVocab = lsystemLexer;
+}
 
 probability : FLOAT ;
 
-rand_entry : FLOAT | '{' SPACE * FLOAT SPACE * ',' SPACE * FLOAT SPACE *  '}' ;
+rand_entry : FLOAT | BR_OPEN SPACE * FLOAT SPACE * SEP SPACE * FLOAT SPACE *  BR_CLOSE ;
 
-rotation : ROT ( '(' ( ( SPACE * rand_entry SPACE * ',' ) ?  SPACE * rand_entry SPACE * ',' ) ? SPACE * rand_entry SPACE * ')' | rand_entry );
+rotation : ROT ( PAR_OPEN ( ( SPACE * rand_entry SPACE * SEP ) ?  SPACE * rand_entry SPACE * SEP ) ? SPACE * rand_entry SPACE * PAR_CLOSE | rand_entry );
 move: MOVE rand_entry ?;
 draw: DRAW rand_entry ?;
 face: FACE rand_entry ?;

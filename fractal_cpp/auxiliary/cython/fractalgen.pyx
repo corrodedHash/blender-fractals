@@ -5,7 +5,7 @@ from libc.stdlib cimport free
 from cython cimport view
 from cpython cimport PyObject, Py_INCREF
 
-cdef extern from "fractalgen.cpp":
+cdef extern from "generator/fractalgen.h":
     cdef cppclass mesh_info[T]:
         T* verts
         uint64_t * edges
@@ -15,16 +15,16 @@ cdef extern from "fractalgen.cpp":
     mesh_info[double] generateMesh(string filename, unsigned int level)
 
 class FaceList:
-    def __init__(self, vertices, indices):    
+    def __init__(self, vertices, indices):
         self.vertices = vertices
         self.indices = indices
-    
+
     def __iter__(self):
         return self._iterate()
-        
+
     def __len__(self):
         return len(self.indices) - 1
-    
+
     def _iterate(self):
         last_index = 0
         for cur_index in self.indices[1:]:
@@ -44,20 +44,20 @@ def generate_fractal(filename, level):
 
     facelist = None
 
-    if (bla.edge_size > 0):      
+    if (bla.edge_size > 0):
       edge_array = <uint64_t[:bla.edge_size // 2, :2]> bla.edges
-      edge_array.callback_free_data = notify_free 
+      edge_array.callback_free_data = notify_free
     else:
       edge_array = None
 
     if (bla.face_vert_size > 0):
       face_vert_array = <uint64_t[:bla.face_vert_size]> bla.face_verts
       face_bound_array = <uint64_t[:bla.face_bound_size]> bla.face_bounds
-      face_vert_array.callback_free_data = notify_free 
-      face_bound_array.callback_free_data = notify_free 
+      face_vert_array.callback_free_data = notify_free
+      face_bound_array.callback_free_data = notify_free
       facelist = FaceList(face_vert_array, face_bound_array)
 
 
-    vert_array.callback_free_data = notify_free 
+    vert_array.callback_free_data = notify_free
 
     return (vert_array, edge_array, facelist)

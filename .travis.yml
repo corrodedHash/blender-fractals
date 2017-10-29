@@ -1,10 +1,20 @@
 # After changing this file, check it on:
 #   http://lint.travis-ci.org/
-language: python
-dist: trusty
+language: generic
 
-python:
-  - 3.6
+os: linux
+env: COMPILER_NAME=gcc CXX=g++-5 CC=gcc-5
+
+addons:
+  apt:
+    packages:
+      - uuid-dev
+      - g++-5
+    sources: &sources
+      - llvm-toolchain-precise-3.8
+      - ubuntu-toolchain-r-test
 
 script:
- - python -m unittest discover -v -s tests
+    - make -C fractal_cpp
+    - python -m unittest
+    - cat "/home/travis/build/corrodedHash/blender-fractals/fractal_cpp/antlr-runtime/build/CMakeFiles/CMakeOutput.log"
