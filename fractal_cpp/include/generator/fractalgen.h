@@ -51,4 +51,4 @@ class FractalGen {
 mesh_info<double> generateMesh(const std::string& filename,
     unsigned int level);
 
-#include "fractalgen_commands.h"
+#include "fractalgen_commands.tpp"
