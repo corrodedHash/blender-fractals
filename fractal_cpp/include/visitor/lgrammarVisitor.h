@@ -52,25 +52,40 @@ class lgrammarVisitor : public lsystemParserBaseVisitor {
   antlrcpp::Any
   visitRand_entry(lsystemParser::Rand_entryContext* ctx) override
   {
-    return visitChildren(ctx);
+    std::array<double, 2> result;
+    result[0] = std::stod(ctx->FLOAT(0)->getText());
+    if (ctx->FLOAT().size() > 1) {
+      result[1] = std::stod(ctx->FLOAT(1)->getText());
+    } else {
+      result[1] = result[0];
+    }
+    return result;
   }
 
   antlrcpp::Any visitRotation(lsystemParser::RotationContext* ctx) override
   {
     Terminal result(Terminal::ROTATE_TERM);
-      result.values[0] = 0;
-      result.values[1] = 0;
-      result.values[2] = 0;
+    result.values[0] = 0;
+    result.values[1] = 0;
+    result.values[2] = 0;
+    std::array<double, 2> rand_number;
     switch (ctx->rand_entry().size()) {
     case 3:
-      result.values[2] = std::stod(ctx->rand_entry(2)->FLOAT(0)->getText());
+      rand_number = visitRand_entry(dynamic_cast<lsystemParser::Rand_entryContext*>(ctx->rand_entry(2)));
+      result.values[4] = rand_number[0];
+      result.values[5] = rand_number[1];
     case 2:
-      result.values[1] = std::stod(ctx->rand_entry(1)->FLOAT(0)->getText());
+      rand_number = visitRand_entry(dynamic_cast<lsystemParser::Rand_entryContext*>(ctx->rand_entry(1)));
+      result.values[2] = rand_number[0];
+      result.values[3] = rand_number[1];
     case 1:
-      result.values[0] = std::stod(ctx->rand_entry(0)->FLOAT(0)->getText());
+      rand_number = visitRand_entry(dynamic_cast<lsystemParser::Rand_entryContext*>(ctx->rand_entry(0)));
+      result.values[0] = rand_number[0];
+      result.values[1] = rand_number[1];
       break;
     case 0:
       result.values[0] = 90.0;
+      result.values[1] = 90.0;
     default:
       std::cout << ctx->rand_entry().size();
       throw std::runtime_error("rotate entry weird");
@@ -81,21 +96,30 @@ class lgrammarVisitor : public lsystemParserBaseVisitor {
   antlrcpp::Any visitMove(lsystemParser::MoveContext* ctx) override
   {
     Terminal result(Terminal::MOVE_TERM);
-    result.values[0] = std::stod(ctx->rand_entry()->FLOAT(0)->getText());
+    std::array<double, 2> rand_number;
+    rand_number = visitRand_entry(dynamic_cast<lsystemParser::Rand_entryContext*>(ctx->rand_entry()));
+    result.values[0] = rand_number[0];
+    result.values[1] = rand_number[1];
     return result;
   }
 
   antlrcpp::Any visitDraw(lsystemParser::DrawContext* ctx) override
   {
     Terminal result(Terminal::DRAW_TERM);
-    result.values[0] = std::stod(ctx->rand_entry()->FLOAT(0)->getText());
+    std::array<double, 2> rand_number;
+    rand_number = visitRand_entry(dynamic_cast<lsystemParser::Rand_entryContext*>(ctx->rand_entry()));
+    result.values[0] = rand_number[0];
+    result.values[1] = rand_number[1];
     return result;
   }
 
   antlrcpp::Any visitFace(lsystemParser::FaceContext* ctx) override
   {
     Terminal result(Terminal::FACE_TERM);
-    result.values[0] = std::stod(ctx->rand_entry()->FLOAT(0)->getText());
+    std::array<double, 2> rand_number;
+    rand_number = visitRand_entry(dynamic_cast<lsystemParser::Rand_entryContext*>(ctx->rand_entry()));
+    result.values[0] = rand_number[0];
+    result.values[1] = rand_number[1];
     return result;
   }
 

@@ -25,7 +25,7 @@ struct Terminal {
       EMPTY
     };
 
-    std::array<double, 3> values;
+    std::array<double, 6> values {};
     TerminalType ttype;
 
   public:
