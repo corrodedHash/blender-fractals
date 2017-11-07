@@ -58,6 +58,9 @@ class lgrammarVisitor : public lsystemParserBaseVisitor {
   antlrcpp::Any visitRotation(lsystemParser::RotationContext* ctx) override
   {
     Terminal result(Terminal::ROTATE_TERM);
+      result.values[0] = 0;
+      result.values[1] = 0;
+      result.values[2] = 0;
     switch (ctx->rand_entry().size()) {
     case 3:
       result.values[2] = std::stod(ctx->rand_entry(2)->FLOAT(0)->getText());

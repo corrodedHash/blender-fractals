@@ -22,18 +22,10 @@ def _create_fractal(self, _context):
             if faces is None:
                 faces = []
 
+
         profile_mesh = bpy.data.meshes.new("FractalMesh")
 
-        # with Timer(name="Copying", verbose=True):
-        #    profile_mesh.vertices.add(len(verts)/3)
-        #    profile_mesh.vertices.foreach_set("co", verts)
-        #    profile_mesh.edges.add(len(edges)/2)
-        #    profile_mesh.edges.foreach_set("vertices_raw", edges)
         with Timer(name="Copying", verbose=True):
-            for i in verts:
-              for x in i:
-                print(x)
-            print(edges)
             profile_mesh.from_pydata(verts, edges, faces)
         profile_mesh.update()
         profile_object = bpy.data.objects.new("Fractal", profile_mesh)
@@ -60,7 +52,7 @@ class Fractal_add_object(bpy.types.Operator):
 
     iteration = bpy.props.IntProperty(
         name="Iteration Count",
-        default=2,
+        default=1,
         min=1,
         soft_min=1,
         soft_max=10,
@@ -68,7 +60,7 @@ class Fractal_add_object(bpy.types.Operator):
         description="Number of iterations of the fractal")
 
     standard_path = os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                                 "examples", "standard", "sierpinski.txt")
+                                 "examples", "3d", "menge.txt")
 
     def reset_iteration(self, _context):
         """Resets iteration"""

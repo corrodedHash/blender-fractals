@@ -1,4 +1,4 @@
-add_library(fractalgen SHARED ${LIB_SRC_FILES} $<TARGET_OBJECTS:parsing> $<TARGET_OBJECTS:python_bridge>)
+add_library(fractalgen SHARED ${LIB_SRC_FILES} $<TARGET_OBJECTS:python_bridge> $<TARGET_OBJECTS:parsing>)
 
 target_link_libraries(fractalgen python3.6m libantlr4-runtime.a)
 

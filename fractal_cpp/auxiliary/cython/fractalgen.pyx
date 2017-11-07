@@ -23,12 +23,14 @@ class FaceList:
         return self._iterate()
 
     def __len__(self):
-        return len(self.indices) - 1
+        return len(self.indices)
 
     def _iterate(self):
-        last_index = 0
-        for cur_index in self.indices[1:]:
+        cdef int last_index = 0
+        cdef int cur_index = 0
+        for cur_index in self.indices:
             yield self.vertices[last_index:cur_index]
+            last_index = cur_index
 
 cdef void notify_free(void* ptr):
     free(ptr)

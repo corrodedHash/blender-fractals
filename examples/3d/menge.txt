@@ -14,6 +14,6 @@ A: push _Menge pop;
 Face: f1 Face f1;
 Move: Move Move Move;
 final:
-A: push f1 r90 f1 r90 f1 r90 f1 r90 m1 r(0, 90) f1 r90 f1 r90 f1 r90 f1 r90 m1 r(0, 90) f1 r90 f1 r90 f1 r90 f1 r90 m1 r(0, 90) f1 r90 f1 r90 f1 r90 f1 r90 m1 r(0, 90) f1 r(0, 90) f1 r(0, 90) f1 r(0, 90) f1 r(0, 90) r90 m1 r-90 f1 r(0, 90) f1 r(0, 90) f1 r(0, 90) f1 r(0, 90) pop;
+A: push f1 r90 f1 r90 f1 r90 m1 r90 m1 r(0, 90) f1 r90 f1 r90 f1 r90 m1 r90 m1 r(0, 90) f1 r90 f1 r90 f1 r90 m1 r90 m1 r(0, 90) f1 r90 f1 r90 f1 r90 m1 r90 m1 r(0, 90) f1 r(0, 90) f1 r(0, 90) f1 r(0, 90) m1 r(0, 90) r90 m1 r-90 f1 r(0, 90) f1 r(0, 90) f1 r(0, 90) m1 r(0, 90) pop;
 Face: f1;
 Move: m1;

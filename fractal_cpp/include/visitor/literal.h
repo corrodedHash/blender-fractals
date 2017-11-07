@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 #include <cassert>
+#include <string>
 
 struct Terminal {
   public:
@@ -29,6 +30,14 @@ struct Terminal {
 
   public:
     Terminal(TerminalType _ttype) : ttype(_ttype) {}
+    std::string toString() const{
+      std::string result = "";
+      result += std::to_string(ttype) + " ";
+      for (auto i: values){
+        result += std::to_string(i) + " ";
+      }
+      return result;
+    }
 };
 
 class NonTerminal;
