@@ -50,20 +50,20 @@ class CommandHandler {
     }
     return result;
   }
-  void handle(const Terminal* term)
+  void handle(const Terminal& term)
   {
-    switch (term->ttype) {
+    switch (term.ttype) {
     case Terminal::ROTATE_TERM:
-      fractal.rotate(random_vector(term->values));
+      fractal.rotate(random_vector(term.values));
       break;
     case Terminal::MOVE_TERM:
-      fractal.move(random_double(term->values));
+      fractal.move(random_double(term.values));
       break;
     case Terminal::DRAW_TERM:
-      fractal.draw(random_double(term->values));
+      fractal.draw(random_double(term.values));
       break;
     case Terminal::FACE_TERM:
-      fractal.face(random_double(term->values));
+      fractal.face(random_double(term.values));
       break;
     case Terminal::ENDFACE_TERM:
       fractal.endface();
@@ -88,9 +88,9 @@ mesh_info<double> generateMesh(const std::string& filename,
   NonTerminalManager ntm = parseGrammar(filename);
   FractalGen<double> myFrac;
   CommandHandler comhandler(myFrac);
-  for (NonTerminal::iterator it = ntm.start->iterate(level); not it.end();
-       ++it) {
-    comhandler.handle(*it);
+  auto nt_tree = ntm.start->get_tree(level);
+  for (auto term: nt_tree) {
+    comhandler.handle(term);
   }
   mesh_info<double> result(myFrac.output());
   return result;

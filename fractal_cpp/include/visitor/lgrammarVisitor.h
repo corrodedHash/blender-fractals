@@ -86,6 +86,7 @@ class lgrammarVisitor : public lsystemParserBaseVisitor {
     case 0:
       result.values[0] = 90.0;
       result.values[1] = 90.0;
+      break;
     default:
       std::cout << ctx->rand_entry().size();
       throw std::runtime_error("rotate entry weird");
