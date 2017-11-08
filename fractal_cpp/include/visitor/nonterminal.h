@@ -38,6 +38,7 @@ class NonTerminal {
   NonTerminal(std::string&& _name)
       : name(_name){};
 
+  // TODO: Should make a map to allow multiple transitions
   void addTrans(NTHolder _trans) { trans = _trans; }
   void addFinalTrans(NTHolder _final_trans) { final_trans = _final_trans; }
 
