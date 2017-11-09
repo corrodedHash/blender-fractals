@@ -1,5 +1,5 @@
 add_custom_command(OUTPUT fractalgen.cpp
-COMMAND cython3 --cplus -o ${CMAKE_CURRENT_BINARY_DIR}/fractalgen.cpp ${CMAKE_CURRENT_SOURCE_DIR}/fractalgen.pyx
+  COMMAND ${CYTHON_EXECUTABLE} -3 --cplus -o ${CMAKE_CURRENT_BINARY_DIR}/fractalgen.cpp ${CMAKE_CURRENT_SOURCE_DIR}/fractalgen.pyx
 DEPENDS fractalgen.pyx)
 
 add_library(python_bridge OBJECT fractalgen.cpp)

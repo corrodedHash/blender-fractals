@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 3.3.2)
 
+
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -fno-omit-frame-pointer")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_RELEASE} -fno-omit-frame-pointer")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Ofast -mtune=native -march=native")
 
 set(ENABLE_TESTS OFF CACHE BOOL "Enable tests")
@@ -12,7 +14,7 @@ include_directories("${CMAKE_SOURCE_DIR}/include")
 
 include(${CMAKE_SOURCE_DIR}/cmake/antlr.cmake)
 
-enable_testing()
+find_package(Cython REQUIRED)
 
 ### END SETUP ###
 
@@ -22,6 +24,7 @@ set(LIB_SRC_FILES "")
 add_subdirectory(lib)
 
 if (ENABLE_TESTS)
+  enable_testing()
   add_subdirectory(tests)
 endif()
 
