@@ -45,10 +45,10 @@ class NonTerminal {
   NonTerminalTree get_tree(unsigned int depth);
 };
 
-struct flat_nonterminal {
-  unsigned int index;
+struct FlatNonterminal {
   const NTHolder& nt;
-  flat_nonterminal(const NTHolder& nt_)
+  unsigned int index;
+  FlatNonterminal(const NTHolder& nt_)
       : nt(nt_)
       , index(0)
   {
@@ -69,11 +69,11 @@ struct flat_nonterminal {
     return nt.list_T[index];
   }
 
-  bool operator==(const flat_nonterminal& other) const
+  bool operator==(const FlatNonterminal& other) const
   {
     return index == other.index and nt == other.nt;
   }
-  bool operator!=(const flat_nonterminal& other) const
+  bool operator!=(const FlatNonterminal& other) const
   {
     return not(*this == other);
   }
@@ -82,12 +82,12 @@ struct flat_nonterminal {
 class NonTerminalTree::iterator : public std::iterator<std::output_iterator_tag, Terminal> {
   private:
   unsigned int wanted_level;
-  std::stack<flat_nonterminal> iterator_stack;
+  std::stack<FlatNonterminal> iterator_stack;
 
   void findTerminal();
   void push_holder(const NTHolder& trans)
   {
-    iterator_stack.push(flat_nonterminal(trans));
+    iterator_stack.push(FlatNonterminal(trans));
   }
   unsigned int getCurrentLevel() { return iterator_stack.size(); }
   void decreaseCurrentLevel();

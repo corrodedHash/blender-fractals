@@ -10,6 +10,8 @@
 #include <fstream>
 
 #include <cmath>
+#include <cstdlib>
+
 
 #include <iostream>
 #include <random>
@@ -35,18 +37,25 @@ class CommandHandler {
   public:
   CommandHandler(FractalGen<double>& fractal_)
       : fractal(fractal_), gen(rd()){};
+  double rand(double start, double end){
+    if (start == end)
+      return start;
+    return ((std::rand() / static_cast<double>(RAND_MAX)) * (start - end)) + start;
+  }
   double random_double(const std::array<double, 6>& values)
   {
-    std::uniform_real_distribution<> dis(values[0], values[1]);
-    return dis(gen);
+    //std::uniform_real_distribution<> dis(values[0], values[1]);
+    //return dis(gen);
+    return rand(values[0], values[1]);
   }
 
   std::array<double, 3> random_vector(const std::array<double, 6>& values)
   {
     std::array<double, 3> result;
     for (int i = 0; i < 3; ++i) {
-      std::uniform_real_distribution<> dis(values[2 * i], values[2 * i + 1]);
-      result[i] = dis(gen);
+      //std::uniform_real_distribution<> dis(values[2 * i], values[2 * i + 1]);
+      //result[i] = dis(gen);
+      result[i] = rand(values[2 * i], values[2 * i + 1]);
     }
     return result;
   }
