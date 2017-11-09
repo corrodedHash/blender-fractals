@@ -35,10 +35,7 @@ TEST_CASE("sierpinsky")
   myfrac.fractalgen.draw(0.1);
   REQUIRE(myfrac.get_pos().top()[0] == Approx(0.2));
   REQUIRE(myfrac.get_pos().top()[1] == Approx(0));
-  REQUIRE(myfrac.get_pos().top()[2] == Approx(0));
-  for (std::size_t i = 0; i < myfrac.fractalgen.output().vert_size; ++i){
-    std::cout << myfrac.fractalgen.output().verts[i] << " ";
-  }
+  REQUIRE(myfrac.get_pos().top()[2] == Approx(0).margin(0.01));
 }
 
 TEST_CASE("flikflak"){

@@ -27,6 +27,9 @@ def _create_fractal(self, _context):
 
         with Timer(name="Copying", verbose=True):
             profile_mesh.from_pydata(verts, edges, faces)
+            #profile_mesh.vertices.foreach_get("co", verts)
+            #profile_mesh.edges.foreach_get("vertices", edges)
+
         profile_mesh.update()
         profile_object = bpy.data.objects.new("Fractal", profile_mesh)
         profile_object.data = profile_mesh
