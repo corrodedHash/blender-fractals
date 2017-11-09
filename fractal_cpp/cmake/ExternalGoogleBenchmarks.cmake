@@ -4,8 +4,6 @@ set(GOOGLEBENCH_EXTERNAL_REPO "https://github.com/google/benchmark.git")
 ExternalProject_ADD(
   #--External-project-name------
   googlebench
-  #--Depend-on-antrl-tool-----------
-  # DEPENDS antlrtool
   #--Core-directories-----------
   PREFIX             ${GOOGLEBENCH_EXTERNAL_ROOT}
   #--Download step--------------
@@ -19,7 +17,7 @@ ExternalProject_ADD(
   #--Patch step----------
   # PATCH_COMMAND sh -c "cp <SOURCE_DIR>/scripts/CMakeLists.txt <SOURCE_DIR>"
   #--Configure step-------------
-  CONFIGURE_COMMAND  ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE=Release -DBENCHMARK_ENABLE_TESTING=OFF -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR> <SOURCE_DIR>
+  CONFIGURE_COMMAND  ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DBENCHMARK_ENABLE_TESTING=OFF -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR> <SOURCE_DIR>
   LOG_CONFIGURE ON
   #--Build step-----------------
   BUILD_COMMAND $(MAKE)
