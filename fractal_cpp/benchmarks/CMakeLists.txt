@@ -1,4 +1,4 @@
-add_executable(benchmarks main.cpp)
+add_executable(benchmarks main.cpp whole.cpp)
 
 target_include_directories(benchmarks PUBLIC ${GOOGLEBENCH_INCLUDE})
 target_link_libraries(benchmarks ${GOOGLEBENCH_LIBS}/libbenchmark.a pthread fractalgen)
