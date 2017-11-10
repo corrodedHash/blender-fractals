@@ -1,4 +1,5 @@
 #include "catch.hpp"
+#include "valarray_comp.h"
 #include "generator/fractalgen.h"
 
 template <typename U>
@@ -15,27 +16,19 @@ class FractalGenTester {
 TEST_CASE("sierpinsky")
 {
   FractalGenTester<double> myfrac;
-  REQUIRE(myfrac.get_pos().top()[0] == Approx(0));
-  REQUIRE(myfrac.get_pos().top()[1] == Approx(0));
-  REQUIRE(myfrac.get_pos().top()[2] == Approx(0));
+  CHECK_THAT(myfrac.get_pos().top(), ValComp( std::valarray<double>({0, 0, 0}) ));
 
   myfrac.fractalgen.rotate({-60, 0, 0});
   myfrac.fractalgen.draw(0.1);
-  REQUIRE(myfrac.get_pos().top()[0] == Approx(0.05));
-  REQUIRE(myfrac.get_pos().top()[1] == Approx(0));
-  REQUIRE(myfrac.get_pos().top()[2] == Approx(0.086603));
+  CHECK_THAT(myfrac.get_pos().top(), ValComp( std::valarray<double>({0.05, 0, 0.086603}) ));
 
   myfrac.fractalgen.rotate({60, 0, 0});
   myfrac.fractalgen.draw(0.1);
-  REQUIRE(myfrac.get_pos().top()[0] == Approx(0.15));
-  REQUIRE(myfrac.get_pos().top()[1] == Approx(0));
-  REQUIRE(myfrac.get_pos().top()[2] == Approx(0.086603));
+  CHECK_THAT(myfrac.get_pos().top(), ValComp( std::valarray<double>({0.15, 0, 0.086603}) ));
 
   myfrac.fractalgen.rotate({60, 0, 0});
   myfrac.fractalgen.draw(0.1);
-  REQUIRE(myfrac.get_pos().top()[0] == Approx(0.2));
-  REQUIRE(myfrac.get_pos().top()[1] == Approx(0));
-  REQUIRE(myfrac.get_pos().top()[2] == Approx(0).margin(0.01));
+  CHECK_THAT(myfrac.get_pos().top(), ValComp( std::valarray<double>({0.2, 0, 0}) ));
 }
 
 TEST_CASE("flikflak"){
