@@ -48,6 +48,9 @@ class FractalGen {
   mesh_info<U> output() { return mesh_info<U>(fractal); };
 };
 
+FractalGen<double> generateFractal(const std::string& filename,
+    unsigned int level);
+
 mesh_info<double> generateMesh(const std::string& filename,
     unsigned int level);
 

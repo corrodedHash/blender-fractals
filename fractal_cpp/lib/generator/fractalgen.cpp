@@ -25,6 +25,19 @@ static NonTerminalManager parseGrammar(const std::string& filename)
 }
 
 
+FractalGen<double> generateFractal(const std::string& filename,
+    unsigned int level)
+{
+  NonTerminalManager ntm = parseGrammar(filename);
+  FractalGen<double> myFrac;
+  CommandHandler comhandler(myFrac);
+  auto nt_tree = ntm.start->get_tree(level);
+  for (auto term: nt_tree) {
+    comhandler.handle(term);
+  }
+  return myFrac;
+}
+
 mesh_info<double> generateMesh(const std::string& filename,
     unsigned int level)
 {

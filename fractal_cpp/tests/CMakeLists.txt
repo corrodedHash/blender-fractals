@@ -1,3 +1,5 @@
-add_executable(testing main.cpp fractalgen.cpp)
+add_executable(testing main.cpp fractalgen.cpp whole.cpp)
+
+target_link_libraries(testing corelib)
 
 add_test(NAME main_test COMMAND testing)
