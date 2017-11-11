@@ -1,8 +1,8 @@
 #include "visitor/nonterminal.h"
 
 #include <cassert>
-#include <stdexcept>
 #include <iostream>
+#include <stdexcept>
 
 NonTerminalTree NonTerminal::get_tree(unsigned int depth)
 {
@@ -14,8 +14,9 @@ void NonTerminalTree::iterator::findTerminal()
   while (not iterator_stack.empty() and (iterator_stack.top().finished() or not iterator_stack.top().cur_is_term())) {
     if (iterator_stack.top().finished()) {
       iterator_stack.pop();
-      if (iterator_stack.empty())
+      if (iterator_stack.empty()) {
         return;
+      }
       ++iterator_stack.top().index;
     } else {
       assert(not iterator_stack.top().cur_is_term());
@@ -32,8 +33,9 @@ void NonTerminalTree::iterator::findTerminal()
 
 NonTerminalTree::iterator& NonTerminalTree::iterator::operator++()
 {
-  if (iterator_stack.empty())
+  if (iterator_stack.empty()) {
     return *this;
+  }
 
   ++(iterator_stack.top().index);
   findTerminal();
@@ -55,9 +57,8 @@ NonTerminalTree::iterator NonTerminalTree::begin()
 {
   if (depth == 0) {
     return iterator(nt.final_trans, 0);
-  } else {
-    return iterator(nt.trans, depth);
   }
+  return iterator(nt.trans, depth);
 }
 
 NonTerminalTree::iterator NonTerminalTree::end()

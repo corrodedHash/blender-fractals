@@ -3,8 +3,9 @@
 
 double CommandHandler::rand(double start, double end)
 {
-  if (start == end)
+  if (start == end){
     return start;
+  }
   return ((std::rand() / static_cast<double>(RAND_MAX)) * (start - end)) + start;
 }
 
