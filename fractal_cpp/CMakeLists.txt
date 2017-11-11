@@ -35,5 +35,8 @@ endif()
 
 ### END SOURCE FILES ###
 
-include(${CMAKE_SOURCE_DIR}/cmake/compile_module.cmake)
+add_library(corelib STATIC $<TARGET_OBJECTS:aux_parsing> ${LIB_SRC_FILES})
+target_link_libraries(corelib libantlr4-runtime.a)
+add_dependencies(corelib antlr4cpp)
 
+include(${CMAKE_SOURCE_DIR}/cmake/compile_module.cmake)
