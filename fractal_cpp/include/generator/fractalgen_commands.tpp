@@ -1,6 +1,7 @@
 #pragma once
 #include "fractal/linalg_helper.h"
 
+namespace frac {
 template <typename U>
 void FractalGen<U>::move(U distance)
 {
@@ -78,3 +79,4 @@ void FractalGen<U>::pop()
 }
 template <typename U>
 void FractalGen<U>::endface() { fractal.faces.new_face(); }
+}

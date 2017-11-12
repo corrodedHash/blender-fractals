@@ -55,5 +55,5 @@ FractalGen<double> generateFractal(const std::string& filename,
 mesh_info<double> generateMesh(const std::string& filename,
     unsigned int level);
 
-#include "fractalgen_commands.tpp"
 }
+#include "fractalgen_commands.tpp"

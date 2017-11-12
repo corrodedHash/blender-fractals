@@ -5,6 +5,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 string (APPEND CMAKE_CXX_FLAGS " -std=c++1z")
 string (APPEND CMAKE_CXX_FLAGS " -fPIC")
 string (APPEND CMAKE_CXX_FLAGS " -fno-omit-frame-pointer")
+#string (APPEND CMAKE_CXX_FLAGS " -flto=thin")
 string (APPEND CMAKE_CXX_FLAGS_DEBUG " -fsanitize=address")
 string (APPEND CMAKE_CXX_FLAGS_RELEASE " -Ofast -mtune=native -march=native")
 
