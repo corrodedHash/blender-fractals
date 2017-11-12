@@ -16,7 +16,7 @@ double CommandHandler::random_double(const std::array<double, 6>& values)
 
 std::array<double, 3> CommandHandler::random_vector(const std::array<double, 6>& values)
 {
-  std::array<double, 3> result;
+  std::array<double, 3> result{};
   for (int i = 0; i < 3; ++i) {
     result[i] = rand(values[2 * i], values[2 * i + 1]);
   }

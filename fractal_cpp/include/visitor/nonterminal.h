@@ -33,14 +33,12 @@ class NonTerminal {
   std::string name;
   NTHolder trans;
   NTHolder final_trans;
-  NonTerminal(const std::string& _name)
-      : name(_name){};
-  NonTerminal(std::string&& _name)
-      : name(_name){};
+  NonTerminal(std::string _name)
+      : name(std::move(_name)){};
 
   // TODO: Should make a map to allow multiple transitions
-  void addTrans(NTHolder _trans) { trans = _trans; }
-  void addFinalTrans(NTHolder _final_trans) { final_trans = _final_trans; }
+  void addTrans(NTHolder _trans) { trans = std::move(_trans); }
+  void addFinalTrans(NTHolder _final_trans) { final_trans = std::move(_final_trans); }
 
   NonTerminalTree get_tree(unsigned int depth);
 };
