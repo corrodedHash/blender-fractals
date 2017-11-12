@@ -41,3 +41,4 @@ target_link_libraries(corelib libantlr4-runtime.a)
 add_dependencies(corelib antlr4cpp)
 
 include(${CMAKE_SOURCE_DIR}/cmake/compile_module.cmake)
+# python2 /usr/share/clang/run-clang-tidy.py "-header-filter=.*" "-checks=bugprone-*,cppcoreguidelines-*,clang-analyzer-*,misc-*,modernize-*,performance-*,readability-*"

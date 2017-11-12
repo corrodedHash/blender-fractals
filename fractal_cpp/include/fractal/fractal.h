@@ -4,7 +4,7 @@
 
 #include "fractal/faces.h"
 
-class Faces;
+struct Faces;
 template <typename U> struct Fractal {
   std::vector<U> verts;
   std::vector<std::size_t> edges;

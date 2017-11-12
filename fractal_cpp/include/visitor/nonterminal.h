@@ -57,14 +57,17 @@ struct FlatNonterminal {
   {
     return index >= nt.size();
   }
-  bool cur_is_term() const{
+  bool cur_is_term() const
+  {
     return nt.isTerminal(index);
   }
-  const NonTerminal* get_cur_nt() const{
+  const NonTerminal* get_cur_nt() const
+  {
     assert(not cur_is_term());
     return nt.list_NT[index];
   }
-  const Terminal& get_cur_term() const{
+  const Terminal& get_cur_term() const
+  {
     assert(cur_is_term());
     return nt.list_T[index];
   }
