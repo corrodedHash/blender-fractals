@@ -4,6 +4,7 @@
 
 #include "fractal/faces.h"
 
+namespace frac {
 struct Faces;
 template <typename U> struct Fractal {
   std::vector<U> verts;
@@ -22,3 +23,4 @@ template <typename U> struct Fractal {
     edges.push_back(v2);
   }
 };
+}

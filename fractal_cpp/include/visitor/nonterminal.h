@@ -11,6 +11,7 @@
 
 #include "visitor/ntholder.h"
 
+namespace frac {
 class NonTerminal;
 class NonTerminalTree {
   public:
@@ -116,3 +117,4 @@ class NonTerminalTree::iterator : public std::iterator<std::output_iterator_tag,
     return not(*this == other);
   }
 };
+}

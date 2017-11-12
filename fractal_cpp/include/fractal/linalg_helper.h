@@ -1,5 +1,6 @@
 #pragma once
 
+namespace frac {
 template <typename U>
 static std::valarray<U> cross(const std::valarray<U>& lhs,
     const std::valarray<U>& rhs)
@@ -55,4 +56,5 @@ static inline void axis_rotate(const std::valarray<U>& input,
     res[0] = (c+axis[0]*axis[0]*c1)*input[0] + (axis[0]*axis[1]*c1-axis[2]*s)*input[1] + (axis[0]*axis[2]*c1+axis[1]*s)*input[2];
     res[1] = (axis[0]*axis[1]*c1+axis[2]*s)*input[0] + (c+axis[1]*axis[1]*c1)*input[1] + (axis[1]*axis[2]*c1-axis[0]*s)*input[2];
     res[2] = (axis[0]*axis[2]*c1-axis[1]*s)*input[0] + (axis[1]*axis[2]*c1+axis[0]*s)*input[1]+(c+axis[2]*axis[2]*c1)*input[2];
+}
 }

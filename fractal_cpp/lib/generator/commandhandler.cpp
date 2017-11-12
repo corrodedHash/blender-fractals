@@ -1,7 +1,7 @@
 #include "generator/commandhandler.h"
 #include <cstdlib>
 
-double CommandHandler::rand(double start, double end)
+double frac::CommandHandler::rand(double start, double end)
 {
   if (start == end){
     return start;
@@ -9,12 +9,12 @@ double CommandHandler::rand(double start, double end)
   return ((std::rand() / static_cast<double>(RAND_MAX)) * (start - end)) + start;
 }
 
-double CommandHandler::random_double(const std::array<double, 6>& values)
+double frac::CommandHandler::random_double(const std::array<double, 6>& values)
 {
   return rand(values[0], values[1]);
 }
 
-std::array<double, 3> CommandHandler::random_vector(const std::array<double, 6>& values)
+std::array<double, 3> frac::CommandHandler::random_vector(const std::array<double, 6>& values)
 {
   std::array<double, 3> result{};
   for (int i = 0; i < 3; ++i) {
@@ -23,7 +23,7 @@ std::array<double, 3> CommandHandler::random_vector(const std::array<double, 6>&
   return result;
 }
 
-void CommandHandler::handle(const Terminal& term)
+void frac::CommandHandler::handle(const ::frac::Terminal& term)
 {
   switch (term.ttype) {
   case Terminal::ROTATE_TERM:

@@ -5,7 +5,7 @@ from libc.stdlib cimport free
 from cython cimport view
 from cpython cimport PyObject, Py_INCREF
 
-cdef extern from "generator/fractalgen.h":
+cdef extern from "generator/fractalgen.h" namespace "frac":
     cdef cppclass mesh_info[T]:
         T* verts
         uint64_t * edges

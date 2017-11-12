@@ -12,7 +12,7 @@
 
 #include <iostream>
 
-static NonTerminalManager parseGrammar(const std::string& filename)
+static frac::NonTerminalManager parseGrammar(const std::string& filename)
 {
   std::ifstream grammarfile;
   grammarfile.open(filename);
@@ -25,7 +25,7 @@ static NonTerminalManager parseGrammar(const std::string& filename)
 }
 
 
-FractalGen<double> generateFractal(const std::string& filename,
+::frac::FractalGen<double> frac::generateFractal(const std::string& filename,
     unsigned int level)
 {
   NonTerminalManager ntm = parseGrammar(filename);
@@ -38,7 +38,7 @@ FractalGen<double> generateFractal(const std::string& filename,
   return myFrac;
 }
 
-mesh_info<double> generateMesh(const std::string& filename,
+::frac::mesh_info<double> frac::generateMesh(const std::string& filename,
     unsigned int level)
 {
   NonTerminalManager ntm = parseGrammar(filename);

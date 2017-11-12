@@ -2,6 +2,7 @@
 
 #include <array>
 
+namespace frac {
 struct Terminal {
   public:
   enum TerminalType {
@@ -21,11 +22,15 @@ struct Terminal {
   public:
   Terminal(TerminalType _ttype)
       : ttype(_ttype)
-  {}
-  bool operator==(const Terminal& other) const{
+  {
+  }
+  bool operator==(const Terminal& other) const
+  {
     return ttype == other.ttype;
   }
-  bool operator!=(const Terminal& other) const{
+  bool operator!=(const Terminal& other) const
+  {
     return not(*this == other);
   }
 };
+}

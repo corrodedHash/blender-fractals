@@ -5,10 +5,10 @@
 template <typename U>
 class FractalGenTester {
   public:
-  FractalGen<U> fractalgen;
+  frac::FractalGen<U> fractalgen;
   std::stack<std::valarray<U>>& get_pos() { return fractalgen.position_stack; };
   std::stack<std::valarray<U>>& get_rot() { return fractalgen.rotation_stack; };
-  Fractal<U>& get_fractal() {return fractalgen.fractal;};
+  frac::Fractal<U>& get_fractal() {return fractalgen.fractal;};
   //std::stack<std::valarray<U>>& get_look() { return look_at_stack; };
   //std::stack<std::size_t>& get_verts() { return verts_stack; };
 };

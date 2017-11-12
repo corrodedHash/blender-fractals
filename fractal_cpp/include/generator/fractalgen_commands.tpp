@@ -48,13 +48,13 @@ void FractalGen<U>::rotate(const std::array<U, 3>& rotation)
 {
   // Rotation around local y axis
   if (rotation[0] != 0) {
-    axis_rotate(rotation_stack.top(), look_at_stack.top(), rotation[0], rotation_stack.top());
+    frac::axis_rotate(rotation_stack.top(), look_at_stack.top(), rotation[0], rotation_stack.top());
   }
   // Rotation around local z axis
   if (rotation[1] != 0) {
-    std::valarray<U> rot_axis = cross(rotation_stack.top(), look_at_stack.top());
-    axis_rotate(rotation_stack.top(), rot_axis, rotation[1], rotation_stack.top());
-    axis_rotate(look_at_stack.top(), rot_axis, rotation[1], look_at_stack.top());
+    std::valarray<U> rot_axis = frac::cross(rotation_stack.top(), look_at_stack.top());
+    frac::axis_rotate(rotation_stack.top(), rot_axis, rotation[1], rotation_stack.top());
+    frac::axis_rotate(look_at_stack.top(), rot_axis, rotation[1], look_at_stack.top());
   }
 }
 

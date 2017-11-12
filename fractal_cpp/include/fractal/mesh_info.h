@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <algorithm>
 
+namespace frac {
 template <typename U> struct mesh_info {
   mesh_info() = default;
   mesh_info(const Fractal<U>& other){
@@ -31,3 +32,4 @@ template <typename U> struct mesh_info {
   std::size_t *face_bounds;
   std::size_t vert_size, edge_size, face_vert_size, face_bound_size;
 };
+}

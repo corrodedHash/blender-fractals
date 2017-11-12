@@ -1,9 +1,11 @@
 #pragma once
 
-#include <vector>
 #include <cstdint>
+#include <vector>
 
 #include "visitor/terminal.h"
+
+namespace frac {
 
 class NonTerminal;
 class NTHolder {
@@ -39,10 +41,13 @@ class NTHolder {
     return list_NT.size();
   }
 
-  bool operator==(const NTHolder& other) const{
+  bool operator==(const NTHolder& other) const
+  {
     return list_NT == other.list_NT and list_T == other.list_T;
   }
-  bool operator!=(const NTHolder& other) const{
+  bool operator!=(const NTHolder& other) const
+  {
     return not(*this == other);
   }
 };
+}

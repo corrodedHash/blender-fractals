@@ -10,24 +10,26 @@
 #include <memory>
 #include <stdexcept>
 
+namespace frac {
 struct NonTerminalManager {
-  NonTerminal* start;
-  std::vector<std::shared_ptr<NonTerminal>> nts;
+  ::frac::NonTerminal* start;
+  std::vector<std::shared_ptr<::frac::NonTerminal>> nts;
 };
+}
 namespace antlr {
 class lgrammarVisitor : public lsystemParserBaseVisitor {
   private:
-  NonTerminalManager ntm;
-  std::map<std::string, NonTerminal*> nts;
-  std::map<std::string, NTHolder> defines;
+  ::frac::NonTerminalManager ntm;
+  std::map<std::string, ::frac::NonTerminal*> nts;
+  std::map<std::string, ::frac::NTHolder> defines;
 
   public:
   lgrammarVisitor() {}
 
   template <typename U>
-  NTHolder buildTrans(U* ctx)
+  ::frac::NTHolder buildTrans(U* ctx)
   {
-    NTHolder result;
+    ::frac::NTHolder result;
     for (const auto& child : ctx->children) {
       if (antlrcpp::is<lsystemParser::Define_termContext*>(child)) {
         result.appendHolder(visitDefine_term(
@@ -64,7 +66,7 @@ class lgrammarVisitor : public lsystemParserBaseVisitor {
 
   antlrcpp::Any visitRotation(lsystemParser::RotationContext* ctx) override
   {
-    Terminal result(Terminal::ROTATE_TERM);
+    ::frac::Terminal result(::frac::Terminal::ROTATE_TERM);
     result.values[0] = 0;
     result.values[1] = 0;
     result.values[2] = 0;
@@ -96,7 +98,7 @@ class lgrammarVisitor : public lsystemParserBaseVisitor {
 
   antlrcpp::Any visitMove(lsystemParser::MoveContext* ctx) override
   {
-    Terminal result(Terminal::MOVE_TERM);
+    ::frac::Terminal result(::frac::Terminal::MOVE_TERM);
     std::array<double, 2> rand_number;
     rand_number = visitRand_entry(dynamic_cast<lsystemParser::Rand_entryContext*>(ctx->rand_entry()));
     result.values[0] = rand_number[0];
@@ -106,7 +108,7 @@ class lgrammarVisitor : public lsystemParserBaseVisitor {
 
   antlrcpp::Any visitDraw(lsystemParser::DrawContext* ctx) override
   {
-    Terminal result(Terminal::DRAW_TERM);
+    ::frac::Terminal result(::frac::Terminal::DRAW_TERM);
     std::array<double, 2> rand_number;
     rand_number = visitRand_entry(dynamic_cast<lsystemParser::Rand_entryContext*>(ctx->rand_entry()));
     result.values[0] = rand_number[0];
@@ -116,7 +118,7 @@ class lgrammarVisitor : public lsystemParserBaseVisitor {
 
   antlrcpp::Any visitFace(lsystemParser::FaceContext* ctx) override
   {
-    Terminal result(Terminal::FACE_TERM);
+    ::frac::Terminal result(::frac::Terminal::FACE_TERM);
     std::array<double, 2> rand_number;
     rand_number = visitRand_entry(dynamic_cast<lsystemParser::Rand_entryContext*>(ctx->rand_entry()));
     result.values[0] = rand_number[0];
@@ -126,16 +128,16 @@ class lgrammarVisitor : public lsystemParserBaseVisitor {
 
   antlrcpp::Any visitEndface(lsystemParser::EndfaceContext* ctx) override
   {
-    return Terminal(Terminal::ENDFACE_TERM);
+    return ::frac::Terminal(::frac::Terminal::ENDFACE_TERM);
   }
   antlrcpp::Any visitPush(lsystemParser::PushContext* ctx) override
   {
-    return Terminal(Terminal::PUSH_TERM);
+    return ::frac::Terminal(::frac::Terminal::PUSH_TERM);
   }
 
   antlrcpp::Any visitPop(lsystemParser::PopContext* ctx) override
   {
-    return Terminal(Terminal::POP_TERM);
+    return ::frac::Terminal(::frac::Terminal::POP_TERM);
   }
 
   antlrcpp::Any visitTerm(lsystemParser::TermContext* ctx) override
@@ -149,7 +151,7 @@ class lgrammarVisitor : public lsystemParserBaseVisitor {
     if (nts.count(nt_name) > 0) {
       return nts[nt_name];
     } else {
-      ntm.nts.push_back(std::make_shared<NonTerminal>(nt_name));
+      ntm.nts.push_back(std::make_shared<::frac::NonTerminal>(nt_name));
       nts.insert(std::make_pair(nt_name, ntm.nts.back().get()));
       return ntm.nts.back().get();
     }
@@ -191,7 +193,7 @@ class lgrammarVisitor : public lsystemParserBaseVisitor {
   antlrcpp::Any
   visitDefine_entity(lsystemParser::Define_entityContext* ctx) override
   {
-    NTHolder resolution = visitDefine_res(ctx->define_res()).as<NTHolder>();
+    ::frac::NTHolder resolution = visitDefine_res(ctx->define_res()).as<::frac::NTHolder>();
     auto ins_res = defines.insert(make_pair(
         ctx->define_term()->DEFINE()->getText(), std::move(resolution)));
     if (not ins_res.second) {
@@ -214,7 +216,7 @@ class lgrammarVisitor : public lsystemParserBaseVisitor {
   antlrcpp::Any
   visitRule_entity(lsystemParser::Rule_entityContext* ctx) override
   {
-    NonTerminal* resolvent = visitNon_term(ctx->non_term());
+    ::frac::NonTerminal* resolvent = visitNon_term(ctx->non_term());
     resolvent->addTrans(visitRule_res(ctx->rule_res()));
     return nullptr;
   }
@@ -232,7 +234,7 @@ class lgrammarVisitor : public lsystemParserBaseVisitor {
   antlrcpp::Any visitFinal_rule_entity(
       lsystemParser::Final_rule_entityContext* ctx) override
   {
-    NonTerminal* resolvent = visitNon_term(ctx->non_term());
+    ::frac::NonTerminal* resolvent = visitNon_term(ctx->non_term());
     resolvent->addFinalTrans(visitFinal_rule_res(ctx->final_rule_res()));
     return nullptr;
   }

@@ -13,9 +13,10 @@
 
 template <typename U>
 class FractalGenTester;
+namespace frac { 
 template <typename U>
 class FractalGen {
-  friend FractalGenTester<U>;
+  friend ::FractalGenTester<U>;
   private:
   std::stack<std::valarray<U>> position_stack;
   std::stack<std::valarray<U>> rotation_stack;
@@ -55,3 +56,4 @@ mesh_info<double> generateMesh(const std::string& filename,
     unsigned int level);
 
 #include "fractalgen_commands.tpp"
+}

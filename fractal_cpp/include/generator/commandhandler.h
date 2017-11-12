@@ -3,6 +3,7 @@
 #include "visitor/terminal.h"
 #include <array>
 
+namespace frac {
 class CommandHandler {
 
   FractalGen<double>& fractal;
@@ -15,3 +16,5 @@ class CommandHandler {
   std::array<double, 3> random_vector(const std::array<double, 6>& values);
   void handle(const Terminal& term);
 };
+
+}

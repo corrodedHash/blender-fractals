@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 
+namespace frac {
 struct Faces {
   std::vector<std::size_t> face_verts{};
   std::vector<std::size_t> face_bounds{};
@@ -22,3 +23,4 @@ struct Faces {
     }
   }
 };
+}

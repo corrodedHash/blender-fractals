@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdexcept>
 
+namespace frac {
 NonTerminalTree NonTerminal::get_tree(unsigned int depth)
 {
   return NonTerminalTree(*this, depth);
@@ -64,4 +65,5 @@ NonTerminalTree::iterator NonTerminalTree::begin()
 NonTerminalTree::iterator NonTerminalTree::end()
 {
   return iterator(depth);
+}
 }
