@@ -6,14 +6,14 @@
 namespace frac {
 class CommandHandler {
 
-  FractalGen<double>& fractal;
+  FractalGen& fractal;
 
-  double rand(double start, double end);
+  ::frac::FType rand(FType start, FType end);
   public:
-  CommandHandler(FractalGen<double>& fractal_): fractal(fractal_){};
-  double random_double(const std::array<double, 6>& values);
+  CommandHandler(FractalGen& fractal_): fractal(fractal_){};
+  ::frac::FType random_number(const std::array<FType, 6>& values);
 
-  std::array<double, 3> random_vector(const std::array<double, 6>& values);
+  std::array<FType, 3> random_vector(const std::array<FType, 6>& values);
   void handle(const Terminal& term);
 };
 

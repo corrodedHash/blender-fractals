@@ -3,11 +3,49 @@ import os
 import faulthandler
 
 import bpy
+from bpy_extras.io_utils import unpack_list, unpack_face_list
 
 from .fractal_cpp.build.fractalgen import generate_fractal
 from .util.timer import Timer
 
 
+
+def _create_fractal_fast(self, _context):
+    faulthandler.enable()
+    if self.grammar_path == "":
+        return
+
+    with Timer(name="all", verbose=True):
+        with Timer(name="Generation", verbose=True):
+            verts, edges, faces = generate_fractal(self.grammar_path, self.iteration)
+            if edges is None:
+                edges = []
+            if faces is None:
+                faces = []
+
+        len_faces = len(faces)
+
+        with Timer(name="Copying", verbose=True):
+            me = bpy.data.meshes.new('Cube')
+            me.vertices.add(len(verts))
+            me.vertices.foreach_set("co", unpack_list(verts))
+
+            me.loops.add(len(faces.vertices))
+            me.loops.foreach_set("vertex_index", unpack_face_list(faces))
+
+            me.polygons.add(len(faces)) 
+            me.polygons.foreach_set("loop_start", list(faces.starts))
+            me.polygons.foreach_set("loop_total", list(faces.totals))
+#me.polygons.foreach_set("vertices", unpack_face_list(faces))
+        with Timer(name="Optimizing", verbose=True):
+
+            me.update(calc_edges=True)
+            me.calc_normals()
+#me.validate(True)
+
+        ob = bpy.data.objects.new(me.name, me)
+        bpy.context.scene.objects.link(ob)
+        bpy.context.scene.update()
 
 def _create_fractal(self, _context):
     faulthandler.enable()
@@ -79,6 +117,6 @@ class Fractal_add_object(bpy.types.Operator):
 
     def execute(self, context):
         """Create the fractal"""
-        _create_fractal(self, context)
+        _create_fractal_fast(self, context)
 
         return {'FINISHED'}

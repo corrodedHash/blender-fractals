@@ -1,22 +1,22 @@
 #include "generator/commandhandler.h"
 #include <cstdlib>
 
-double frac::CommandHandler::rand(double start, double end)
+::frac::FType ::frac::CommandHandler::rand(::frac::FType start, ::frac::FType end)
 {
   if (start == end){
     return start;
   }
-  return ((std::rand() / static_cast<double>(RAND_MAX)) * (start - end)) + start;
+  return ((std::rand() / static_cast<::frac::FType>(RAND_MAX)) * (start - end)) + start;
 }
 
-double frac::CommandHandler::random_double(const std::array<double, 6>& values)
+::frac::FType ::frac::CommandHandler::random_number(const std::array<::frac::FType, 6>& values)
 {
   return rand(values[0], values[1]);
 }
 
-std::array<double, 3> frac::CommandHandler::random_vector(const std::array<double, 6>& values)
+std::array<::frac::FType, 3> frac::CommandHandler::random_vector(const std::array<::frac::FType, 6>& values)
 {
-  std::array<double, 3> result{};
+  std::array<::frac::FType, 3> result{};
   for (int i = 0; i < 3; ++i) {
     result[i] = rand(values[2 * i], values[2 * i + 1]);
   }
@@ -30,13 +30,13 @@ void frac::CommandHandler::handle(const ::frac::Terminal& term)
     fractal.rotate(random_vector(term.values));
     break;
   case Terminal::MOVE_TERM:
-    fractal.move(random_double(term.values));
+    fractal.move(random_number(term.values));
     break;
   case Terminal::DRAW_TERM:
-    fractal.draw(random_double(term.values));
+    fractal.draw(random_number(term.values));
     break;
   case Terminal::FACE_TERM:
-    fractal.face(random_double(term.values));
+    fractal.face(random_number(term.values));
     break;
   case Terminal::ENDFACE_TERM:
     fractal.endface();

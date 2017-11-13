@@ -54,7 +54,7 @@ class lgrammarVisitor : public lsystemParserBaseVisitor {
   antlrcpp::Any
   visitRand_entry(lsystemParser::Rand_entryContext* ctx) override
   {
-    std::array<double, 2> result;
+    std::array<::frac::FType, 2> result;
     result[0] = std::stod(ctx->FLOAT(0)->getText());
     if (ctx->FLOAT().size() > 1) {
       result[1] = std::stod(ctx->FLOAT(1)->getText());
@@ -70,7 +70,7 @@ class lgrammarVisitor : public lsystemParserBaseVisitor {
     result.values[0] = 0;
     result.values[1] = 0;
     result.values[2] = 0;
-    std::array<double, 2> rand_number;
+    std::array<::frac::FType, 2> rand_number;
     switch (ctx->rand_entry().size()) {
     case 3:
       rand_number = visitRand_entry(dynamic_cast<lsystemParser::Rand_entryContext*>(ctx->rand_entry(2)));
@@ -99,7 +99,7 @@ class lgrammarVisitor : public lsystemParserBaseVisitor {
   antlrcpp::Any visitMove(lsystemParser::MoveContext* ctx) override
   {
     ::frac::Terminal result(::frac::Terminal::MOVE_TERM);
-    std::array<double, 2> rand_number;
+    std::array<::frac::FType, 2> rand_number;
     rand_number = visitRand_entry(dynamic_cast<lsystemParser::Rand_entryContext*>(ctx->rand_entry()));
     result.values[0] = rand_number[0];
     result.values[1] = rand_number[1];
@@ -109,7 +109,7 @@ class lgrammarVisitor : public lsystemParserBaseVisitor {
   antlrcpp::Any visitDraw(lsystemParser::DrawContext* ctx) override
   {
     ::frac::Terminal result(::frac::Terminal::DRAW_TERM);
-    std::array<double, 2> rand_number;
+    std::array<::frac::FType, 2> rand_number;
     rand_number = visitRand_entry(dynamic_cast<lsystemParser::Rand_entryContext*>(ctx->rand_entry()));
     result.values[0] = rand_number[0];
     result.values[1] = rand_number[1];
@@ -119,7 +119,7 @@ class lgrammarVisitor : public lsystemParserBaseVisitor {
   antlrcpp::Any visitFace(lsystemParser::FaceContext* ctx) override
   {
     ::frac::Terminal result(::frac::Terminal::FACE_TERM);
-    std::array<double, 2> rand_number;
+    std::array<::frac::FType, 2> rand_number;
     rand_number = visitRand_entry(dynamic_cast<lsystemParser::Rand_entryContext*>(ctx->rand_entry()));
     result.values[0] = rand_number[0];
     result.values[1] = rand_number[1];

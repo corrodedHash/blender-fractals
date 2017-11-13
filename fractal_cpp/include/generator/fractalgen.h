@@ -11,33 +11,31 @@
 #include "generator/fractaltimer.h"
 #include "visitor/literal.h"
 
-template <typename U>
 class FractalGenTester;
 namespace frac { 
-template <typename U>
 class FractalGen {
-  friend ::FractalGenTester<U>;
+  friend ::FractalGenTester;
   private:
-  std::stack<std::valarray<U>> position_stack;
-  std::stack<std::valarray<U>> rotation_stack;
-  std::stack<std::valarray<U>> look_at_stack;
-  std::stack<std::size_t> verts_stack;
+  std::stack<std::valarray<FType>> position_stack;
+  std::stack<std::valarray<FType>> rotation_stack;
+  std::stack<std::valarray<FType>> look_at_stack;
+  std::stack<IType> verts_stack;
 
-  Fractal<U> fractal;
+  Fractal fractal;
 
   bool moved = false;
 
   public:
-  void move(U distance);
-  void draw(U distance);
-  void face(U distance);
-  void rotate(const std::array<U, 3>& rotation);
+  void move(FType distance);
+  void draw(FType distance);
+  void face(FType distance);
+  void rotate(const std::array<FType, 3>& rotation);
 
   void push();
   void pop();
   void endface();
 
-  FractalGen<U>()
+  FractalGen()
   {
     position_stack.push({ 0, 0, 0 });
     rotation_stack.push({ 1, 0, 0 });
@@ -46,14 +44,13 @@ class FractalGen {
     fractal.add_vert(position_stack.top());
   }
 
-  mesh_info<U> output() { return mesh_info<U>(fractal); };
+  mesh_info output() { return mesh_info(fractal); };
 };
 
-FractalGen<double> generateFractal(const std::string& filename,
+FractalGen generateFractal(const std::string& filename,
     unsigned int level);
 
-mesh_info<double> generateMesh(const std::string& filename,
+mesh_info generateMesh(const std::string& filename,
     unsigned int level);
 
 }
-#include "fractalgen_commands.tpp"

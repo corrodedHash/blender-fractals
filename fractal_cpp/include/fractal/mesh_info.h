@@ -1,35 +1,52 @@
 #pragma once
 #include "fractal/fractal.h"
 
-#include <cstdint>
 #include <algorithm>
+#include <cstdint>
 
 namespace frac {
-template <typename U> struct mesh_info {
+struct mesh_info {
   mesh_info() = default;
-  mesh_info(const Fractal<U>& other){
+  mesh_info(const Fractal& other)
+  {
     vert_size = other.verts.size();
-    verts = new U[other.verts.size()];
+    verts = new FType[other.verts.size()];
 
     edge_size = other.edges.size();
-    edges = new std::size_t[other.edges.size()];
+    edges = new IType[other.edges.size()];
 
     face_vert_size = other.faces.face_verts.size();
     face_bound_size = other.faces.face_bounds.size();
-    face_verts = new std::size_t[other.faces.face_verts.size()];
-    face_bounds = new std::size_t[other.faces.face_bounds.size()];
+    face_verts = new IType[other.faces.face_verts.size()];
+    face_bounds = new IType[other.faces.face_bounds.size()];
+
+    face_starts = new IType[other.faces.face_bounds.size()];
+    face_totals = new IType[other.faces.face_bounds.size()];
+
 
     std::copy(std::begin(other.verts), std::end(other.verts), verts);
     std::copy(std::begin(other.edges), std::end(other.edges), edges);
     std::copy(std::begin(other.faces.face_verts), std::end(other.faces.face_verts),
-              face_verts);
+        face_verts);
     std::copy(std::begin(other.faces.face_bounds), std::end(other.faces.face_bounds),
-              face_bounds);
-  } 
-  U *verts;
-  std::size_t *edges;
-  std::size_t *face_verts;
-  std::size_t *face_bounds;
-  std::size_t vert_size, edge_size, face_vert_size, face_bound_size;
+        face_bounds);
+    if (other.faces.face_bounds.size() > 0) {
+      face_starts[0] = 0;
+      for (unsigned int i = 1; i < other.faces.face_bounds.size(); ++i) {
+        face_starts[i] = face_bounds[i - 1];
+      }
+      face_totals[0] = face_bounds[0];
+      for (unsigned int i = 1; i < other.faces.face_bounds.size(); ++i) {
+        face_totals[i] = face_bounds[i] - face_bounds[i - 1];
+      }
+    }
+  }
+  FType* verts;
+  IType* edges;
+  IType* face_verts;
+  IType* face_bounds;
+  IType* face_starts;
+  IType* face_totals;
+  IType vert_size, edge_size, face_vert_size, face_bound_size;
 };
 }

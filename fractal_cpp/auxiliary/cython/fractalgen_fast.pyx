@@ -11,17 +11,13 @@ cdef extern from "generator/fractalgen.h" namespace "frac":
         uint32_t * edges
         uint32_t * face_verts
         uint32_t * face_bounds
-        uint32_t * face_starts
-        uint32_t * face_totals
         uint32_t vert_size, edge_size, face_vert_size, face_bound_size
     mesh_info generateMesh(string filename, unsigned int level)
 
 class FaceList:
-    def __init__(self, vertices, indices, starts, totals):
+    def __init__(self, vertices, indices):
         self.vertices = vertices
         self.indices = indices
-        self.starts = starts
-        self.totals = totals
 
     def __iter__(self):
         return self._iterate()
@@ -47,8 +43,6 @@ def generate_fractal(filename, level):
     cdef view.array edge_array
     cdef view.array face_vert_array
     cdef view.array face_bound_array
-    cdef view.array face_starts_array
-    cdef view.array face_totals_array
 
     facelist = None
 
@@ -61,14 +55,9 @@ def generate_fractal(filename, level):
     if (bla.face_vert_size > 0):
       face_vert_array = <uint32_t[:bla.face_vert_size]> bla.face_verts
       face_bound_array = <uint32_t[:bla.face_bound_size]> bla.face_bounds
-      face_starts_array = <uint32_t[:bla.face_bound_size]> bla.face_starts
-      face_totals_array = <uint32_t[:bla.face_bound_size]> bla.face_totals
-
       face_vert_array.callback_free_data = notify_free
       face_bound_array.callback_free_data = notify_free
-      face_starts_array.callback_free_data = notify_free
-      face_totals_array.callback_free_data = notify_free
-      facelist = FaceList(face_vert_array, face_bound_array, face_starts_array, face_totals_array)
+      facelist = FaceList(face_vert_array, face_bound_array)
 
 
     vert_array.callback_free_data = notify_free

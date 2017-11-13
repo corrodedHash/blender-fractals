@@ -1,5 +1,6 @@
 #pragma once
 
+#include "master/config.h"
 #include <array>
 
 namespace frac {
@@ -16,7 +17,7 @@ struct Terminal {
     EMPTY
   };
 
-  std::array<double, 6> values{};
+  std::array<::frac::FType, 6> values{};
   TerminalType ttype;
 
   public:

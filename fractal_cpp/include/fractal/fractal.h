@@ -6,19 +6,19 @@
 
 namespace frac {
 struct Faces;
-template <typename U> struct Fractal {
-  std::vector<U> verts;
-  std::vector<std::size_t> edges;
+struct Fractal {
+  std::vector<FType> verts;
+  std::vector<IType> edges;
   Faces faces;
 
-  void add_vert(const std::valarray<U>& vert){
+  void add_vert(const std::valarray<FType>& vert){
     verts.insert(std::end(verts), std::begin(vert),
                  std::end(vert));
   }
   std::size_t vert_count(){
     return verts.size() / 3;
   }
-  void add_edge(std::size_t v1, std::size_t v2){
+  void add_edge(IType v1, IType v2){
     edges.push_back(v1);
     edges.push_back(v2);
   }

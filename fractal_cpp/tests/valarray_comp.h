@@ -1,9 +1,10 @@
 #pragma once
+#include "master/config.h"
 #include "catch.hpp"
 #include <valarray>
 #include <cmath>
 
-inline std::string valtostring(const std::valarray<double>& tos){
+inline std::string valtostring(const std::valarray<::frac::FType>& tos){
     std::ostringstream ss;
     ss << "(" << tos[0];
     for (int i = 1; i < tos.size(); ++i){
@@ -13,17 +14,17 @@ inline std::string valtostring(const std::valarray<double>& tos){
     return ss.str();
 }
 
-class ValComp : public Catch::MatcherBase<std::valarray<double>> {
-  std::valarray<double> tocompare;
+class ValComp : public Catch::MatcherBase<std::valarray<::frac::FType>> {
+  std::valarray<::frac::FType> tocompare;
 
   public:
-  ValComp(std::valarray<double> tocompare_)
+  ValComp(std::valarray<::frac::FType> tocompare_)
       : tocompare(tocompare_)
   {
   }
 
   // Performs the test for this matcher
-  bool match(const std::valarray<double>& comparee) const override
+  bool match(const std::valarray<::frac::FType>& comparee) const override
   {
     if (tocompare.size() != comparee.size())
       return false;

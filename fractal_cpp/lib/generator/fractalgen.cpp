@@ -25,11 +25,11 @@ static frac::NonTerminalManager parseGrammar(const std::string& filename)
 }
 
 
-::frac::FractalGen<double> frac::generateFractal(const std::string& filename,
+::frac::FractalGen frac::generateFractal(const std::string& filename,
     unsigned int level)
 {
   NonTerminalManager ntm = parseGrammar(filename);
-  FractalGen<double> myFrac;
+  FractalGen myFrac;
   CommandHandler comhandler(myFrac);
   auto nt_tree = ntm.start->get_tree(level);
   for (auto term: nt_tree) {
@@ -38,16 +38,16 @@ static frac::NonTerminalManager parseGrammar(const std::string& filename)
   return myFrac;
 }
 
-::frac::mesh_info<double> frac::generateMesh(const std::string& filename,
+::frac::mesh_info frac::generateMesh(const std::string& filename,
     unsigned int level)
 {
   NonTerminalManager ntm = parseGrammar(filename);
-  FractalGen<double> myFrac;
+  FractalGen myFrac;
   CommandHandler comhandler(myFrac);
   auto nt_tree = ntm.start->get_tree(level);
   for (auto term: nt_tree) {
     comhandler.handle(term);
   }
-  mesh_info<double> result(myFrac.output());
+  mesh_info result(myFrac.output());
   return result;
 }

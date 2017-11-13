@@ -1,15 +1,11 @@
 #pragma once
+#include "master/config.h"
 #include <valarray>
-#include <functional>
 
 namespace frac {
-template <typename U>
-inline std::valarray<U> cross(const std::valarray<U>& lhs,
-    const std::valarray<U>& rhs);
+std::valarray<FType> cross(const std::valarray<FType>& lhs,
+    const std::valarray<FType>& rhs);
 
-template <typename U>
-inline void axis_rotate(const std::valarray<U>& input,
-    const std::valarray<U>& axis, U degree, std::valarray<U>& res);
+void axis_rotate(const std::valarray<::frac::FType>& input,
+    const std::valarray<::frac::FType>& axis, ::frac::FType degree, std::valarray<::frac::FType>& res);
 }
-
-#include "linalg_helper.tpp"
