@@ -57,6 +57,9 @@ void FractalGen<U>::rotate(const std::array<U, 3>& rotation)
     frac::axis_rotate(rotation_stack.top(), rot_axis, rotation[1], rotation_stack.top());
     frac::axis_rotate(look_at_stack.top(), rot_axis, rotation[1], look_at_stack.top());
   }
+  if (rotation[2] != 0) {
+    frac::axis_rotate(look_at_stack.top(), rotation_stack.top(), rotation[0], look_at_stack.top());
+  }
 }
 
 template <typename U>

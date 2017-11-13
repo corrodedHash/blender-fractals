@@ -8,8 +8,8 @@ class FractalGenTester {
   frac::FractalGen<U> fractalgen;
   std::stack<std::valarray<U>>& get_pos() { return fractalgen.position_stack; };
   std::stack<std::valarray<U>>& get_rot() { return fractalgen.rotation_stack; };
+  std::stack<std::valarray<U>>& get_look() { return fractalgen.look_at_stack; };
   frac::Fractal<U>& get_fractal() { return fractalgen.fractal; };
-  //std::stack<std::valarray<U>>& get_look() { return look_at_stack; };
   //std::stack<std::size_t>& get_verts() { return verts_stack; };
 };
 
@@ -50,16 +50,27 @@ TEST_CASE("circle rot")
 {
   FractalGenTester<double> myfrac;
   CHECK_THAT(std::valarray<double>({ 1, 0, 0 }), ValComp(myfrac.get_rot().top()));
+  CHECK_THAT(std::valarray<double>({ 0, 1, 0 }), ValComp(myfrac.get_look().top()));
 
   myfrac.fractalgen.rotate({ 60, 0, 0 });
+  CHECK_THAT(std::valarray<double>({ 0.5, 0, -0.866025 }), ValComp(myfrac.get_rot().top()));
+  CHECK_THAT(std::valarray<double>({ 0, 1, 0 }), ValComp(myfrac.get_look().top()));
   myfrac.fractalgen.rotate({ 60, 0, 0 });
+  CHECK_THAT(std::valarray<double>({ -0.5, 0, -0.866025 }), ValComp(myfrac.get_rot().top()));
+  CHECK_THAT(std::valarray<double>({ 0, 1, 0 }), ValComp(myfrac.get_look().top()));
   myfrac.fractalgen.rotate({ 60, 0, 0 });
 
   CHECK_THAT(std::valarray<double>({ -1, 0, 0 }), ValComp(myfrac.get_rot().top()));
+  CHECK_THAT(std::valarray<double>({ 0, 1, 0 }), ValComp(myfrac.get_look().top()));
 
   myfrac.fractalgen.rotate({ 60, 0, 0 });
+  CHECK_THAT(std::valarray<double>({ -0.5, 0, 0.866025 }), ValComp(myfrac.get_rot().top()));
+  CHECK_THAT(std::valarray<double>({ 0, 1, 0 }), ValComp(myfrac.get_look().top()));
   myfrac.fractalgen.rotate({ 60, 0, 0 });
+  CHECK_THAT(std::valarray<double>({ 0.5, 0, 0.866025 }), ValComp(myfrac.get_rot().top()));
+  CHECK_THAT(std::valarray<double>({ 0, 1, 0 }), ValComp(myfrac.get_look().top()));
   myfrac.fractalgen.rotate({ 60, 0, 0 });
 
   CHECK_THAT(std::valarray<double>({ 1, 0, 0 }), ValComp(myfrac.get_rot().top()));
+  CHECK_THAT(std::valarray<double>({ 0, 1, 0 }), ValComp(myfrac.get_look().top()));
 }

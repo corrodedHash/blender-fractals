@@ -1,5 +1,17 @@
+#pragma once
 #include "catch.hpp"
 #include <valarray>
+#include <cmath>
+
+inline std::string valtostring(const std::valarray<double>& tos){
+    std::ostringstream ss;
+    ss << "(" << tos[0];
+    for (int i = 1; i < tos.size(); ++i){
+      ss << ", " << tos[i];
+    }
+    ss << ")";
+    return ss.str();
+}
 
 class ValComp : public Catch::MatcherBase<std::valarray<double>> {
   std::valarray<double> tocompare;
@@ -16,7 +28,7 @@ class ValComp : public Catch::MatcherBase<std::valarray<double>> {
     if (tocompare.size() != comparee.size())
       return false;
     for (int i = 0; i < tocompare.size(); ++i)
-      if (tocompare[i] - comparee[i] > 0.00001)
+      if (std::abs(tocompare[i] - comparee[i]) > 0.00001)
         return false;
     return true;
   }
@@ -28,11 +40,7 @@ class ValComp : public Catch::MatcherBase<std::valarray<double>> {
   std::string describe() const override
   {
     std::ostringstream ss;
-    ss << " is about equal to (" << tocompare[0];
-    for (int i = 1; i < tocompare.size(); ++i){
-      ss << ", " << tocompare[i];
-    }
-    ss << ")";
+    ss << " is about equal to " << valtostring(tocompare);
     return ss.str();
   }
 };

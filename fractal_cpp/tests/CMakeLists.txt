@@ -1,4 +1,4 @@
-add_executable(testing main.cpp fractalgen.cpp whole.cpp)
+add_executable(testing main.cpp fractalgen.cpp whole.cpp linalg.cpp)
 
 target_link_libraries(testing corelib)
 

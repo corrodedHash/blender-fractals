@@ -12,22 +12,25 @@ static std::valarray<U> cross(const std::valarray<U>& lhs,
 }
 
 template <typename U>
-static inline void axis_rotate_opt(const std::valarray<U>& input,
+static inline void axis_rotate(const std::valarray<U>& input,
     const std::valarray<U>& axis, U degree, std::valarray<U>& res)
 {
   static const U sqrt3_2 = static_cast<U>(0.5) * std::sqrt(static_cast<U>(3));
   static const U rad_degree_constant = static_cast<U>(4) * std::atan(static_cast<U>(1)) / static_cast<U>(180);
+  std::array<U, 3> tmp;
 
   if (degree == static_cast<U>(90)) {
-    res[0] = axis[0] * axis[0] * input[0] + (axis[0] * axis[1] - axis[2]) * input[1] + (axis[0] * axis[2] + axis[1]) * input[2];
-    res[1] = (axis[0] * axis[1] + axis[2]) * input[0] + (axis[1] * axis[1]) * input[1] + (axis[1] * axis[2] - axis[0]) * input[2];
-    res[2] = (axis[0] * axis[2] - axis[1]) * input[0] + (axis[1] * axis[2] + axis[0]) * input[1] + (axis[2] * axis[2]) * input[2];
+    tmp[0] = axis[0] * axis[0] * input[0] + (axis[0] * axis[1] - axis[2]) * input[1] + (axis[0] * axis[2] + axis[1]) * input[2];
+    tmp[1] = (axis[0] * axis[1] + axis[2]) * input[0] + (axis[1] * axis[1]) * input[1] + (axis[1] * axis[2] - axis[0]) * input[2];
+    tmp[2] = (axis[0] * axis[2] - axis[1]) * input[0] + (axis[1] * axis[2] + axis[0]) * input[1] + (axis[2] * axis[2]) * input[2];
+    std::copy(std::begin(tmp), std::end(tmp), std::begin(res));
     return;
   }
   if (degree == static_cast<U>(-90)) {
-    res[0] = (axis[0] * axis[0]) * input[0] + (axis[0] * axis[1] + axis[2]) * input[1] + (axis[0] * axis[2] - axis[1]) * input[2];
-    res[1] = (axis[0] * axis[1] - axis[2]) * input[0] + (axis[1] * axis[1]) * input[1] + (axis[1] * axis[2] + axis[0]) * input[2];
-    res[2] = (axis[0] * axis[2] + axis[1]) * input[0] + (axis[1] * axis[2] - axis[0]) * input[1] + (axis[2] * axis[2]) * input[2];
+    tmp[0] = (axis[0] * axis[0]) * input[0] + (axis[0] * axis[1] + axis[2]) * input[1] + (axis[0] * axis[2] - axis[1]) * input[2];
+    tmp[1] = (axis[0] * axis[1] - axis[2]) * input[0] + (axis[1] * axis[1]) * input[1] + (axis[1] * axis[2] + axis[0]) * input[2];
+    tmp[2] = (axis[0] * axis[2] + axis[1]) * input[0] + (axis[1] * axis[2] - axis[0]) * input[1] + (axis[2] * axis[2]) * input[2];
+    std::copy(std::begin(tmp), std::end(tmp), std::begin(res));
     return;
   }
 
@@ -45,19 +48,9 @@ static inline void axis_rotate_opt(const std::valarray<U>& input,
   }
 
   const U c1 = static_cast<U>(1) - c;
-  res[0] = (c + axis[0] * axis[0] * c1) * input[0] + (axis[0] * axis[1] * c1 - axis[2] * s) * input[1] + (axis[0] * axis[2] * c1 + axis[1] * s) * input[2];
-  res[1] = (axis[0] * axis[1] * c1 + axis[2] * s) * input[0] + (c + axis[1] * axis[1] * c1) * input[1] + (axis[1] * axis[2] * c1 - axis[0] * s) * input[2];
-  res[2] = (axis[0] * axis[2] * c1 - axis[1] * s) * input[0] + (axis[1] * axis[2] * c1 + axis[0] * s) * input[1] + (c + axis[2] * axis[2] * c1) * input[2];
+  tmp[0] = (c + axis[0] * axis[0] * c1) * input[0] + (axis[0] * axis[1] * c1 - axis[2] * s) * input[1] + (axis[0] * axis[2] * c1 + axis[1] * s) * input[2];
+  tmp[1] = (axis[0] * axis[1] * c1 + axis[2] * s) * input[0] + (c + axis[1] * axis[1] * c1) * input[1] + (axis[1] * axis[2] * c1 - axis[0] * s) * input[2];
+  tmp[2] = (axis[0] * axis[2] * c1 - axis[1] * s) * input[0] + (axis[1] * axis[2] * c1 + axis[0] * s) * input[1] + (c + axis[2] * axis[2] * c1) * input[2];
+  std::copy(std::begin(tmp), std::end(tmp), std::begin(res));
 }
-
-const double rad_degree_constant = (4. * std::atan(1.)) / 180.;
-
-template <typename U>
-static inline void axis_rotate_bad(const std::valarray<U>& input,
-    const std::valarray<U>& axis, U degree, std::valarray<U>& res)
-{
-  res = axis * (axis * input) + std::cos(degree * rad_degree_constant) * cross(cross(axis, input), axis) + std::sin(degree * rad_degree_constant) * cross(axis, input);
-}
-
-
 }
