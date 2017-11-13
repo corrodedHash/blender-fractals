@@ -31,3 +31,6 @@ Then, just iterate away.<br>
 
 Who provided the parser generator I used, which made this project a thousand times easier.<br>
 Their [project](http://www.antlr.org/).
+
+## Improvements on the internal axis_rotation thanks to someone much smarter than me
+Look at the [benchmarks](docs/axis_rotate.txt), that is almost a 10x speed-up.
