@@ -2,11 +2,13 @@
 
 #include "master/config.h"
 #include <array>
+#include <memory>
+#include <random>
 
 namespace frac {
 struct Terminal {
   public:
-  enum TerminalType {
+  enum class TerminalType {
     ROTATE_TERM,
     MOVE_TERM,
     DRAW_TERM,
@@ -20,9 +22,12 @@ struct Terminal {
   std::array<::frac::FType, 6> values{};
   TerminalType ttype;
 
-  public:
-  Terminal(TerminalType _ttype)
-      : ttype(_ttype)
+  Terminal()
+      : ttype(Terminal::TerminalType::EMPTY)
+  {
+  }
+  Terminal(TerminalType ttype_)
+      : ttype(ttype_)
   {
   }
   bool operator==(const Terminal& other) const

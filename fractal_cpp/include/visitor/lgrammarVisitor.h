@@ -14,6 +14,10 @@ namespace frac {
 struct NonTerminalManager {
   ::frac::NonTerminal* start;
   std::vector<std::shared_ptr<::frac::NonTerminal>> nts;
+
+  Terminal create_terminal(::frac::Terminal::TerminalType ttype){
+    return Terminal(ttype);
+  }
 };
 }
 namespace antlr {
@@ -66,7 +70,7 @@ class lgrammarVisitor : public lsystemParserBaseVisitor {
 
   antlrcpp::Any visitRotation(lsystemParser::RotationContext* ctx) override
   {
-    ::frac::Terminal result(::frac::Terminal::ROTATE_TERM);
+    ::frac::Terminal result(ntm.create_terminal(::frac::Terminal::TerminalType::ROTATE_TERM));
     result.values[0] = 0;
     result.values[1] = 0;
     result.values[2] = 0;
@@ -98,7 +102,7 @@ class lgrammarVisitor : public lsystemParserBaseVisitor {
 
   antlrcpp::Any visitMove(lsystemParser::MoveContext* ctx) override
   {
-    ::frac::Terminal result(::frac::Terminal::MOVE_TERM);
+    ::frac::Terminal result(ntm.create_terminal(::frac::Terminal::TerminalType::MOVE_TERM));
     std::array<::frac::FType, 2> rand_number;
     rand_number = visitRand_entry(dynamic_cast<lsystemParser::Rand_entryContext*>(ctx->rand_entry()));
     result.values[0] = rand_number[0];
@@ -108,7 +112,7 @@ class lgrammarVisitor : public lsystemParserBaseVisitor {
 
   antlrcpp::Any visitDraw(lsystemParser::DrawContext* ctx) override
   {
-    ::frac::Terminal result(::frac::Terminal::DRAW_TERM);
+    ::frac::Terminal result(ntm.create_terminal(::frac::Terminal::TerminalType::DRAW_TERM));
     std::array<::frac::FType, 2> rand_number;
     rand_number = visitRand_entry(dynamic_cast<lsystemParser::Rand_entryContext*>(ctx->rand_entry()));
     result.values[0] = rand_number[0];
@@ -118,7 +122,7 @@ class lgrammarVisitor : public lsystemParserBaseVisitor {
 
   antlrcpp::Any visitFace(lsystemParser::FaceContext* ctx) override
   {
-    ::frac::Terminal result(::frac::Terminal::FACE_TERM);
+    ::frac::Terminal result(ntm.create_terminal(::frac::Terminal::TerminalType::FACE_TERM));
     std::array<::frac::FType, 2> rand_number;
     rand_number = visitRand_entry(dynamic_cast<lsystemParser::Rand_entryContext*>(ctx->rand_entry()));
     result.values[0] = rand_number[0];
@@ -128,16 +132,16 @@ class lgrammarVisitor : public lsystemParserBaseVisitor {
 
   antlrcpp::Any visitEndface(lsystemParser::EndfaceContext* ctx) override
   {
-    return ::frac::Terminal(::frac::Terminal::ENDFACE_TERM);
+    return ntm.create_terminal(::frac::Terminal::TerminalType::ENDFACE_TERM);
   }
   antlrcpp::Any visitPush(lsystemParser::PushContext* ctx) override
   {
-    return ::frac::Terminal(::frac::Terminal::PUSH_TERM);
+    return ntm.create_terminal(::frac::Terminal::TerminalType::PUSH_TERM);
   }
 
   antlrcpp::Any visitPop(lsystemParser::PopContext* ctx) override
   {
-    return ::frac::Terminal(::frac::Terminal::POP_TERM);
+    return ntm.create_terminal(::frac::Terminal::TerminalType::POP_TERM);
   }
 
   antlrcpp::Any visitTerm(lsystemParser::TermContext* ctx) override

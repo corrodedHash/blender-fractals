@@ -27,7 +27,7 @@ class NTHolder {
   void appendNT(NonTerminal* nt)
   {
     list_NT.push_back(nt);
-    list_T.push_back(Terminal(Terminal::EMPTY));
+    list_T.push_back(Terminal());
   }
   void appendT(Terminal&& t)
   {

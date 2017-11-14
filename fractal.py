@@ -117,6 +117,6 @@ class Fractal_add_object(bpy.types.Operator):
 
     def execute(self, context):
         """Create the fractal"""
-        _create_fractal_fast(self, context)
+        _create_fractal(self, context)
 
         return {'FINISHED'}

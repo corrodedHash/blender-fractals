@@ -41,6 +41,17 @@ struct mesh_info {
       }
     }
   }
+
+  // We dont want an automatic destructor, as this is supposed to be used and cleaned up by python
+  // This function is just for testing
+  void clean_up(){
+    delete[] verts;
+    delete[] edges;
+    delete[] face_verts;
+    delete[] face_bounds;
+    delete[] face_starts;
+    delete[] face_totals;
+  }
   FType* verts;
   IType* edges;
   IType* face_verts;
@@ -48,5 +59,6 @@ struct mesh_info {
   IType* face_starts;
   IType* face_totals;
   IType vert_size, edge_size, face_vert_size, face_bound_size;
+
 };
 }
