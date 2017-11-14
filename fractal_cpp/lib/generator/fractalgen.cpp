@@ -38,7 +38,7 @@ static frac::NonTerminalManager parseGrammar(const std::string& filename)
   return myFrac;
 }
 
-::frac::mesh_info frac::generateMesh(const std::string& filename,
+::frac::MeshInfo frac::generateMesh(const std::string& filename,
     unsigned int level)
 {
   NonTerminalManager ntm = parseGrammar(filename);
@@ -48,6 +48,6 @@ static frac::NonTerminalManager parseGrammar(const std::string& filename)
   for (auto term: nt_tree) {
     comhandler.handle(term);
   }
-  mesh_info result(myFrac.output());
+  MeshInfo result(myFrac.output());
   return result;
 }

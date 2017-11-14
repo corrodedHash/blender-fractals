@@ -6,7 +6,7 @@ from cython cimport view
 from cpython cimport PyObject, Py_INCREF
 
 cdef extern from "generator/fractalgen.h" namespace "frac":
-    cdef cppclass mesh_info:
+    cdef cppclass MeshInfo:
         float* verts
         uint32_t * edges
         uint32_t * face_verts
@@ -14,7 +14,7 @@ cdef extern from "generator/fractalgen.h" namespace "frac":
         uint32_t * face_starts
         uint32_t * face_totals
         uint32_t vert_size, edge_size, face_vert_size, face_bound_size
-    mesh_info generateMesh(string filename, unsigned int level)
+    MeshInfo generateMesh(string filename, unsigned int level)
 
 class FaceList:
     def __init__(self, vertices, indices, starts, totals):
@@ -42,7 +42,7 @@ cdef void notify_free(void* ptr):
 
 def generate_fractal(filename, level):
     cdef string cpp_file = bytes(filename, "utf8")
-    cdef mesh_info bla = generateMesh(cpp_file, level)
+    cdef MeshInfo bla = generateMesh(cpp_file, level)
     cdef view.array vert_array = <float[:bla.vert_size // 3, :3]> bla.verts
     cdef view.array edge_array
     cdef view.array face_vert_array

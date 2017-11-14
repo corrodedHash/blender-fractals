@@ -5,9 +5,9 @@
 #include <cstdint>
 
 namespace frac {
-struct mesh_info {
-  mesh_info() = default;
-  mesh_info(const Fractal& other)
+struct MeshInfo {
+  MeshInfo() = default;
+  MeshInfo(const Fractal& other)
   {
     vert_size = other.verts.size();
     verts = new FType[other.verts.size()];

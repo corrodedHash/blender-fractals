@@ -7,7 +7,7 @@
 #include <stack>
 #include <valarray>
 
-#include "fractal/mesh_info.h"
+#include "fractal/meshinfo.h"
 #include "generator/fractaltimer.h"
 #include "visitor/literal.h"
 
@@ -44,13 +44,13 @@ class FractalGen {
     fractal.add_vert(position_stack.top());
   }
 
-  mesh_info output() { return mesh_info(fractal); };
+  MeshInfo output() { return MeshInfo(fractal); };
 };
 
 FractalGen generateFractal(const std::string& filename,
     unsigned int level);
 
-mesh_info generateMesh(const std::string& filename,
+MeshInfo generateMesh(const std::string& filename,
     unsigned int level);
 
 }
