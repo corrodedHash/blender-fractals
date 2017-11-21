@@ -1,0 +1,1 @@
+const std::string grammarpath = "@CMAKE_SOURCE_DIR@/../examples";
