@@ -30,6 +30,7 @@ file(DOWNLOAD ${ANTLR4CPP_TOOL_URL} ${ANTLR4CPP_TOOL_LOCATION}
   TLS_VERIFY ON)
 add_custom_target(antlrtool DEPENDS ${ANTLR4CPP_TOOL_LOCATION})
 
+if (MSVC)
 ExternalProject_ADD(
   #--External-project-name------
   antlr4cpp
@@ -61,6 +62,39 @@ ExternalProject_ADD(
   #--Install step---------------
   # INSTALL_COMMAND    ""
 )
+else()
+ExternalProject_ADD(
+  #--External-project-name------
+  antlr4cpp
+  #--Depend-on-antrl-tool-----------
+  DEPENDS antlrtool
+  #--Core-directories-----------
+  PREFIX             ${ANTLR4CPP_EXTERNAL_ROOT}
+  #--Download step--------------
+  GIT_REPOSITORY     ${ANTLR4CPP_EXTERNAL_REPO}
+  GIT_SHALLOW 1
+  # GIT_TAG          ${ANTLR4CPP_EXTERNAL_TAG}
+  TIMEOUT            10
+  LOG_DOWNLOAD       ON
+  #--Update step----------
+  #UPDATE_COMMAND     ${GIT_EXECUTABLE} pull
+  UPDATE_COMMAND ""
+  #--Patch step----------
+  # PATCH_COMMAND sh -c "cp <SOURCE_DIR>/scripts/CMakeLists.txt <SOURCE_DIR>"
+  #--Configure step-------------
+  SOURCE_SUBDIR runtime/Cpp
+  CMAKE_ARGS -DCMAKE_CXX_FLAGS=-fPIC -DCMAKE_BUILD_TYPE=${DCMAKE_BUILD_TYPE} -DANTLR4CPP_JAR_LOCATION=${ANTLR4CPP_TOOL_LOCATION} -DBUILD_SHARED_LIBS=ON -BUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+  LOG_CONFIGURE ON
+  #--Build step-----------------
+  BUILD_COMMAND ${CMAKE_MAKE_PROGRAM} ALL_BUILD INSTALL
+  LOG_BUILD ON
+  #--Install step---------------
+  # INSTALL_COMMAND    ""
+  # INSTALL_DIR ${CMAKE_BINARY_DIR}/
+  #--Install step---------------
+  # INSTALL_COMMAND    ""
+)
+endif()
 
 ExternalProject_Get_Property(antlr4cpp INSTALL_DIR)
 
