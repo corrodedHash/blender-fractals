@@ -3,16 +3,25 @@ cmake_minimum_required(VERSION 3.3.2)
 
 # Set compiler flags
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
-string (APPEND CMAKE_CXX_FLAGS " -std=c++1z")
-string (APPEND CMAKE_CXX_FLAGS " -fPIC")
-string (APPEND CMAKE_CXX_FLAGS " -fno-omit-frame-pointer")
+
+if(MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++latest /W4")
+    # Default debug flags are OK 
+    set(CMAKE_CXX_FLAGS_RELEASE "{CMAKE_CXX_FLAGS_RELEASE} /O2")
+else()
+    string (APPEND CMAKE_CXX_FLAGS " -std=c++1z")
+    string (APPEND CMAKE_CXX_FLAGS " -fPIC")
+    string (APPEND CMAKE_CXX_FLAGS " -fno-omit-frame-pointer")
 #string (APPEND CMAKE_CXX_FLAGS " -flto=thin")
-string (APPEND CMAKE_CXX_FLAGS_DEBUG " -fsanitize=address")
-string (APPEND CMAKE_CXX_FLAGS_RELEASE " -Ofast -mtune=native -march=native")
+    string (APPEND CMAKE_CXX_FLAGS_DEBUG " -fsanitize=address")
+    string (APPEND CMAKE_CXX_FLAGS_RELEASE " -Ofast -mtune=native -march=native")
+
+endif()
 
 # Set cache options
-set(ENABLE_TESTS OFF CACHE BOOL "Enable tests")
-set(ENABLE_BENCHMARKS OFF CACHE BOOL "Enable benchmarks")
+set(FRAC_ENABLE_TESTS OFF CACHE BOOL "Enable tests")
+set(FRAC_ENABLE_BENCHMARKS OFF CACHE BOOL "Enable benchmarks")
+set(FRAC_GENERATE_CYTHON ON CACHE BOOL "Generate the cython from the .pyx file, otherwise supply auxiliary/cython/fractalgen.cpp")
 
 # Append system wide include directories
 include_directories("${CMAKE_SOURCE_DIR}/include")
@@ -26,7 +35,10 @@ antlr4cpp_process_grammar(fractal_parse antlr
   ${CMAKE_SOURCE_DIR}/auxiliary/parsing/lsystemParser.g4)
 include_directories(${antlr4cpp_include_dirs_antlr})
 
-find_package(Cython REQUIRED)
+# Use cython
+if (FRAC_GENERATE_CYTHON)
+  find_package(Cython REQUIRED)
+endif()
 
 ### END SETUP ###
 
@@ -34,12 +46,12 @@ add_subdirectory(auxiliary)
 
 add_subdirectory(lib)
 
-if (ENABLE_TESTS)
+if (FRAC_ENABLE_TESTS)
   enable_testing()
   add_subdirectory(tests)
 endif()
 
-if (ENABLE_BENCHMARKS)
+if (FRAC_ENABLE_BENCHMARKS)
   include( "${CMAKE_SOURCE_DIR}/cmake/ExternalGoogleBenchmarks.cmake" )
   add_subdirectory(benchmarks)
 endif()
