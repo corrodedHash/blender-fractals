@@ -42,6 +42,8 @@ if (FRAC_GENERATE_CYTHON)
   find_package(Cython REQUIRED)
 endif()
 
+find_package(PythonLibs 3.6 REQUIRED)
+
 ### END SETUP ###
 
 add_subdirectory(auxiliary)
@@ -63,7 +65,7 @@ endif()
 # Compile main output
 add_library(fractalgen SHARED $<TARGET_OBJECTS:aux_python_bridge>)
 
-target_link_libraries(fractalgen python3.6m lib_core)
+target_link_libraries(fractalgen ${PYTHON_LIBRARIES} lib_core)
 
 target_compile_options(fractalgen PUBLIC -pthread -Wno-unused-result -Wsign-compare -DNDEBUG -g
   -fwrapv -O3 -Wall -march=x86-64 -mtune=generic -O2 -pipe
