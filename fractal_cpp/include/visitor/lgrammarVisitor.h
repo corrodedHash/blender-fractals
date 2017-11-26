@@ -12,7 +12,7 @@
 
 namespace frac {
 struct NonTerminalManager {
-  ::frac::NonTerminal* start;
+  ::frac::NonTerminal* start = 0; 
   std::vector<std::shared_ptr<::frac::NonTerminal>> nts;
 
   Terminal create_terminal(::frac::Terminal::TerminalType ttype){
@@ -71,8 +71,8 @@ class lgrammarVisitor : public lsystemParserBaseVisitor {
   antlrcpp::Any visitRotation(lsystemParser::RotationContext* ctx) override
   {
     ::frac::Terminal result(ntm.create_terminal(::frac::Terminal::TerminalType::ROTATE_TERM));
-    result.values[0] = 0;
-    result.values[1] = 0;
+    result.values[0] = 90;
+    result.values[1] = 90;
     result.values[2] = 0;
     std::array<::frac::FType, 2> rand_number;
     switch (ctx->rand_entry().size()) {
@@ -103,7 +103,9 @@ class lgrammarVisitor : public lsystemParserBaseVisitor {
   antlrcpp::Any visitMove(lsystemParser::MoveContext* ctx) override
   {
     ::frac::Terminal result(ntm.create_terminal(::frac::Terminal::TerminalType::MOVE_TERM));
-    std::array<::frac::FType, 2> rand_number;
+    std::array<::frac::FType, 2> rand_number = {1, 0};
+    if (ctx->rand_entry() == 0)
+      return result;
     rand_number = visitRand_entry(dynamic_cast<lsystemParser::Rand_entryContext*>(ctx->rand_entry()));
     result.values[0] = rand_number[0];
     result.values[1] = rand_number[1];
@@ -113,7 +115,9 @@ class lgrammarVisitor : public lsystemParserBaseVisitor {
   antlrcpp::Any visitDraw(lsystemParser::DrawContext* ctx) override
   {
     ::frac::Terminal result(ntm.create_terminal(::frac::Terminal::TerminalType::DRAW_TERM));
-    std::array<::frac::FType, 2> rand_number;
+    std::array<::frac::FType, 2> rand_number = {1, 0};
+    if (ctx->rand_entry() == 0)
+      return result;
     rand_number = visitRand_entry(dynamic_cast<lsystemParser::Rand_entryContext*>(ctx->rand_entry()));
     result.values[0] = rand_number[0];
     result.values[1] = rand_number[1];
@@ -123,7 +127,9 @@ class lgrammarVisitor : public lsystemParserBaseVisitor {
   antlrcpp::Any visitFace(lsystemParser::FaceContext* ctx) override
   {
     ::frac::Terminal result(ntm.create_terminal(::frac::Terminal::TerminalType::FACE_TERM));
-    std::array<::frac::FType, 2> rand_number;
+    std::array<::frac::FType, 2> rand_number = {1, 0};
+    if (ctx->rand_entry() == 0)
+      return result;
     rand_number = visitRand_entry(dynamic_cast<lsystemParser::Rand_entryContext*>(ctx->rand_entry()));
     result.values[0] = rand_number[0];
     result.values[1] = rand_number[1];

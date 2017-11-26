@@ -4,5 +4,5 @@ add_subdirectory(visitor)
 
 add_library(lib_core STATIC $<TARGET_OBJECTS:aux_parsing> ${LIB_SRC_FILES})
 
-target_link_libraries(lib_core libantlr4-runtime.a)
+target_link_libraries(lib_core antlr4-runtime)
 add_dependencies(lib_core antlr4cpp)

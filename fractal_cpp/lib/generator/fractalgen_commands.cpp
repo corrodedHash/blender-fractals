@@ -70,6 +70,9 @@ void FractalGen::push()
 void FractalGen::pop()
 {
   endface();
+  if (rotation_stack.size() <= 1){
+    throw std::runtime_error("Tried to pop empty stack");
+  }
   position_stack.pop();
   rotation_stack.pop();
   look_at_stack.pop();

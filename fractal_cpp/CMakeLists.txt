@@ -5,12 +5,18 @@ cmake_minimum_required(VERSION 3.3.2)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 if(MSVC)
+
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++latest /W4")
     # Need to make Visual C++ conform standard
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Ze")
     # Default debug flags are OK 
-    set(CMAKE_CXX_FLAGS_RELEASE "{CMAKE_CXX_FLAGS_RELEASE} /O2")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2")
 else()
+
+  if (FRAC_ENABLE_FUZZER)
+      string( APPEND CMAKE_CXX_FLAGS " -fsanitize-coverage=trace-pc-guard -fsanitize=address")
+    endif()
+    string (APPEND CMAKE_CXX_FLAGS " -fcolor-diagnostics")
     string (APPEND CMAKE_CXX_FLAGS " -std=c++1z")
     string (APPEND CMAKE_CXX_FLAGS " -fPIC")
     string (APPEND CMAKE_CXX_FLAGS " -fno-omit-frame-pointer")
@@ -22,6 +28,8 @@ endif()
 
 # Set cache options
 set(FRAC_ENABLE_TESTS OFF CACHE BOOL "Enable tests")
+set(FRAC_ENABLE_PYTHON ON CACHE BOOL "Build the python module")
+set(FRAC_ENABLE_FUZZER OFF CACHE BOOL "Enable fuzzing")
 set(FRAC_ENABLE_BENCHMARKS OFF CACHE BOOL "Enable benchmarks")
 set(FRAC_GENERATE_CYTHON ON CACHE BOOL "Generate the cython from the .pyx file, otherwise supply auxiliary/cython/fractalgen.cpp")
 
@@ -58,9 +66,15 @@ if (FRAC_ENABLE_BENCHMARKS)
   add_subdirectory(benchmarks)
 endif()
 
+if (FRAC_ENABLE_FUZZER)
+  add_subdirectory(fuzzer)
+endif()
+
 ### END SOURCE FILES ###
 
 # Compile main output
+
+if (FRAC_ENABLE_PYTHON)
 add_library(fractalgen SHARED $<TARGET_OBJECTS:aux_python_bridge>)
 
 target_link_libraries(fractalgen python3.6m lib_core)
@@ -71,6 +85,7 @@ target_compile_options(fractalgen PUBLIC -pthread -Wno-unused-result -Wsign-comp
 
 set_target_properties(fractalgen PROPERTIES PREFIX "")
 set_target_properties(fractalgen PROPERTIES OUTPUT_NAME "fractalgen")
+endif()
 
 # END COMPILING
 

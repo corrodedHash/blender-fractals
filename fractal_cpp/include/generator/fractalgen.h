@@ -50,6 +50,9 @@ class FractalGen {
 FractalGen generateFractal(const std::string& filename,
     unsigned int level);
 
+FractalGen generateFractal(const char data[], size_t size,
+    unsigned int level);
+
 MeshInfo generateMesh(const std::string& filename,
     unsigned int level);
 
