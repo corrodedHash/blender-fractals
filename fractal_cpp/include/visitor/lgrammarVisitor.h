@@ -258,6 +258,11 @@ class lgrammarVisitor : public lsystemParserBaseVisitor {
   antlrcpp::Any visitCode(lsystemParser::CodeContext* ctx) override
   {
     visitChildren(ctx);
+    for (auto nonterm: ntm.nts){
+      if (nonterm->trans.size() == 0){
+        throw std::runtime_error("Created empty not-terminal");
+      }
+    }
     return ntm;
   }
 };
