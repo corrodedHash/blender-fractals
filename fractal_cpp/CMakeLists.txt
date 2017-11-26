@@ -95,7 +95,7 @@ endif()
 # END COMPILING
 
 # Add clang-tidy target
-add_custom_target(tidy COMMAND python2 /usr/share/clang/run-clang-tidy.py "-header-filter=-benchmark.h" "-checks=bugprone-*,clang-analyzer-*,misc-*,modernize-*,performance-*,readability-*" > tidy.txt DEPENDS corelib)
+add_custom_target(tidy COMMAND python2 /usr/share/clang/run-clang-tidy.py "-header-filter=-benchmark.h" "-checks=bugprone-*,clang-analyzer-*,misc-*,modernize-*,performance-*,readability-*" > tidy.txt DEPENDS lib_core)
 
 # Add doxygen target
 find_package(Doxygen)
