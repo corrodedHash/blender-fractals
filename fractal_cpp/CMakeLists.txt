@@ -15,6 +15,7 @@ else()
 
   if (FRAC_ENABLE_FUZZER)
       string( APPEND CMAKE_CXX_FLAGS " -fsanitize-coverage=trace-pc-guard -fsanitize=address")
+      string( APPEND CMAKE_CXX_FLAGS " -fprofile-instr-generate -fcoverage-mapping")
     endif()
     string (APPEND CMAKE_CXX_FLAGS " -fcolor-diagnostics")
     string (APPEND CMAKE_CXX_FLAGS " -std=c++1z")
