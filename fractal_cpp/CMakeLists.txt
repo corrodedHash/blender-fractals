@@ -6,24 +6,28 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 if(MSVC)
 
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++latest /W4")
-    # Need to make Visual C++ conform standard
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Ze")
-    # Default debug flags are OK 
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++latest /W4")
+  # Need to make Visual C++ conform standard
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Ze")
+  # Default debug flags are OK
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2")
 else()
 
   if (FRAC_ENABLE_FUZZER)
-      string( APPEND CMAKE_CXX_FLAGS " -fsanitize-coverage=trace-pc-guard -fsanitize=address")
-      string( APPEND CMAKE_CXX_FLAGS " -fprofile-instr-generate -fcoverage-mapping")
-    endif()
+    string( APPEND CMAKE_CXX_FLAGS " -fsanitize-coverage=trace-pc-guard -fsanitize=address")
+    string( APPEND CMAKE_CXX_FLAGS " -fprofile-instr-generate -fcoverage-mapping")
+  endif()
+  if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     string (APPEND CMAKE_CXX_FLAGS " -fcolor-diagnostics")
-    string (APPEND CMAKE_CXX_FLAGS " -std=c++1z")
-    string (APPEND CMAKE_CXX_FLAGS " -fPIC")
-    string (APPEND CMAKE_CXX_FLAGS " -fno-omit-frame-pointer")
-#string (APPEND CMAKE_CXX_FLAGS " -flto=thin")
-    string (APPEND CMAKE_CXX_FLAGS_DEBUG " -fsanitize=address")
-    string (APPEND CMAKE_CXX_FLAGS_RELEASE " -Ofast -mtune=native -march=native")
+  else()
+    message(STATUS "Not compiling with clang, disabling colored diagnostics")
+  endif()
+  string (APPEND CMAKE_CXX_FLAGS " -std=c++1z")
+  string (APPEND CMAKE_CXX_FLAGS " -fPIC")
+  string (APPEND CMAKE_CXX_FLAGS " -fno-omit-frame-pointer")
+  #string (APPEND CMAKE_CXX_FLAGS " -flto=thin")
+  string (APPEND CMAKE_CXX_FLAGS_DEBUG " -fsanitize=address")
+  string (APPEND CMAKE_CXX_FLAGS_RELEASE " -Ofast -mtune=native -march=native")
 
 endif()
 
@@ -76,16 +80,16 @@ endif()
 # Compile main output
 
 if (FRAC_ENABLE_PYTHON)
-add_library(fractalgen SHARED $<TARGET_OBJECTS:aux_python_bridge>)
+  add_library(fractalgen SHARED $<TARGET_OBJECTS:aux_python_bridge>)
 
-target_link_libraries(fractalgen python3.6m lib_core)
+  target_link_libraries(fractalgen python3.6m lib_core)
 
-target_compile_options(fractalgen PUBLIC -pthread -Wno-unused-result -Wsign-compare -DNDEBUG -g
-  -fwrapv -O3 -Wall -march=x86-64 -mtune=generic -O2 -pipe
-  -fstack-protector-strong -fno-plt)
+  target_compile_options(fractalgen PUBLIC -pthread -Wno-unused-result -Wsign-compare -DNDEBUG -g
+    -fwrapv -O3 -Wall -march=x86-64 -mtune=generic -O2 -pipe
+    -fstack-protector-strong -fno-plt)
 
-set_target_properties(fractalgen PROPERTIES PREFIX "")
-set_target_properties(fractalgen PROPERTIES OUTPUT_NAME "fractalgen")
+  set_target_properties(fractalgen PROPERTIES PREFIX "")
+  set_target_properties(fractalgen PROPERTIES OUTPUT_NAME "fractalgen")
 endif()
 
 # END COMPILING
@@ -96,11 +100,11 @@ add_custom_target(tidy COMMAND python2 /usr/share/clang/run-clang-tidy.py "-head
 # Add doxygen target
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
-add_custom_target(doc
-${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
-WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-COMMENT "Generating API documentation with Doxygen" VERBATIM
-)
+  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
+  add_custom_target(doc
+    ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMENT "Generating API documentation with Doxygen" VERBATIM
+    )
 endif(DOXYGEN_FOUND)
 # END SPECIAL TARGETS
