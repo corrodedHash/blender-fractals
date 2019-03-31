@@ -1,2 +1,3 @@
-__pycache__/
-fractal_cpp/build
+fractal_cpp/auxiliary/parsing/
+fractal_cpp/build/
+fractal_cpp/build_*/
