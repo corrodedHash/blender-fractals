@@ -82,7 +82,7 @@ endif()
 if (FRAC_ENABLE_PYTHON)
   add_library(fractalgen SHARED $<TARGET_OBJECTS:aux_python_bridge>)
 
-  target_link_libraries(fractalgen python3.6m lib_core)
+  target_link_libraries(fractalgen python3.7m lib_core)
 
   target_compile_options(fractalgen PUBLIC -pthread -Wno-unused-result -Wsign-compare -DNDEBUG -g
     -fwrapv -O3 -Wall -march=x86-64 -mtune=generic -O2 -pipe
