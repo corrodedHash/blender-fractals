@@ -6,5 +6,5 @@ if (FRAC_GENERATE_CYTHON)
 endif()
 
 add_library(aux_python_bridge OBJECT fractalgen.cpp)
-target_include_directories(aux_python_bridge PUBLIC /usr/include/python3.7m)
+target_include_directories(aux_python_bridge PUBLIC ${Python_INCLUDE_DIRS})
 

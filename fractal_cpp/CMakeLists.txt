@@ -50,6 +50,7 @@ antlr4cpp_process_grammar(fractal_parse antlr
   ${CMAKE_SOURCE_DIR}/auxiliary/parsing/lsystemParser.g4)
 include_directories(${antlr4cpp_include_dirs_antlr})
 
+find_package(Python COMPONENTS Development REQUIRED)
 # Use cython
 if (FRAC_GENERATE_CYTHON)
   find_package(Cython REQUIRED)
@@ -82,7 +83,7 @@ endif()
 if (FRAC_ENABLE_PYTHON)
   add_library(fractalgen SHARED $<TARGET_OBJECTS:aux_python_bridge>)
 
-  target_link_libraries(fractalgen python3.7m lib_core)
+  target_link_libraries(fractalgen Python::Python lib_core)
 
   target_compile_options(fractalgen PUBLIC -pthread -Wno-unused-result -Wsign-compare -DNDEBUG -g
     -fwrapv -O3 -Wall -march=x86-64 -mtune=generic -O2 -pipe
