@@ -6,8 +6,7 @@
   yy::parser::symbol_type yylex ()
 %}
 
-%option c++
-%option noyywrap
+%option noyywrap nounput noinput batch debug
 
 %%
 [ \t\n] { return yy::parser::make_SPACE(); }

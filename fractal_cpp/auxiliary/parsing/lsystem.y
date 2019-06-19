@@ -10,6 +10,12 @@
 %define api.value.type variant
 %define parse.assert
 
+%code {
+# define YY_DECL \
+  yy::parser::symbol_type yylex ()
+YY_DECL;
+}
+
 %token <double> FLOAT
 %token <std::string> NT
 %token <std::string> DEFINE
@@ -128,6 +134,9 @@ rand_entry:
 
 {};
 %%
+void yy::parser::error(const std::string& hi){
+  std::cout << hi << '\n';
+}
 
 int main(int, char**) {
   yy::parser parse;
