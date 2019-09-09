@@ -1,0 +1,3 @@
+[submodule "fractal_cpp/cmake"]
+	path = fractal_cpp/cmake
+	url = https://github.com/corrodedHash/cmake-framework

@@ -1,8 +1,13 @@
-add_subdirectory(fractal)
+add_library(Core STATIC $<TARGET_OBJECTS:aux_parsing>)
+
+set_target_properties(Core PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
+
 add_subdirectory(generator)
+add_subdirectory(fractal)
 add_subdirectory(visitor)
 
-add_library(lib_core STATIC $<TARGET_OBJECTS:aux_parsing> ${LIB_SRC_FILES})
+add_dependencies(Core antlr4cpp antlr4cpp_generation_antlr)
 
-target_link_libraries(lib_core antlr4-runtime)
-add_dependencies(lib_core antlr4cpp)
+target_link_libraries(Core GeneralConfig)
+target_link_libraries(Core antlr4-runtime)
+target_link_libraries(Core aux_parsing)
