@@ -1,21 +1,23 @@
 #include "generator/commandhandler.h"
+
 #include <cstdlib>
 
-::frac::FType (::frac::RandomSuite::rand)(::frac::FType start, ::frac::FType end)
-{
-  if (start == end){
+::frac::FType(::frac::RandomSuite::rand)(::frac::FType start,
+                                         ::frac::FType end) {
+  if (start == end) {
     return start;
   }
-  return dist(mt, std::uniform_real_distribution<double>::param_type(start, end));
+  return dist(mt,
+              std::uniform_real_distribution<double>::param_type(start, end));
 }
 
-::frac::FType (::frac::CommandHandler::random_number)(const std::array<::frac::FType, 6>& values)
-{
+::frac::FType(::frac::CommandHandler::random_number)(
+    const std::array<::frac::FType, 6>& values) {
   return rndm.rand(values[0], values[1]);
 }
 
-std::array<::frac::FType, 3> (::frac::CommandHandler::random_vector)(const std::array<::frac::FType, 6>& values)
-{
+std::array<::frac::FType, 3>(::frac::CommandHandler::random_vector)(
+    const std::array<::frac::FType, 6>& values) {
   std::array<::frac::FType, 3> result{};
   for (int i = 0; i < 3; ++i) {
     result[i] = rndm.rand(values[2 * i], values[2 * i + 1]);
@@ -23,8 +25,8 @@ std::array<::frac::FType, 3> (::frac::CommandHandler::random_vector)(const std::
   return result;
 }
 
-void frac::CommandHandler::handle(const ::frac::Terminal& term)
-{
+void
+frac::CommandHandler::handle(const ::frac::Terminal& term) {
   switch (term.ttype) {
   case Terminal::TerminalType::ROTATE_TERM:
     fractal.rotate(random_vector(term.values));
