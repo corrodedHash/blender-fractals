@@ -6,10 +6,6 @@ antlr4cpp_process_grammar(fractal_parse antlr
   ${CMAKE_SOURCE_DIR}/auxiliary/parsing/lsystemParser.g4)
 include_directories(${antlr4cpp_include_dirs_antlr})
 
-foreach(generated_file ${antlr4cpp_src_files_antlr})
-  set_source_files_properties(${generated_file} PROPERTIES GENERATED TRUE)
-endforeach(generated_file)
-
 add_library(aux_parsing OBJECT ${antlr4cpp_src_files_antlr})
 target_link_directories(aux_parsing PUBLIC ${ANTLR4CPP_LIBS})
 target_include_directories(aux_parsing PUBLIC ${antlr4cpp_include_dirs_antlr})

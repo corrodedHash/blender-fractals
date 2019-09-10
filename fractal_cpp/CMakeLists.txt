@@ -22,10 +22,13 @@ add_subdirectory(auxiliary)
 # Compile main output
 
 if (${PROJECT_NAME}_ENABLE_PYTHON)
-  add_library(fractalgen SHARED $<TARGET_OBJECTS:aux_python_bridge>)
+  add_library(fractalgen SHARED)
 
+  target_link_libraries(fractalgen PRIVATE aux_python_bridge)
+  target_link_libraries(fractalgen PRIVATE Core)
+  target_link_libraries(fractalgen PRIVATE Python::Python )
   target_link_libraries(fractalgen PRIVATE GeneralConfig)
-  target_link_libraries(fractalgen PRIVATE Python::Python Core)
+
   set_target_properties(fractalgen PROPERTIES PREFIX "")
   set_target_properties(fractalgen PROPERTIES OUTPUT_NAME "fractalgen")
 endif()
